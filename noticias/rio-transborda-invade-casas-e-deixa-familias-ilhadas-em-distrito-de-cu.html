@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;0,900;1,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <!-- Tema: abre em Claro; aplica a escolha salva antes de desenhar a página (evita piscar) -->
-  <script>(function(){var m="light";try{m=localStorage.getItem("cbn-theme-mode")||"light"}catch(e){}var d=document.documentElement;d.setAttribute("data-theme-mode",m);d.setAttribute("data-theme",m==="auto"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):m)})();</script>
+  <script>(function(){var m="light";try{m=localStorage.getItem("cbn-theme-mode")||"light"}catch(e){}var d=document.documentElement;d.setAttribute("data-cbn-mode",m);d.setAttribute("data-cbn-theme",m==="auto"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):m);if(!("onpagereveal" in window)||location.protocol==="file:")d.classList.add("no-vt")})();</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">

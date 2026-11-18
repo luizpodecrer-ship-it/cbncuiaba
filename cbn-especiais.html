@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;0,900;1,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <!-- Tema: abre em Claro; aplica a escolha salva antes de desenhar a página (evita piscar) -->
-  <script>(function(){var m="light";try{m=localStorage.getItem("cbn-theme-mode")||"light"}catch(e){}var d=document.documentElement;d.setAttribute("data-theme-mode",m);d.setAttribute("data-theme",m==="auto"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):m)})();</script>
+  <script>(function(){var m="light";try{m=localStorage.getItem("cbn-theme-mode")||"light"}catch(e){}var d=document.documentElement;d.setAttribute("data-cbn-mode",m);d.setAttribute("data-cbn-theme",m==="auto"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):m);if(!("onpagereveal" in window)||location.protocol==="file:")d.classList.add("no-vt")})();</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -124,7 +124,7 @@
 <div class="page-head"><div class="container"><nav class="crumbs" aria-label="Você está em"><a href="index.html">Início</a><i aria-hidden="true">›</i><span aria-current="page">CBN Especiais</span></nav><h1 class="page-head__title">CBN Especiais</h1><p class="page-head__desc">Séries e projetos especiais da CBN Cuiabá.</p><p class="page-head__count">5 publicações</p></div></div>
 <div class="section"><div class="container layout"><div class="layout__main"><div class="special-tabs"><a class="is-active" href="cbn-especiais.html">Todos</a><a href="aguas-cuiaba.html">Águas Cuiabá</a><a href="agroligadas.html">Agroligadas</a><a href="comprova.html">CBN + Projeto Comprova</a></div><div class="feature"><article class="card card--overlay card--lg">
   <div class="card__media"><img src="assets/img/agua.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
-  <div class="card__body"><span class="tag tag--solid">Águas Cuiabá</span><h2 class="card__title"><a href="noticias/novo-reservatorio-da-aguas-cuiaba-reforca-abastecimento-em-cuiaba.html">Novo reservatório da Águas Cuiabá reforça abastecimento em Cuiabá</a></h2><p class="card__excerpt">Resumo da notícia em uma ou duas linhas, escrito pela redação para contextualizar o leitor antes do clique.</p><div class="meta"><time>11 mar 2026</time></div></div>
+  <div class="card__body"><span class="tag tag--solid">Águas Cuiabá</span><h2 class="card__title"><a href="noticias/novo-reservatorio-da-aguas-cuiaba-reforca-abastecimento-em-cuiaba.html">Novo reservatório da Águas Cuiabá reforça abastecimento em Cuiabá</a></h2><div class="meta"><time>11 mar 2026</time></div></div>
 </article><div class="list-divided"><article class="card card--row">
   <div class="card__media"><img src="assets/img/peixes.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
   <div class="card__body"><h3 class="card__title"><a href="noticias/interligue-ja-completa-dois-anos-com-avancos-para-os-rios-de-cuiaba.html">Interligue Já completa dois anos com avanços para os rios de Cuiabá</a></h3><div class="meta"><time>17 jun 2026</time></div></div>
@@ -139,7 +139,7 @@
 </article></div></div><aside class="ad ad--secundario" aria-label="Publicidade" data-slot="secundario"><span class="ad__label">Publicidade</span>
   <div class="ad__box" data-name="Secundário" data-format="728 × 90"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div></aside><header class="section-head"><h2 class="section-head__title">Mais em CBN Especiais</h2></header><div class="feed"><article class="card card--feed" data-search="oscilações da arroba do gado: entendendo o mercado e protegendo seu lucro agroligadas">
   <div class="card__media"><img src="assets/img/compostagem.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
-  <div class="card__body"><span class="tag">Agroligadas</span><h3 class="card__title"><a href="noticias/oscilacoes-da-arroba-do-gado-entendendo-o-mercado-e-protegendo-seu-luc.html">Oscilações da Arroba do Gado: Entendendo o Mercado e Protegendo seu Lucro</a></h3><p class="card__excerpt">Resumo da notícia em uma ou duas linhas, escrito pela redação para contextualizar o leitor antes do clique.</p><div class="meta"><time>3 jul 2025</time></div></div>
+  <div class="card__body"><span class="tag">Agroligadas</span><h3 class="card__title"><a href="noticias/oscilacoes-da-arroba-do-gado-entendendo-o-mercado-e-protegendo-seu-luc.html">Oscilações da Arroba do Gado: Entendendo o Mercado e Protegendo seu Lucro</a></h3><div class="meta"><time>3 jul 2025</time></div></div>
 </article></div></div><aside class="sidebar" aria-label="Lateral">
   <aside class="ad ad--lateral" aria-label="Publicidade" data-slot="lateral-1"><span class="ad__label">Publicidade</span>
   <div class="ad__box" data-name="Lateral 1" data-format="300 × 250"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div></aside>

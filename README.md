@@ -30,6 +30,9 @@ O banner entra dentro de `.ad__box`. Em telas mais estreitas que o formato, a me
 
 ## Observações
 
+- Cards de notícia: em todo o portal mostram apenas editoria, título e data. A linha fina aparece somente dentro da página da notícia.
+
+- Navegação suave: links internos trocam a página sem recarregar (o cabeçalho não pisca e a rádio continua tocando). A cada troca o script dispara o evento `cbn:navigate` no `document` — use-o para recarregar os banners e registrar a visualização no Analytics. Para desligar, use `<body data-soft-nav="off">`; os links voltam a abrir normalmente.
 - Tema: abre em Claro; o visitante pode escolher Claro, Escuro ou Automático (salvo em `localStorage`).
 - Rádio ao vivo: o endereço da transmissão está no atributo `data-stream` do `<audio id="radio">`.
 - Conteúdo de exemplo: os textos das notícias, os títulos das entrevistas, os nomes da equipe e os contatos são marcadores de posição.

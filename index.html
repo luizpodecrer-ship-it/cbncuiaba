@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;0,900;1,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <!-- Tema: abre em Claro; aplica a escolha salva antes de desenhar a página (evita piscar) -->
-  <script>(function(){var m="light";try{m=localStorage.getItem("cbn-theme-mode")||"light"}catch(e){}var d=document.documentElement;d.setAttribute("data-theme-mode",m);d.setAttribute("data-theme",m==="auto"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):m)})();</script>
+  <script>(function(){var m="light";try{m=localStorage.getItem("cbn-theme-mode")||"light"}catch(e){}var d=document.documentElement;d.setAttribute("data-cbn-mode",m);d.setAttribute("data-cbn-theme",m==="auto"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):m);if(!("onpagereveal" in window)||location.protocol==="file:")d.classList.add("no-vt")})();</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -138,7 +138,6 @@
           <div class="card__body">
             <span class="tag tag--solid">Cidades</span>
             <h1 class="card__title"><a href="noticias/imagens-aereas-mostram-casas-submersas-apos-rompimento-de-barragem-em.html">Imagens aéreas mostram casas submersas após rompimento de barragem em Cuiabá</a></h1>
-            <p class="card__excerpt">Defesa Civil monitora a área e orienta moradores; equipes seguem no local para atender as famílias atingidas.</p>
             <div class="meta"><time>Há 35 min</time></div>
           </div>
         </article>
@@ -264,7 +263,6 @@
           <div class="card__body">
             
             <h3 class="card__title"><a href="noticias/gisela-rejeita-planos-de-disputar-prefeitura-e-mira-mandato-no-governo.html">Gisela rejeita planos de disputar Prefeitura e mira mandato no governo</a></h3>
-            <p class="card__excerpt">Parlamentar afirma que o foco está na atuação atual e descarta entrar na disputa municipal.</p>
             <div class="meta"><time>17 nov 2026</time></div>
           </div>
         </article>
