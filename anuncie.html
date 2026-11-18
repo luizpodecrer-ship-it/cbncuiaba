@@ -67,7 +67,10 @@
     <div class="header__actions">
       <button class="icon-btn" data-open="search" aria-label="Buscar"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
       <button class="icon-btn theme-cycle" data-theme-cycle aria-label="Tema: claro"><svg class="t-light" aria-hidden="true"><use href="#i-sun"/></svg><svg class="t-dark" aria-hidden="true"><use href="#i-moon"/></svg><svg class="t-auto" aria-hidden="true"><use href="#i-auto"/></svg></button>
-      <button class="live-btn" data-radio-toggle aria-pressed="false"><span class="pulse"></span> Ao vivo</button>
+      <button class="live-btn" data-radio-toggle aria-pressed="false">
+        <span class="live-btn__pulse"><span class="live-btn__core"><svg class="fill i-play" aria-hidden="true"><use href="#i-play"/></svg><svg class="fill i-pause" aria-hidden="true"><use href="#i-pause"/></svg></span><i class="live-btn__wave"></i><i class="live-btn__wave"></i><i class="live-btn__wave"></i></span>
+        <span class="live-btn__label">Ao vivo</span>
+      </button>
     </div>
   </div>
   <!-- Menu em cápsula (desktop): fica sobre a borda inferior do cabeçalho -->
@@ -237,12 +240,12 @@
   </nav>
   <div class="drawer__sub">
     <a href="artigos.html">Artigos</a><a href="cbn-especiais.html">CBN Especiais</a><a href="stories.html">CBN Stories</a><a href="anuncie.html">Anuncie</a><a href="politica-de-privacidade.html">Política de privacidade</a>
-    <div class="theme-switch" role="radiogroup" aria-label="Tema do site"><button type="button" role="radio" aria-checked="true" data-theme-set="light"><svg aria-hidden="true"><use href="#i-sun"/></svg> Claro</button><button type="button" role="radio" aria-checked="false" data-theme-set="dark"><svg aria-hidden="true"><use href="#i-moon"/></svg> Escuro</button><button type="button" role="radio" aria-checked="false" data-theme-set="auto"><svg aria-hidden="true"><use href="#i-auto"/></svg> Automático</button></div>
   </div>
   <div class="drawer__foot">
     <a href="https://www.facebook.com/cbncba" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
     <a href="https://instagram.com/cbncbafm" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
     <a href="https://www.youtube.com/@cbncba" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-yt"/></svg></a>
+    <button class="theme-cycle drawer__theme" type="button" data-theme-cycle aria-label="Tema: claro"><svg class="t-light" aria-hidden="true"><use href="#i-sun"/></svg><svg class="t-dark" aria-hidden="true"><use href="#i-moon"/></svg><svg class="t-auto" aria-hidden="true"><use href="#i-auto"/></svg></button>
   </div>
 </aside>
 

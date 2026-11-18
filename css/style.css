@@ -12,8 +12,9 @@
   --red: #d10a11;
   --red-600: #b3070d;
   --red-050: #fdecec;
-  --ink: #272b33;
-  --ink-2: #4d5460;
+  --ink: #272b33;      /* títulos, menu e destaques */
+  --text: #3d4047;     /* texto corrido do conteúdo (10% mais claro que os títulos) */
+  --ink-2: #5f6570;
   --muted: #6e7583;
   --line: #e6e8ec;
   --bg: #ffffff;
@@ -37,6 +38,7 @@
 [data-cbn-theme="dark"] {
   color-scheme: dark;
   --ink: #f2f3f5;
+  --text: #e4e6ea;
   --ink-2: #c9cdd4;
   --muted: #9aa1ac;
   --line: #2a2e36;
@@ -146,12 +148,6 @@ svg.fill { fill: currentColor; stroke: none; }
 .topbar .icon-btn { width: 32px; height: 32px; }
 .topbar .icon-btn svg { width: 15px; height: 15px; }
 
-/* Seletor de tema: Claro / Escuro / Automático */
-.theme-switch { display: inline-flex; padding: 3px; gap: 2px; border-radius: 8px; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .1); }
-.theme-switch button { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 5px; font-size: .74rem; font-weight: 600; color: #b9bec8; transition: background-color .2s, color .2s; }
-.theme-switch button svg { width: 13px; height: 13px; }
-.theme-switch button:hover { color: #fff; }
-.theme-switch button[aria-checked="true"] { background: #fff; color: #14161a; }
 .theme-cycle svg { display: none; }
 [data-cbn-mode="light"] .theme-cycle .t-light,
 [data-cbn-mode="dark"] .theme-cycle .t-dark,
@@ -169,8 +165,22 @@ svg.fill { fill: currentColor; stroke: none; }
 .drawer .logo img { height: 40px; }
 
 .header__actions { display: flex; align-items: center; gap: 4px; margin-left: auto; }
-.live-btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 8px; background: #fff; color: var(--red); font-weight: 800; font-size: .82rem; letter-spacing: .04em; text-transform: uppercase; margin-left: 6px; transition: transform .2s var(--ease); }
-.live-btn:hover { transform: translateY(-1px); }
+/* Botão "Ao vivo": núcleo branco com o play e três ondas que se expandem em sequência.
+   Tudo cabe dentro da faixa vermelha (a maior onda tem 46px). */
+.live-btn { display: inline-flex; align-items: center; gap: 14px; height: 44px; padding: 0 6px 0 14px; margin-left: 4px; color: #fff; border-radius: 8px; }
+.live-btn__pulse { position: relative; width: 22px; height: 22px; flex: none; }
+.live-btn__core { position: absolute; inset: 0; z-index: 1; border-radius: 50%; background: #fff; color: var(--red); display: grid; place-items: center; transition: transform .2s var(--ease); }
+.live-btn__core svg { width: 10px; height: 10px; }
+.live-btn__core .i-pause, .is-playing .live-btn__core .i-play { display: none; }
+.is-playing .live-btn__core .i-pause { display: block; }
+.live-btn__wave { position: absolute; inset: 0; margin: auto; width: 22px; height: 22px; border-radius: 50%; border: 2px solid #fff; opacity: 0; animation: live-ping 2.4s cubic-bezier(0, .4, .2, 1) infinite; }
+.live-btn__wave:nth-child(3) { animation-delay: .8s; }
+.live-btn__wave:nth-child(4) { animation-delay: 1.6s; }
+@keyframes live-ping { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(2.1); opacity: 0; } }
+.live-btn__label { font-size: .66rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .85; transition: opacity .2s; }
+.live-btn:hover .live-btn__label { opacity: 1; }
+.live-btn:hover .live-btn__core { transform: scale(1.08); }
+.live-btn:active .live-btn__core { transform: scale(.92); }
 
 /* Menu em cápsula ----------------------------------------------------------
    Uma cápsula opaca com filete de luz no topo; a "chapa" de destaque desliza
@@ -441,11 +451,11 @@ svg.fill { fill: currentColor; stroke: none; }
 .drawer__nav svg { color: var(--muted); }
 .drawer__sub { padding: 16px 20px; display: grid; gap: 4px; font-size: .92rem; color: var(--ink-2); }
 .drawer__sub a { min-height: 40px; display: flex; align-items: center; }
-.drawer__sub .theme-switch { margin-top: 10px; background: var(--bg-soft); border-color: var(--line); display: grid; grid-template-columns: repeat(3, 1fr); }
-.drawer__sub .theme-switch button { height: 40px; justify-content: center; color: var(--ink-2); font-size: .82rem; }
-.drawer__sub .theme-switch button[aria-checked="true"] { background: var(--ink); color: var(--bg); }
 .drawer__foot { margin-top: auto; padding: 16px 20px 24px; display: flex; gap: 8px; border-top: 1px solid var(--line); }
 .drawer__foot a { width: 44px; height: 44px; border-radius: 50%; background: var(--bg-soft); display: grid; place-items: center; }
+/* Ícone de tema no menu lateral: alterna claro → escuro → automático */
+.drawer__theme { margin-left: auto; width: 44px; height: 44px; border-radius: 50%; background: var(--bg-soft); display: grid; place-items: center; transition: background-color .2s, transform .15s var(--ease); }
+.drawer__theme:active { transform: scale(.94); }
 
 .search { position: fixed; inset: 0; z-index: 100; background: var(--bg); opacity: 0; visibility: hidden; transform: translateY(-12px); transition: opacity .25s, transform .25s var(--ease), visibility .25s; overflow-y: auto; }
 .search.is-open { opacity: 1; visibility: visible; transform: none; }
@@ -533,15 +543,15 @@ svg.fill { fill: currentColor; stroke: none; }
 .article__figure figcaption span { opacity: .8; }
 .article__figure--media .interview__play { left: 50%; top: calc(50% - 16px); bottom: auto; width: 72px; height: 72px; transform: translate(-50%, -50%); }
 .article__figure--media .interview__play svg { width: 28px; height: 28px; }
-.prose { --fs: 1.14rem; font-size: var(--fs); font-weight: 500; line-height: 1.75; max-width: 46rem; }   /* peso 500: a Manrope fica mais legível em telas pequenas */
+.prose { --fs: 1.14rem; font-size: var(--fs); font-weight: 500; line-height: 1.75; max-width: 46rem; color: var(--text); }   /* peso 500: a Manrope fica mais legível em telas pequenas */
 .prose > * + * { margin-top: 1.2em; }
-.prose h2 { font-family: var(--font-head); font-weight: 800; font-size: 1.35em; line-height: 1.2; letter-spacing: -.02em; margin-top: 1.6em; }
+.prose h2 { color: var(--ink); font-family: var(--font-head); font-weight: 800; font-size: 1.35em; line-height: 1.2; letter-spacing: -.02em; margin-top: 1.6em; }
 .prose a { color: var(--red); text-decoration: underline; text-underline-offset: 3px; }
 .prose ul { list-style: none; display: grid; gap: .4em; }
 .prose ul li { position: relative; padding-left: 1.3em; }
 .prose ul li::before { content: ""; position: absolute; left: 0; top: .68em; width: 8px; height: 8px; border-radius: 2px; background: var(--red); }
 .prose blockquote { margin-inline: 0; padding: 4px 0 4px 22px; border-left: 4px solid var(--red); }
-.prose blockquote p { font-family: var(--font-head); font-weight: 700; font-size: 1.25em; line-height: 1.35; letter-spacing: -.01em; }
+.prose blockquote p { color: var(--ink); font-family: var(--font-head); font-weight: 700; font-size: 1.25em; line-height: 1.35; letter-spacing: -.01em; }
 .prose blockquote cite { display: block; margin-top: 8px; font-style: normal; font-size: .8em; color: var(--muted); }
 .prose .ad { margin-block: 1.8em; }
 .article__tags { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: .86rem; }
@@ -638,7 +648,7 @@ img.is-loading { opacity: 0; }
 .card, .opinion, .interview, .story { transition: transform .2s var(--ease), box-shadow .25s, border-color .25s; }
 .card:active, .story:active { transform: scale(.985); }
 .icon-btn { transition: background-color .2s, transform .15s var(--ease); }
-.icon-btn:active, .live-btn:active, .player__play:active, .share__btn:active, .tools__btn:active, .special-tabs a:active, .theme-switch button:active { transform: scale(.94); }
+.icon-btn:active, .player__play:active, .share__btn:active, .tools__btn:active, .special-tabs a:active { transform: scale(.94); }
 .special-tabs a, .article__tags a, .search__tags a, .section-head__more, .footer a, .drawer__nav a, .crumbs a { transition: background-color .2s, color .2s, border-color .2s, transform .15s var(--ease); }
 .drawer__nav a:active { background: var(--bg-soft); padding-left: 26px; }
 .drawer__nav a { transition: background-color .2s, padding-left .2s var(--ease); }
