@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;0,900;1,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <!-- Tema: abre em Claro; aplica a escolha salva antes de desenhar a página (evita piscar) -->
+  <script>(function(){var m="light";try{m=localStorage.getItem("cbn-theme-mode")||"light"}catch(e){}var d=document.documentElement;d.setAttribute("data-theme-mode",m);d.setAttribute("data-theme",m==="auto"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):m)})();</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -25,9 +27,11 @@
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
   <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/></symbol>
+  <symbol id="i-auto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" style="fill:currentColor"/></symbol>
   <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
   <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9.5v5h4l5 4v-13l-5 4H4zM16.5 9a4 4 0 0 1 0 6M19 6.5a8 8 0 0 1 0 11"/></symbol>
   <symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.700 0l3-3a4 4 0 0 0-5.700-5.700l-1 1M14 10a4 4 0 0 0-5.700 0l-3 3a4 4 0 0 0 5.700 5.700l1-1"/></symbol>
   <symbol id="i-fb" viewBox="0 0 24 24"><path d="M14 8.5V7c0-.8.5-1 1-1h2V3h-2.7C11.6 3 10.5 4.8 10.500 6.800V8.500H8v3h2.500V21H14v-9.500h2.600l.4-3z"/></symbol>
   <symbol id="i-ig" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.800" r=".6"/></symbol>
   <symbol id="i-yt" viewBox="0 0 24 24"><rect x="2.500" y="5.500" width="19" height="13" rx="4"/><path d="m10 9.500 5 2.500-5 2.500z"/></symbol>
@@ -45,8 +49,9 @@
       <span class="topbar__item"><svg aria-hidden="true"><use href="#i-sun"/></svg> Cuiabá 34°C</span>
     </div>
     <div class="topbar__right">
-      <a class="topbar__item" href="#">Anuncie</a>
-      <a class="topbar__item" href="#">Expediente</a>
+      <div class="theme-switch" role="radiogroup" aria-label="Tema do site"><button type="button" role="radio" aria-checked="true" data-theme-set="light"><svg aria-hidden="true"><use href="#i-sun"/></svg> Claro</button><button type="button" role="radio" aria-checked="false" data-theme-set="dark"><svg aria-hidden="true"><use href="#i-moon"/></svg> Escuro</button><button type="button" role="radio" aria-checked="false" data-theme-set="auto"><svg aria-hidden="true"><use href="#i-auto"/></svg> Automático</button></div>
+      <a class="topbar__item" href="anuncie.html">Anuncie</a>
+      <a class="topbar__item" href="expediente.html">Expediente</a>
       <a class="icon-btn" href="https://www.facebook.com/cbncba" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
       <a class="icon-btn" href="https://instagram.com/cbncbafm" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
       <a class="icon-btn" href="https://www.youtube.com/@cbncba" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-yt"/></svg></a>
@@ -58,41 +63,42 @@
 <header class="header">
   <div class="container header__in">
     <button class="icon-btn header__menu" data-open="menu" aria-label="Abrir menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
-    <a class="logo" href="index.html" aria-label="CBN Cuiabá 95,9 FM — página inicial">
-          <!-- LOGO: substituir por <img src="logo-cbn-cuiaba.svg"> (arquivo oficial da marca) -->
-          <span class="logo__mark">CBN</span>
-          <span class="logo__sub"><span class="logo__city">Cuiabá</span><span class="logo__fm">95,9 FM</span></span>
-        </a>
-    <nav class="nav" aria-label="Editorias">
-      <ul class="nav__list">
-            <li><a class="nav__link" href="#">Notícias</a></li>
-            <li><a class="nav__link" href="#">Política</a></li>
-            <li><a class="nav__link" href="#">Cidades</a></li>
-            <li><a class="nav__link" href="#">Economia &amp; Negócios</a></li>
-            <li><a class="nav__link" href="#">Esporte &amp; Cultura</a></li>
-            <li><a class="nav__link" href="#">Entrevistas</a></li>
-            <li><a class="nav__link" href="#">Expediente</a></li>
-      </ul>
-    </nav>
+    <a class="logo" href="index.html" aria-label="CBN Cuiabá — página inicial"><img src="assets/img/logo-cbn-cuiaba.svg" alt="CBN Cuiabá 95,9 FM" width="556" height="298"></a>
     <div class="header__actions">
       <button class="icon-btn" data-open="search" aria-label="Buscar"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
-      <button class="icon-btn" data-theme-toggle aria-label="Alternar tema claro/escuro"><svg aria-hidden="true"><use href="#i-moon"/></svg></button>
+      <button class="icon-btn theme-cycle" data-theme-cycle aria-label="Tema: claro"><svg class="t-light" aria-hidden="true"><use href="#i-sun"/></svg><svg class="t-dark" aria-hidden="true"><use href="#i-moon"/></svg><svg class="t-auto" aria-hidden="true"><use href="#i-auto"/></svg></button>
       <button class="live-btn" data-radio-toggle aria-pressed="false"><span class="pulse"></span> Ao vivo</button>
     </div>
+  </div>
+  <!-- Menu em cápsula (desktop): fica sobre a borda inferior do cabeçalho -->
+  <div class="header__nav">
+    <nav class="capsule" aria-label="Editorias" data-capsule>
+      <span class="capsule__pill" aria-hidden="true"></span>
+      <ul class="capsule__list">
+            <li><a class="capsule__link capsule__link--home" href="index.html" aria-current="page" aria-label="Início"><svg aria-hidden="true"><use href="#i-home"/></svg></a></li>
+            <li><a class="capsule__link" href="noticias.html">Notícias</a></li>
+            <li><a class="capsule__link" href="politica.html">Política</a></li>
+            <li><a class="capsule__link" href="cidades.html">Cidades</a></li>
+            <li><a class="capsule__link" href="economia-negocios.html">Economia &amp; Negócios</a></li>
+            <li><a class="capsule__link" href="esporte-cultura.html">Esporte &amp; Cultura</a></li>
+            <li><a class="capsule__link" href="entrevistas.html">Entrevistas</a></li>
+            <li><a class="capsule__link" href="expediente.html">Expediente</a></li>
+      </ul>
+    </nav>
   </div>
 </header>
 
 <!-- Editorias em chips (somente mobile/tablet) -->
 <nav class="chips" aria-label="Editorias">
   <ul class="chips__list">
-        <li><a class="chips__link" href="#" aria-current="page">Início</a></li>
-        <li><a class="chips__link" href="#">Notícias</a></li>
-        <li><a class="chips__link" href="#">Política</a></li>
-        <li><a class="chips__link" href="#">Cidades</a></li>
-        <li><a class="chips__link" href="#">Economia &amp; Negócios</a></li>
-        <li><a class="chips__link" href="#">Esporte &amp; Cultura</a></li>
-        <li><a class="chips__link" href="#">Entrevistas</a></li>
-        <li><a class="chips__link" href="#">Expediente</a></li>
+        <li><a class="chips__link" href="index.html" aria-current="page">Início</a></li>
+        <li><a class="chips__link" href="noticias.html">Notícias</a></li>
+        <li><a class="chips__link" href="politica.html">Política</a></li>
+        <li><a class="chips__link" href="cidades.html">Cidades</a></li>
+        <li><a class="chips__link" href="economia-negocios.html">Economia &amp; Negócios</a></li>
+        <li><a class="chips__link" href="esporte-cultura.html">Esporte &amp; Cultura</a></li>
+        <li><a class="chips__link" href="entrevistas.html">Entrevistas</a></li>
+        <li><a class="chips__link" href="expediente.html">Expediente</a></li>
   </ul>
 </nav>
 
@@ -101,9 +107,9 @@
   <div class="container breaking__in">
     <span class="breaking__label"><span class="pulse"></span> Urgente</span>
     <div class="breaking__track">
-      <p class="breaking__item is-active"><time>14h32</time><a href="#">Rio transborda, invade casas e deixa famílias ilhadas em distrito de Cuiabá</a></p>
-      <p class="breaking__item"><time>13h10</time><a href="#">Arena Pantanal vira centro de operações para atender ocorrências da chuva</a></p>
-      <p class="breaking__item"><time>11h04</time><a href="#">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></p>
+      <p class="breaking__item is-active"><time>14h32</time><a href="noticias/rio-transborda-invade-casas-e-deixa-familias-ilhadas-em-distrito-de-cu.html">Rio transborda, invade casas e deixa famílias ilhadas em distrito de Cuiabá</a></p>
+      <p class="breaking__item"><time>13h10</time><a href="noticias/arena-pantanal-vira-centro-de-operacoes-para-atender-ocorrencias-da-ch.html">Arena Pantanal vira centro de operações para atender ocorrências da chuva</a></p>
+      <p class="breaking__item"><time>11h04</time><a href="noticias/tarifa-de-agua-tera-reducao-em-cuiaba-a-partir-de-janeiro-de-2027.html">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></p>
     </div>
     <div class="breaking__nav">
       <button class="icon-btn" data-breaking="prev" aria-label="Anterior"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>
@@ -114,12 +120,12 @@
 
 <main id="conteudo">
 
-  <!-- PUBLICIDADE 01 — Topo: Super Banner 728x90 (mobile 320x100) -->
+  <!-- PUBLICIDADE — TOPO 990x120 -->
   <div class="ad-wrap">
     <div class="container">
-      <aside class="ad ad--leaderboard" aria-label="Publicidade" data-slot="topo">
+      <aside class="ad ad--topo" aria-label="Publicidade" data-slot="topo">
         <span class="ad__label">Publicidade</span>
-        <div class="ad__box" data-name="Super Banner — Topo"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
+        <div class="ad__box" data-name="Topo" data-format="990 × 120"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
       </aside>
     </div>
   </div>
@@ -131,7 +137,7 @@
           <div class="card__media"><img src="assets/img/barragem.jpg" alt="" width="800" height="500" fetchpriority="high"></div>
           <div class="card__body">
             <span class="tag tag--solid">Cidades</span>
-            <h1 class="card__title"><a href="#">Imagens aéreas mostram casas submersas após rompimento de barragem em Cuiabá</a></h1>
+            <h1 class="card__title"><a href="noticias/imagens-aereas-mostram-casas-submersas-apos-rompimento-de-barragem-em.html">Imagens aéreas mostram casas submersas após rompimento de barragem em Cuiabá</a></h1>
             <p class="card__excerpt">Defesa Civil monitora a área e orienta moradores; equipes seguem no local para atender as famílias atingidas.</p>
             <div class="meta"><time>Há 35 min</time></div>
           </div>
@@ -141,7 +147,7 @@
           <div class="card__media"><img src="assets/img/faccao.jpg" alt="" width="800" height="500" fetchpriority="high"></div>
           <div class="card__body">
             <span class="tag tag--solid">Notícias</span>
-            <h2 class="card__title"><a href="#">Líder de facção teria comprado imóvel na Bahia com identidade falsa</a></h2>
+            <h2 class="card__title"><a href="noticias/lider-de-faccao-teria-comprado-imovel-na-bahia-com-identidade-falsa.html">Líder de facção teria comprado imóvel na Bahia com identidade falsa</a></h2>
             <div class="meta"><time>Há 1 h</time></div>
           </div>
         </article>
@@ -149,7 +155,7 @@
           <div class="card__media"><img src="assets/img/arena.jpg" alt="" width="800" height="500" fetchpriority="high"></div>
           <div class="card__body">
             <span class="tag tag--solid">Cidades</span>
-            <h2 class="card__title"><a href="#">Arena Pantanal vira centro de operações para atender ocorrências da chuva em Cuiabá</a></h2>
+            <h2 class="card__title"><a href="noticias/arena-pantanal-vira-centro-de-operacoes-para-atender-ocorrencias-da-ch.html">Arena Pantanal vira centro de operações para atender ocorrências da chuva em Cuiabá</a></h2>
             <div class="meta"><time>Há 2 h</time></div>
           </div>
         </article>
@@ -159,14 +165,14 @@
           <h2 class="latest__title" id="ultimas"><span class="pulse"></span> Últimas notícias</h2>
         </div>
         <ol class="latest__list">
-            <li class="latest__item"><time>14h32</time><a href="#">Rio transborda, invade casas e deixa famílias ilhadas em distrito de Cuiabá</a></li>
-            <li class="latest__item"><time>13h50</time><a href="#">Empresário é suspeito de causar prejuízo de R$ 2 milhões com venda de carros</a></li>
-            <li class="latest__item"><time>12h15</time><a href="#">Mãe, filho médico e terceiro réu vão a júri por chacina em MT</a></li>
-            <li class="latest__item"><time>11h04</time><a href="#">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></li>
-            <li class="latest__item"><time>09h41</time><a href="#">Polícia prende nove e mira núcleo de facção em cidade de MT</a></li>
-            <li class="latest__item"><time>08h20</time><a href="#">Governo discute estratégias para ampliar produção de peixes no norte de MT</a></li>
+            <li class="latest__item"><time>14h32</time><a href="noticias/rio-transborda-invade-casas-e-deixa-familias-ilhadas-em-distrito-de-cu.html">Rio transborda, invade casas e deixa famílias ilhadas em distrito de Cuiabá</a></li>
+            <li class="latest__item"><time>13h50</time><a href="noticias/empresario-e-suspeito-de-causar-prejuizo-de-r-2-milhoes-com-venda-de-c.html">Empresário é suspeito de causar prejuízo de R$ 2 milhões com venda de carros</a></li>
+            <li class="latest__item"><time>12h15</time><a href="noticias/mae-filho-medico-e-terceiro-reu-vao-a-juri-por-chacina-em-mt.html">Mãe, filho médico e terceiro réu vão a júri por chacina em MT</a></li>
+            <li class="latest__item"><time>11h04</time><a href="noticias/tarifa-de-agua-tera-reducao-em-cuiaba-a-partir-de-janeiro-de-2027.html">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></li>
+            <li class="latest__item"><time>09h41</time><a href="noticias/policia-prende-nove-e-mira-nucleo-de-faccao-em-cidade-de-mt.html">Polícia prende nove e mira núcleo de facção em cidade de MT</a></li>
+            <li class="latest__item"><time>08h20</time><a href="noticias/governo-discute-estrategias-para-ampliar-producao-de-peixes-no-norte-d.html">Governo discute estratégias para ampliar produção de peixes no norte de MT</a></li>
         </ol>
-        <a class="latest__more" href="#">Ver todas as notícias</a>
+        <a class="latest__more" href="noticias.html">Ver todas as notícias</a>
       </aside>
     </div>
   </section>
@@ -176,52 +182,52 @@
     <div class="container">
       <header class="section-head">
           <h2 class="section-head__title" id="stories">CBN Stories</h2>
-          <a class="section-head__more" href="#">Ver todos <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="section-head__more" href="stories.html">Ver todos <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </header>
       <div class="stories">
         <button class="scroll-btn scroll-btn--prev" data-scroll="-1" data-target="#stories-track" aria-label="Voltar"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>
         <div class="stories__track" id="stories-track">
-          <a class="story" href="#">
+          <a class="story" href="stories.html">
             <img src="assets/img/barragem.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
             <span class="story__bars"><i></i><i></i><i></i></span>
             <span class="story__title">Rompimento de barragem: o que se sabe até agora</span>
           </a>
-          <a class="story" href="#">
+          <a class="story" href="stories.html">
             <img src="assets/img/arena.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
             <span class="story__bars"><i></i><i></i><i></i></span>
             <span class="story__title">Arena Pantanal vira centro de operações</span>
           </a>
-          <a class="story" href="#">
+          <a class="story" href="stories.html">
             <img src="assets/img/agua.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
             <span class="story__bars"><i></i><i></i><i></i></span>
             <span class="story__title">Conta de água mais barata em 2027</span>
           </a>
-          <a class="story" href="#">
+          <a class="story" href="stories.html">
             <img src="assets/img/empereur.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
             <span class="story__bars"><i></i><i></i><i></i></span>
             <span class="story__title">Alan Empereur se despede do Cuiabá</span>
           </a>
-          <a class="story" href="#">
+          <a class="story" href="stories.html">
             <img src="assets/img/aeroporto.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
             <span class="story__bars"><i></i><i></i><i></i></span>
             <span class="story__title">Nova rota aérea liga Cuiabá a São Paulo</span>
           </a>
-          <a class="story" href="#">
+          <a class="story" href="stories.html">
             <img src="assets/img/peixes.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
             <span class="story__bars"><i></i><i></i><i></i></span>
             <span class="story__title">Piscicultura avança no norte de MT</span>
           </a>
-          <a class="story" href="#">
+          <a class="story" href="stories.html">
             <img src="assets/img/lago.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
             <span class="story__bars"><i></i><i></i><i></i></span>
             <span class="story__title">Lago Di Vino ganha prêmio internacional</span>
           </a>
-          <a class="story" href="#">
+          <a class="story" href="stories.html">
             <img src="assets/img/cuiaba1.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
             <span class="story__bars"><i></i><i></i><i></i></span>
             <span class="story__title">Cuiabá vence em casa na Série B</span>
           </a>
-          <a class="story" href="#">
+          <a class="story" href="stories.html">
             <img src="assets/img/compostagem.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
             <span class="story__bars"><i></i><i></i><i></i></span>
             <span class="story__title">Resíduos viram fertilizante em Cuiabá</span>
@@ -232,12 +238,12 @@
     </div>
   </section>
 
-  <!-- PUBLICIDADE 02 — Billboard 970x250 (tablet 728x90 / mobile 300x250) -->
+  <!-- PUBLICIDADE — SECUNDÁRIO 728x90 -->
   <div class="ad-wrap ad-wrap--soft">
     <div class="container">
-      <aside class="ad ad--billboard" aria-label="Publicidade" data-slot="billboard-1">
+      <aside class="ad ad--secundario" aria-label="Publicidade" data-slot="secundario">
         <span class="ad__label">Publicidade</span>
-        <div class="ad__box" data-name="Billboard — Destaque"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
+        <div class="ad__box" data-name="Secundário" data-format="728 × 90"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
       </aside>
     </div>
   </div>
@@ -250,14 +256,14 @@
         <section class="reveal" aria-labelledby="politica">
           <header class="section-head">
           <h2 class="section-head__title" id="politica">Política</h2>
-          <a class="section-head__more" href="#">Mais de Política <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="section-head__more" href="politica.html">Mais de Política <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </header>
           <div class="feature">
             <article class="card card--lg">
           <div class="card__media"><img src="assets/img/gisela.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Gisela rejeita planos de disputar Prefeitura e mira mandato no governo</a></h3>
+            <h3 class="card__title"><a href="noticias/gisela-rejeita-planos-de-disputar-prefeitura-e-mira-mandato-no-governo.html">Gisela rejeita planos de disputar Prefeitura e mira mandato no governo</a></h3>
             <p class="card__excerpt">Parlamentar afirma que o foco está na atuação atual e descarta entrar na disputa municipal.</p>
             <div class="meta"><time>17 nov 2026</time></div>
           </div>
@@ -267,7 +273,7 @@
           <div class="card__media"><img src="assets/img/jayme.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Jayme descarta aposentadoria política e diz que vai apoiar novos candidatos</a></h3>
+            <h3 class="card__title"><a href="noticias/jayme-descarta-aposentadoria-politica-e-diz-que-vai-apoiar-novos-candi.html">Jayme descarta aposentadoria política e diz que vai apoiar novos candidatos</a></h3>
             <div class="meta"><time>17 nov 2026</time></div>
           </div>
         </article>
@@ -275,7 +281,7 @@
           <div class="card__media"><img src="assets/img/tce.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Após operação da PF, TCE faz ‘pente-fino’ em direitos e pagamentos a membros</a></h3>
+            <h3 class="card__title"><a href="noticias/apos-operacao-da-pf-tce-faz-pente-fino-em-direitos-e-pagamentos-a-memb.html">Após operação da PF, TCE faz ‘pente-fino’ em direitos e pagamentos a membros</a></h3>
             <div class="meta"><time>17 nov 2026</time></div>
           </div>
         </article>
@@ -283,7 +289,7 @@
           <div class="card__media"><img src="assets/img/abilio.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Abilio admite que fusão “não deu certo” e vai recriar secretarias de Cultura e Esporte</a></h3>
+            <h3 class="card__title"><a href="noticias/abilio-admite-que-fusao-nao-deu-certo-e-vai-recriar-secretarias-de-cul.html">Abilio admite que fusão “não deu certo” e vai recriar secretarias de Cultura e Esporte</a></h3>
             <div class="meta"><time>16 nov 2026</time></div>
           </div>
         </article>
@@ -291,7 +297,7 @@
           <div class="card__media"><img src="assets/img/flavia.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Flávia acusa Wanderley de travar município e projeta mudança com Lucas</a></h3>
+            <h3 class="card__title"><a href="noticias/flavia-acusa-wanderley-de-travar-municipio-e-projeta-mudanca-com-lucas.html">Flávia acusa Wanderley de travar município e projeta mudança com Lucas</a></h3>
             <div class="meta"><time>16 nov 2026</time></div>
           </div>
         </article>
@@ -302,14 +308,14 @@
         <section class="reveal" aria-labelledby="cidades">
           <header class="section-head">
           <h2 class="section-head__title" id="cidades">Cidades</h2>
-          <a class="section-head__more" href="#">Mais de Cidades <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="section-head__more" href="cidades.html">Mais de Cidades <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </header>
           <div class="grid-4">
             <article class="card ">
           <div class="card__media"><img src="assets/img/rio.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Rio transborda, invade casas e deixa famílias ilhadas em distrito de Cuiabá</a></h3>
+            <h3 class="card__title"><a href="noticias/rio-transborda-invade-casas-e-deixa-familias-ilhadas-em-distrito-de-cu.html">Rio transborda, invade casas e deixa famílias ilhadas em distrito de Cuiabá</a></h3>
             <div class="meta"><time>18 nov 2026</time></div>
           </div>
         </article>
@@ -317,7 +323,7 @@
           <div class="card__media"><img src="assets/img/juri.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Mãe, filho médico e terceiro réu vão a júri por chacina em MT</a></h3>
+            <h3 class="card__title"><a href="noticias/mae-filho-medico-e-terceiro-reu-vao-a-juri-por-chacina-em-mt.html">Mãe, filho médico e terceiro réu vão a júri por chacina em MT</a></h3>
             <div class="meta"><time>17 nov 2026</time></div>
           </div>
         </article>
@@ -325,7 +331,7 @@
           <div class="card__media"><img src="assets/img/agua.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></h3>
+            <h3 class="card__title"><a href="noticias/tarifa-de-agua-tera-reducao-em-cuiaba-a-partir-de-janeiro-de-2027.html">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></h3>
             <div class="meta"><time>17 nov 2026</time></div>
           </div>
         </article>
@@ -333,30 +339,24 @@
           <div class="card__media"><img src="assets/img/operacao.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Polícia prende nove e mira núcleo de facção em cidade de MT</a></h3>
+            <h3 class="card__title"><a href="noticias/policia-prende-nove-e-mira-nucleo-de-faccao-em-cidade-de-mt.html">Polícia prende nove e mira núcleo de facção em cidade de MT</a></h3>
             <div class="meta"><time>17 nov 2026</time></div>
           </div>
         </article>
           </div>
         </section>
 
-        <!-- PUBLICIDADE 03 — Super Banner 728x90 entre editorias (mobile 320x100) -->
-        <aside class="ad ad--leaderboard" aria-label="Publicidade" data-slot="meio-1">
-        <span class="ad__label">Publicidade</span>
-        <div class="ad__box" data-name="Super Banner — Meio"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
-      </aside>
-
         <section class="reveal" aria-labelledby="economia">
           <header class="section-head">
           <h2 class="section-head__title" id="economia">Economia &amp; Negócios</h2>
-          <a class="section-head__more" href="#">Mais de Economia <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="section-head__more" href="economia-negocios.html">Mais de Economia <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </header>
           <div class="grid-3 to-row-mobile">
             <article class="card ">
           <div class="card__media"><img src="assets/img/condominio.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Condomínio às margens do Rio Cuiabá oferece proposta inédita de lazer na região</a></h3>
+            <h3 class="card__title"><a href="noticias/condominio-as-margens-do-rio-cuiaba-oferece-proposta-inedita-de-lazer.html">Condomínio às margens do Rio Cuiabá oferece proposta inédita de lazer na região</a></h3>
             <div class="meta"><time>3 ago 2026</time></div>
           </div>
         </article>
@@ -364,7 +364,7 @@
           <div class="card__media"><img src="assets/img/aeroporto.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Mato Grosso amplia conexão aérea com nova rota da Azul para São Paulo</a></h3>
+            <h3 class="card__title"><a href="noticias/mato-grosso-amplia-conexao-aerea-com-nova-rota-da-azul-para-sao-paulo.html">Mato Grosso amplia conexão aérea com nova rota da Azul para São Paulo</a></h3>
             <div class="meta"><time>28 mai 2026</time></div>
           </div>
         </article>
@@ -372,7 +372,7 @@
           <div class="card__media"><img src="assets/img/compostagem.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Compostagem transforma resíduos do saneamento em fertilizante em Cuiabá</a></h3>
+            <h3 class="card__title"><a href="noticias/compostagem-transforma-residuos-do-saneamento-em-fertilizante-em-cuiab.html">Compostagem transforma resíduos do saneamento em fertilizante em Cuiabá</a></h3>
             <div class="meta"><time>27 mai 2026</time></div>
           </div>
         </article>
@@ -382,14 +382,14 @@
         <section class="reveal" aria-labelledby="esporte">
           <header class="section-head">
           <h2 class="section-head__title" id="esporte">Esporte &amp; Cultura</h2>
-          <a class="section-head__more" href="#">Mais de Esporte & Cultura <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="section-head__more" href="esporte-cultura.html">Mais de Esporte & Cultura <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </header>
           <div class="feature">
             <article class="card card--overlay card--lg">
           <div class="card__media"><img src="assets/img/empereur.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             <span class="tag tag--solid">Futebol</span>
-            <h3 class="card__title"><a href="#">Capitão Alan Empereur deixa o Cuiabá após mais de um mês de negociação</a></h3>
+            <h3 class="card__title"><a href="noticias/capitao-alan-empereur-deixa-o-cuiaba-apos-mais-de-um-mes-de-negociacao.html">Capitão Alan Empereur deixa o Cuiabá após mais de um mês de negociação</a></h3>
             <div class="meta"><time>13 nov 2026</time></div>
           </div>
         </article>
@@ -398,7 +398,7 @@
           <div class="card__media"><img src="assets/img/mixto.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Mixto anuncia Natan Bahia para reforçar ataque em 2027</a></h3>
+            <h3 class="card__title"><a href="noticias/mixto-anuncia-natan-bahia-para-reforcar-ataque-em-2027.html">Mixto anuncia Natan Bahia para reforçar ataque em 2027</a></h3>
             <div class="meta"><time>9 out 2026</time></div>
           </div>
         </article>
@@ -406,7 +406,7 @@
           <div class="card__media"><img src="assets/img/cuiaba1.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Cuiabá vence em casa e decreta o rebaixamento da Ponte Preta na Série B</a></h3>
+            <h3 class="card__title"><a href="noticias/cuiaba-vence-em-casa-e-decreta-o-rebaixamento-da-ponte-preta-na-serie.html">Cuiabá vence em casa e decreta o rebaixamento da Ponte Preta na Série B</a></h3>
             <div class="meta"><time>4 out 2026</time></div>
           </div>
         </article>
@@ -414,7 +414,7 @@
           <div class="card__media"><img src="assets/img/cuiaba2.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             
-            <h3 class="card__title"><a href="#">Cuiabá é dominado pelo CRB no Rei Pelé e se distancia do G6</a></h3>
+            <h3 class="card__title"><a href="noticias/cuiaba-e-dominado-pelo-crb-no-rei-pele-e-se-distancia-do-g6.html">Cuiabá é dominado pelo CRB no Rei Pelé e se distancia do G6</a></h3>
             <div class="meta"><time>28 set 2026</time></div>
           </div>
         </article>
@@ -426,28 +426,22 @@
 
       <!-- LATERAL -->
       <aside class="sidebar" aria-label="Lateral">
-        <!-- PUBLICIDADE 04 — Retângulo 300x250 -->
-        <aside class="ad ad--rectangle" aria-label="Publicidade" data-slot="lateral-1">
+        <!-- PUBLICIDADE — LATERAL 300x250 (posição 1) -->
+        <aside class="ad ad--lateral" aria-label="Publicidade" data-slot="lateral-1">
         <span class="ad__label">Publicidade</span>
-        <div class="ad__box" data-name="Retângulo — Lateral 1"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
+        <div class="ad__box" data-name="Lateral 1" data-format="300 × 250"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
       </aside>
 
         <section class="widget" aria-labelledby="mais-lidas">
           <h2 class="widget__title" id="mais-lidas">Mais lidas</h2>
           <ol class="ranking">
-            <li class="ranking__item"><a href="#">Imagens aéreas mostram casas submersas após rompimento de barragem em Cuiabá</a></li>
-            <li class="ranking__item"><a href="#">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></li>
-            <li class="ranking__item"><a href="#">Líder de facção teria comprado imóvel na Bahia com identidade falsa</a></li>
-            <li class="ranking__item"><a href="#">Capitão Alan Empereur deixa o Cuiabá após mais de um mês de negociação</a></li>
-            <li class="ranking__item"><a href="#">Abilio admite que fusão “não deu certo” e vai recriar secretarias</a></li>
+            <li class="ranking__item"><a href="noticias/imagens-aereas-mostram-casas-submersas-apos-rompimento-de-barragem-em.html">Imagens aéreas mostram casas submersas após rompimento de barragem em Cuiabá</a></li>
+            <li class="ranking__item"><a href="noticias/tarifa-de-agua-tera-reducao-em-cuiaba-a-partir-de-janeiro-de-2027.html">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></li>
+            <li class="ranking__item"><a href="noticias/lider-de-faccao-teria-comprado-imovel-na-bahia-com-identidade-falsa.html">Líder de facção teria comprado imóvel na Bahia com identidade falsa</a></li>
+            <li class="ranking__item"><a href="noticias/capitao-alan-empereur-deixa-o-cuiaba-apos-mais-de-um-mes-de-negociacao.html">Capitão Alan Empereur deixa o Cuiabá após mais de um mês de negociação</a></li>
+            <li class="ranking__item"><a href="noticias/abilio-admite-que-fusao-nao-deu-certo-e-vai-recriar-secretarias-de-cul.html">Abilio admite que fusão “não deu certo” e vai recriar secretarias</a></li>
           </ol>
         </section>
-
-        <!-- PUBLICIDADE 05 — Retângulo 300x250 -->
-        <aside class="ad ad--rectangle" aria-label="Publicidade" data-slot="lateral-2">
-        <span class="ad__label">Publicidade</span>
-        <div class="ad__box" data-name="Retângulo — Lateral 2"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
-      </aside>
 
         <section class="widget" aria-labelledby="redes">
           <h2 class="widget__title" id="redes">Siga a CBN Cuiabá</h2>
@@ -458,11 +452,11 @@
           </div>
         </section>
 
-        <!-- PUBLICIDADE 06 — Half Page 300x600 (acompanha a rolagem no desktop) -->
+        <!-- PUBLICIDADE — LATERAL 300x250 (posição 2, acompanha a rolagem no desktop) -->
         <div class="sidebar__sticky">
-          <aside class="ad ad--halfpage" aria-label="Publicidade" data-slot="lateral-3">
+          <aside class="ad ad--lateral" aria-label="Publicidade" data-slot="lateral-2">
         <span class="ad__label">Publicidade</span>
-        <div class="ad__box" data-name="Half Page — Lateral"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
+        <div class="ad__box" data-name="Lateral 2" data-format="300 × 250"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
       </aside>
         </div>
       </aside>
@@ -474,7 +468,7 @@
     <div class="container">
       <header class="section-head">
           <h2 class="section-head__title" id="entrevistas">Entrevistas</h2>
-          <a class="section-head__more" href="#">Todas as entrevistas <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="section-head__more" href="entrevistas.html">Todas as entrevistas <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </header>
       <div class="grid-4 snap-mobile">
           <article class="interview">
@@ -484,7 +478,7 @@
             </div>
             <div>
               <span class="tag">Política</span>
-              <h3 class="interview__title"><a href="#">Os bastidores da semana na Assembleia e no Palácio Paiaguás</a></h3>
+              <h3 class="interview__title"><a href="noticias/os-bastidores-da-semana-na-assembleia-e-no-palacio-paiaguas.html">Os bastidores da semana na Assembleia e no Palácio Paiaguás</a></h3>
             </div>
             <div class="meta"><span>CBN Cuiabá</span><time>Áudio e vídeo</time></div>
           </article>
@@ -495,7 +489,7 @@
             </div>
             <div>
               <span class="tag">Cidades</span>
-              <h3 class="interview__title"><a href="#">Saneamento: o que muda na conta de água do cuiabano em 2027</a></h3>
+              <h3 class="interview__title"><a href="noticias/saneamento-o-que-muda-na-conta-de-agua-do-cuiabano-em-2027.html">Saneamento: o que muda na conta de água do cuiabano em 2027</a></h3>
             </div>
             <div class="meta"><span>CBN Cuiabá</span><time>Áudio e vídeo</time></div>
           </article>
@@ -506,7 +500,7 @@
             </div>
             <div>
               <span class="tag">Economia</span>
-              <h3 class="interview__title"><a href="#">Novas rotas aéreas e o impacto no turismo de Mato Grosso</a></h3>
+              <h3 class="interview__title"><a href="noticias/novas-rotas-aereas-e-o-impacto-no-turismo-de-mato-grosso.html">Novas rotas aéreas e o impacto no turismo de Mato Grosso</a></h3>
             </div>
             <div class="meta"><span>CBN Cuiabá</span><time>Áudio e vídeo</time></div>
           </article>
@@ -517,7 +511,7 @@
             </div>
             <div>
               <span class="tag">Esporte</span>
-              <h3 class="interview__title"><a href="#">O planejamento do Cuiabá para a próxima temporada</a></h3>
+              <h3 class="interview__title"><a href="noticias/o-planejamento-do-cuiaba-para-a-proxima-temporada.html">O planejamento do Cuiabá para a próxima temporada</a></h3>
             </div>
             <div class="meta"><span>CBN Cuiabá</span><time>Áudio e vídeo</time></div>
           </article>
@@ -525,30 +519,20 @@
     </div>
   </section>
 
-  <!-- PUBLICIDADE 07 — Billboard 970x250 (tablet 728x90 / mobile 300x250) -->
-  <div class="ad-wrap">
-    <div class="container">
-      <aside class="ad ad--billboard" aria-label="Publicidade" data-slot="billboard-2">
-        <span class="ad__label">Publicidade</span>
-        <div class="ad__box" data-name="Billboard — Meio"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
-      </aside>
-    </div>
-  </div>
-
   <!-- ============ ARTIGOS + CBN ESPECIAIS ============ -->
   <div class="section section--soft">
     <div class="container cols-2">
       <section class="reveal" aria-labelledby="artigos">
         <header class="section-head">
           <h2 class="section-head__title" id="artigos">Artigos</h2>
-          <a class="section-head__more" href="#">Todos os artigos <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="section-head__more" href="artigos.html">Todos os artigos <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </header>
         <div class="stack">
           <article class="opinion">
             <img class="opinion__avatar" src="assets/img/art1.jpg" alt="" width="64" height="64" loading="lazy">
             <div>
               <span class="tag">Saúde</span>
-              <h3 class="opinion__title"><a href="#">Vergonha de um exame ou medo de descobrir uma doença?</a></h3>
+              <h3 class="opinion__title"><a href="noticias/vergonha-de-um-exame-ou-medo-de-descobrir-uma-doenca.html">Vergonha de um exame ou medo de descobrir uma doença?</a></h3>
               <p class="opinion__author">Por Nome do articulista</p>
             </div>
           </article>
@@ -556,7 +540,7 @@
             <img class="opinion__avatar" src="assets/img/art2.jpg" alt="" width="64" height="64" loading="lazy">
             <div>
               <span class="tag">Mídia</span>
-              <h3 class="opinion__title"><a href="#">77% da população ouve rádio. Sua marca está no ar?</a></h3>
+              <h3 class="opinion__title"><a href="noticias/77-da-populacao-ouve-radio-sua-marca-esta-no-ar.html">77% da população ouve rádio. Sua marca está no ar?</a></h3>
               <p class="opinion__author">Por Nome do articulista</p>
             </div>
           </article>
@@ -564,7 +548,7 @@
             <img class="opinion__avatar" src="assets/img/art3.jpg" alt="" width="64" height="64" loading="lazy">
             <div>
               <span class="tag">Mercado imobiliário</span>
-              <h3 class="opinion__title"><a href="#">R$ 1,46 bi e menos imóveis vendidos: o paradoxo que está redefinindo o mercado de Cuiabá</a></h3>
+              <h3 class="opinion__title"><a href="noticias/r-1-46-bi-e-menos-imoveis-vendidos-o-paradoxo-que-esta-redefinindo-o-m.html">R$ 1,46 bi e menos imóveis vendidos: o paradoxo que está redefinindo o mercado de Cuiabá</a></h3>
               <p class="opinion__author">Por Nome do articulista</p>
             </div>
           </article>
@@ -572,7 +556,7 @@
             <img class="opinion__avatar" src="assets/img/art4.jpg" alt="" width="64" height="64" loading="lazy">
             <div>
               <span class="tag">Saúde</span>
-              <h3 class="opinion__title"><a href="#">A hipertensão não espera pelos sintomas e prevenção também não deve esperar</a></h3>
+              <h3 class="opinion__title"><a href="noticias/a-hipertensao-nao-espera-pelos-sintomas-e-prevencao-tambem-nao-deve-es.html">A hipertensão não espera pelos sintomas e prevenção também não deve esperar</a></h3>
               <p class="opinion__author">Por Nome do articulista</p>
             </div>
           </article>
@@ -582,20 +566,20 @@
       <section class="reveal" aria-labelledby="especiais">
         <header class="section-head">
           <h2 class="section-head__title" id="especiais">CBN Especiais</h2>
-          <a class="section-head__more" href="#">Ver especiais <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="section-head__more" href="cbn-especiais.html">Ver especiais <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </header>
         <div class="special-tabs">
-          <a class="is-active" href="#">Todos</a>
-          <a href="#">Águas Cuiabá</a>
-          <a href="#">Agroligadas</a>
-          <a href="#">CBN + Projeto Comprova</a>
+          <a class="is-active" href="cbn-especiais.html">Todos</a>
+          <a href="aguas-cuiaba.html">Águas Cuiabá</a>
+          <a href="agroligadas.html">Agroligadas</a>
+          <a href="comprova.html">CBN + Projeto Comprova</a>
         </div>
         <div class="stack">
           <article class="card card--overlay">
           <div class="card__media"><img src="assets/img/agua.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             <span class="tag tag--solid">Águas Cuiabá</span>
-            <h3 class="card__title"><a href="#">Novo reservatório da Águas Cuiabá reforça abastecimento em Cuiabá</a></h3>
+            <h3 class="card__title"><a href="noticias/novo-reservatorio-da-aguas-cuiaba-reforca-abastecimento-em-cuiaba.html">Novo reservatório da Águas Cuiabá reforça abastecimento em Cuiabá</a></h3>
             <div class="meta"><time>11 mar 2026</time></div>
           </div>
         </article>
@@ -604,7 +588,7 @@
           <div class="card__media"><img src="assets/img/peixes.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             <span class="tag">Águas Cuiabá</span>
-            <h3 class="card__title"><a href="#">Interligue Já completa dois anos com avanços para os rios de Cuiabá</a></h3>
+            <h3 class="card__title"><a href="noticias/interligue-ja-completa-dois-anos-com-avancos-para-os-rios-de-cuiaba.html">Interligue Já completa dois anos com avanços para os rios de Cuiabá</a></h3>
             <div class="meta"><time>17 jun 2026</time></div>
           </div>
         </article>
@@ -612,7 +596,7 @@
           <div class="card__media"><img src="assets/img/lago.jpg" alt="" width="800" height="500" loading="lazy" decoding="async"></div>
           <div class="card__body">
             <span class="tag">Agroligadas</span>
-            <h3 class="card__title"><a href="#">Produção de grãos avança no Brasil e exportações de soja superam expectativas</a></h3>
+            <h3 class="card__title"><a href="noticias/producao-de-graos-avanca-no-brasil-e-exportacoes-de-soja-superam-expec.html">Produção de grãos avança no Brasil e exportações de soja superam expectativas</a></h3>
             <div class="meta"><time>11 jul 2025</time></div>
           </div>
         </article>
@@ -630,24 +614,24 @@
           <h2 class="cta__title" id="newsletter">As notícias de Cuiabá e MT direto no seu e-mail</h2>
           <p class="cta__text">Um resumo diário com o que realmente importa, selecionado pela redação da CBN Cuiabá.</p>
         </div>
-        <form class="cta__form" action="#" method="post">
+        <form class="cta__form" action="#" method="post" data-demo-form="Pronto! Você receberá as principais notícias no seu e-mail.">
           <div class="cta__row">
             <label class="sr-only" for="news-email">Seu e-mail</label>
             <input id="news-email" type="email" name="email" placeholder="Digite seu e-mail" autocomplete="email" required>
             <button class="btn btn--red" type="submit">Quero receber</button>
           </div>
-          <p class="cta__small" aria-live="polite">Ao assinar, você concorda com a nossa <a href="#">política de privacidade</a>.</p>
+          <p class="cta__small" aria-live="polite">Ao assinar, você concorda com a nossa <a href="politica-de-privacidade.html">política de privacidade</a>.</p>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- PUBLICIDADE 08 — Rodapé: Super Banner 728x90 (mobile 320x100) -->
+  <!-- PUBLICIDADE — FINAL SECUNDÁRIO 728x90 -->
   <div class="ad-wrap">
     <div class="container">
-      <aside class="ad ad--leaderboard" aria-label="Publicidade" data-slot="rodape">
+      <aside class="ad ad--secundario" aria-label="Publicidade" data-slot="final-secundario">
         <span class="ad__label">Publicidade</span>
-        <div class="ad__box" data-name="Super Banner — Rodapé"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
+        <div class="ad__box" data-name="Final secundário" data-format="728 × 90"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div>
       </aside>
     </div>
   </div>
@@ -658,11 +642,7 @@
 <footer class="footer">
   <div class="container footer__grid">
     <div class="footer__brand">
-      <div class="logo" aria-label="CBN Cuiabá 95,9 FM — página inicial">
-          <!-- LOGO: substituir por <img src="logo-cbn-cuiaba.svg"> (arquivo oficial da marca) -->
-          <span class="logo__mark">CBN</span>
-          <span class="logo__sub"><span class="logo__city">Cuiabá</span><span class="logo__fm">95,9 FM</span></span>
-        </div>
+      <div class="logo"><img src="assets/img/logo-cbn-cuiaba.svg" alt="CBN Cuiabá 95,9 FM" width="556" height="298"></div>
       <p>A rádio que toca notícia. Jornalismo de Cuiabá e Mato Grosso, 24 horas no ar em 95,9 FM.</p>
       <div class="footer__social">
         <a href="https://www.facebook.com/cbncba" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
@@ -674,20 +654,20 @@
     <nav aria-label="Editorias no rodapé">
       <h2 class="footer__title">Editorias</h2>
       <ul class="footer__links">
-        <li><a href="#">Notícias</a></li><li><a href="#">Política</a></li><li><a href="#">Cidades</a></li>
-        <li><a href="#">Economia &amp; Negócios</a></li><li><a href="#">Esporte &amp; Cultura</a></li><li><a href="#">Entrevistas</a></li>
+        <li><a href="noticias.html">Notícias</a></li><li><a href="politica.html">Política</a></li><li><a href="cidades.html">Cidades</a></li>
+        <li><a href="economia-negocios.html">Economia &amp; Negócios</a></li><li><a href="esporte-cultura.html">Esporte &amp; Cultura</a></li><li><a href="entrevistas.html">Entrevistas</a></li>
       </ul>
     </nav>
     <nav aria-label="Especiais">
       <h2 class="footer__title">Especiais</h2>
       <ul class="footer__links">
-        <li><a href="#">Artigos</a></li><li><a href="#">CBN Especiais</a></li><li><a href="#">CBN + Projeto Comprova</a></li><li><a href="#">CBN Stories</a></li>
+        <li><a href="artigos.html">Artigos</a></li><li><a href="cbn-especiais.html">CBN Especiais</a></li><li><a href="comprova.html">CBN + Projeto Comprova</a></li><li><a href="stories.html">CBN Stories</a></li>
       </ul>
     </nav>
     <nav aria-label="Institucional">
       <h2 class="footer__title">Institucional</h2>
       <ul class="footer__links">
-        <li><a href="#">Expediente</a></li><li><a href="#">Anuncie</a></li><li><a href="#">Fale com a redação</a></li><li><a href="#">Política de privacidade</a></li>
+        <li><a href="expediente.html">Expediente</a></li><li><a href="anuncie.html">Anuncie</a></li><li><a href="fale-conosco.html">Fale com a redação</a></li><li><a href="politica-de-privacidade.html">Política de privacidade</a></li>
       </ul>
     </nav>
   </div>
@@ -732,25 +712,21 @@
 <div class="scrim"></div>
 <aside class="drawer" aria-hidden="true" aria-label="Menu">
   <div class="drawer__head">
-    <div class="logo" aria-label="CBN Cuiabá 95,9 FM — página inicial">
-          <!-- LOGO: substituir por <img src="logo-cbn-cuiaba.svg"> (arquivo oficial da marca) -->
-          <span class="logo__mark">CBN</span>
-          <span class="logo__sub"><span class="logo__city">Cuiabá</span><span class="logo__fm">95,9 FM</span></span>
-        </div>
+    <div class="logo"><img src="assets/img/logo-cbn-cuiaba.svg" alt="CBN Cuiabá 95,9 FM" width="556" height="298"></div>
     <button class="icon-btn" data-close aria-label="Fechar menu"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
   </div>
   <nav class="drawer__nav">
-      <a href="#">Notícias <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
-      <a href="#">Política <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
-      <a href="#">Cidades <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
-      <a href="#">Economia &amp; Negócios <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
-      <a href="#">Esporte &amp; Cultura <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
-      <a href="#">Entrevistas <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
-      <a href="#">Expediente <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+      <a href="noticias.html">Notícias <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+      <a href="politica.html">Política <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+      <a href="cidades.html">Cidades <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+      <a href="economia-negocios.html">Economia &amp; Negócios <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+      <a href="esporte-cultura.html">Esporte &amp; Cultura <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+      <a href="entrevistas.html">Entrevistas <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
+      <a href="expediente.html">Expediente <svg aria-hidden="true"><use href="#i-chev"/></svg></a>
   </nav>
   <div class="drawer__sub">
-    <a href="#">Artigos</a><a href="#">CBN Especiais</a><a href="#">CBN Stories</a><a href="#">Anuncie</a><a href="#">Política de privacidade</a>
-    <button class="btn btn--ghost" data-theme-toggle><svg aria-hidden="true"><use href="#i-moon"/></svg> Tema claro/escuro</button>
+    <a href="artigos.html">Artigos</a><a href="cbn-especiais.html">CBN Especiais</a><a href="stories.html">CBN Stories</a><a href="anuncie.html">Anuncie</a><a href="politica-de-privacidade.html">Política de privacidade</a>
+    <div class="theme-switch" role="radiogroup" aria-label="Tema do site"><button type="button" role="radio" aria-checked="true" data-theme-set="light"><svg aria-hidden="true"><use href="#i-sun"/></svg> Claro</button><button type="button" role="radio" aria-checked="false" data-theme-set="dark"><svg aria-hidden="true"><use href="#i-moon"/></svg> Escuro</button><button type="button" role="radio" aria-checked="false" data-theme-set="auto"><svg aria-hidden="true"><use href="#i-auto"/></svg> Automático</button></div>
   </div>
   <div class="drawer__foot">
     <a href="https://www.facebook.com/cbncba" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
@@ -763,14 +739,14 @@
 <div class="search" role="dialog" aria-modal="true" aria-label="Buscar" aria-hidden="true">
   <div class="search__in">
     <div class="search__top"><button class="icon-btn" data-close aria-label="Fechar busca"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
-    <form class="search__form" action="/" method="get" role="search">
+    <form class="search__form" action="busca.html" method="get" role="search">
       <svg aria-hidden="true"><use href="#i-search"/></svg>
       <label class="sr-only" for="s">Buscar notícias</label>
       <input id="s" type="search" name="s" placeholder="O que você procura?" autocomplete="off">
     </form>
     <p class="search__hint">Assuntos em alta</p>
     <div class="search__tags">
-      <a href="#">Chuvas em Cuiabá</a><a href="#">Barragem</a><a href="#">Tarifa de água</a><a href="#">Cuiabá EC</a><a href="#">Eleições</a><a href="#">Arena Pantanal</a>
+      <a href="busca.html?s=Chuvas+em+Cuiabá">Chuvas em Cuiabá</a><a href="busca.html?s=Barragem">Barragem</a><a href="busca.html?s=Tarifa+de+água">Tarifa de água</a><a href="busca.html?s=Cuiabá+EC">Cuiabá EC</a><a href="busca.html?s=Eleições">Eleições</a><a href="busca.html?s=Arena+Pantanal">Arena Pantanal</a>
     </div>
   </div>
 </div>
