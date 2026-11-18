@@ -23,7 +23,7 @@
   /* Estado que muda a cada página */
   var header, drawer, search, scrim, lastFocus, progressBar, prose;
   var breakingTimer = null, viewer = null, io = null, placeCapsule = null;
-  var prevPill = null, prevChipScroll = null;
+  var prevPill = null, prevChipScroll = null, prevChipPill = null;
 
   /* Faz uma troca visual com transição suave quando o navegador permite */
   function transition(fn) {
@@ -133,10 +133,20 @@
   }
   function rememberNav() {
     var act = $('.capsule__active');
-    prevPill = act && act.classList.contains('is-on') ? { x: act.style.transform, w: act.style.width } : null;
+    /* Guarda a posição em que a marca está NA TELA (pode estar no meio do deslize),
+       para a página seguinte continuar o movimento do mesmo ponto, sem salto. */
+    prevPill = null;
+    if (act && act.classList.contains('is-on')) {
+      var acs = getComputedStyle(act);
+      var mx = acs.transform && acs.transform !== 'none' ? new DOMMatrixReadOnly(acs.transform).m41 : 0;
+      prevPill = { x: 'translateX(' + mx + 'px)', w: acs.width };
+    }
     var cl = $('.chips__list');
     prevChipScroll = cl ? cl.scrollLeft : null;
-    try { sessionStorage.setItem('cbn-nav', JSON.stringify({ pill: prevPill, chip: prevChipScroll, t: Date.now() })); } catch (e) {}
+    var cp = $('.chips__pill');
+    prevChipPill = null;
+    if (cp && cp.classList.contains('is-on')) { var ccs = getComputedStyle(cp); prevChipPill = { l: ccs.left, w: ccs.width }; }
+    try { sessionStorage.setItem('cbn-nav', JSON.stringify({ pill: prevPill, chip: prevChipScroll, chipPill: prevChipPill, t: Date.now() })); } catch (e) {}
   }
   function teardown() {
     clearInterval(breakingTimer);
@@ -171,6 +181,7 @@
         history.pushState({ y: 0 }, '', url);          // em ambientes restritos isto falha e caímos no modo normal
       }
       transition(function () {
+        rememberNav();                                   // posição da marca no instante da troca
         teardown();
         swapBody(doc);
         init(true);
@@ -296,6 +307,7 @@
     if (!soft) { try { memo = JSON.parse(sessionStorage.getItem('cbn-nav') || 'null'); if (memo && Date.now() - memo.t > 4000) memo = null; } catch (e) {} }
     var fromPill = soft ? prevPill : memo && memo.pill;
     var fromChip = soft ? prevChipScroll : memo && memo.chip;
+    var fromChipPill = soft ? prevChipPill : memo && memo.chipPill;
     placeCapsule = null;
     $$('[data-capsule]').forEach(function (cap) {
       var list = $('.capsule__list', cap);
@@ -346,13 +358,48 @@
       cap.addEventListener('focusout', function (e) { if (!cap.contains(e.relatedTarget)) hover.classList.remove('is-on'); });
     });
 
-    /* Editorias no mobile: mantém a rolagem e desliza até a editoria atual */
-    var chipNow = $('.chips__link[aria-current]');
-    if (chipNow) {
-      var cl = chipNow.closest('.chips__list');
-      var target = Math.max(0, chipNow.offsetLeft - cl.offsetLeft - 60);
-      if (fromChip != null && !reduce) { cl.scrollLeft = fromChip; cl.scrollTo({ left: target, behavior: 'smooth' }); }
-      else cl.scrollLeft = target;
+    /* Editorias no mobile: a marca vermelha desliza até a editoria tocada e a
+       faixa mantém a rolagem, levando a editoria atual para a área visível.   */
+    var chipList = $('.chips__list');
+    if (chipList) {
+      var chipNow = $('.chips__link[aria-current]', chipList);
+      var chipPill = document.createElement('li');
+      chipPill.className = 'chips__pill'; chipPill.setAttribute('aria-hidden', 'true'); chipPill.setAttribute('role', 'presentation');
+      chipList.insertBefore(chipPill, chipList.firstChild);
+      chipList.parentNode.classList.add('is-ready');
+      var putChip = function (link, animate) {
+        if (!animate) chipPill.classList.add('is-jump');
+        chipPill.style.left = link.offsetLeft + 'px';
+        chipPill.style.width = link.offsetWidth + 'px';
+        chipPill.classList.add('is-on');
+        if (!animate) { void chipPill.offsetWidth; chipPill.classList.remove('is-jump'); }
+      };
+      if (fromChip != null) chipList.scrollLeft = fromChip;
+      if (chipNow) {
+        if (fromChipPill && !reduce) {                     // parte de onde estava na página anterior
+          chipPill.classList.add('is-jump', 'is-on');
+          chipPill.style.left = fromChipPill.l; chipPill.style.width = fromChipPill.w;
+          void chipPill.offsetWidth; chipPill.classList.remove('is-jump');
+          requestAnimationFrame(function () { putChip(chipNow, true); });
+        } else putChip(chipNow, false);
+        /* A faixa só rola se a editoria atual não estiver inteira na tela — e só
+           depois do deslize da marca, para os dois movimentos não se misturarem. */
+        var seen = chipNow.offsetLeft - chipList.scrollLeft >= 8 &&
+                   chipNow.offsetLeft + chipNow.offsetWidth - chipList.scrollLeft <= chipList.clientWidth - 8;
+        var target = Math.max(0, chipNow.offsetLeft - (chipList.clientWidth - chipNow.offsetWidth) / 2);
+        if (!seen) {
+          if (fromChip != null && !reduce) setTimeout(function () { if (document.contains(chipList)) chipList.scrollTo({ left: target, behavior: 'smooth' }); }, 420);
+          else chipList.scrollLeft = target;
+        }
+      }
+      $$('.chips__link', chipList).forEach(function (link) {
+        link.addEventListener('click', function (e) {      // resposta imediata ao toque
+          if (link === chipNow || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+          if (chipNow) chipNow.removeAttribute('aria-current');
+          link.setAttribute('aria-current', 'page');
+          chipNow = link; putChip(link, true);
+        });
+      });
     }
 
     /* Barra inferior (mobile): marca a seção atual */
@@ -545,7 +592,14 @@
     window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
 
     var rt;
-    window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (placeCapsule) placeCapsule(false); }, 120); });
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () {
+        if (placeCapsule) placeCapsule(false);
+        var cp = $('.chips__pill'), cn = $('.chips__link[aria-current]');
+        if (cp && cn) { cp.classList.add('is-jump'); cp.style.left = cn.offsetLeft + 'px'; cp.style.width = cn.offsetWidth + 'px'; void cp.offsetWidth; cp.classList.remove('is-jump'); }
+      }, 120);
+    });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (placeCapsule) placeCapsule(false); });
 
     document.addEventListener('keydown', function (e) {
