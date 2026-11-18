@@ -193,13 +193,15 @@
     root.classList.add('is-leaving');
     setTimeout(function () { location.href = url; }, 110);
   }
+  /* Página do próprio site: termina em .html ou não tem extensão (URLs amigáveis, como no WordPress) */
+  function isPage(path) { return !/\.(?!html?$)[a-z0-9]+$/i.test(path) && !/\/wp-(admin|login|json)/.test(path); }
   function internalLink(a, e) {
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return false;
     if ((a.target && a.target !== '_self') || a.hasAttribute('download')) return false;
     var href = a.getAttribute('href');
     if (!href || href.charAt(0) === '#') return false;
     if (a.protocol !== location.protocol || a.host !== location.host) return false;
-    return /\.html?$/.test(a.pathname);
+    return isPage(a.pathname);
   }
 
   /* ======================================================================
@@ -354,11 +356,15 @@
     }
 
     /* Barra inferior (mobile): marca a seção atual */
-    var file = location.pathname.split('/').pop() || 'index.html';
+    var file = (location.pathname.split('/').pop() || 'index').replace(/\.html?$/, '');
     var tabs = $$('.tabbar__item');
     tabs.forEach(function (t) { t.classList.remove('is-active'); });
-    var tab = file === 'noticias.html' ? tabs[1] : file === 'index.html' ? tabs[0] : null;
+    var tab = file === 'noticias' ? tabs[1] : file === 'index' ? tabs[0] : null;
     if (tab) tab.classList.add('is-active');
+    tabs.forEach(function (t) {                           // fica vermelho no instante do toque
+      if (t.tagName !== 'A') return;
+      t.addEventListener('click', function () { tabs.forEach(function (x) { x.classList.remove('is-active'); }); t.classList.add('is-active'); });
+    });
 
     /* Faixa "Urgente" */
     var items = $$('.breaking__item');
@@ -577,7 +583,7 @@
     if (SOFT) {
       var warm = function (e) {
         var a = e.target.closest ? e.target.closest('a[href]') : null;
-        if (a && a.host === location.host && /\.html?$/.test(a.pathname) && a.pathname !== location.pathname) fetchPage(a.href);
+        if (a && a.protocol === location.protocol && a.host === location.host && isPage(a.pathname) && a.pathname !== location.pathname && a.getAttribute('href').charAt(0) !== '#') fetchPage(a.href);
       };
       var ht;
       document.addEventListener('pointerover', function (e) { if (e.pointerType === 'mouse') { clearTimeout(ht); ht = setTimeout(function () { warm(e); }, 70); } }, { passive: true });

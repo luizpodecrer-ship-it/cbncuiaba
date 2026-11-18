@@ -30,6 +30,8 @@ O banner entra dentro de `.ad__box`. Em telas mais estreitas que o formato, a me
 
 ## Observações
 
+- Logo: sempre aplicado em branco sobre vermelho ou fundo escuro, nunca em cinza nem com transparência. `logo-cbn-cuiaba.svg` é o logo completo; `logo-cbn-mark.svg` é só a marca "CBN", para espaços pequenos (ex.: selo do autor na notícia).
+
 - Cards de notícia: em todo o portal mostram apenas editoria, título e data. A linha fina aparece somente dentro da página da notícia.
 
 - Navegação suave: links internos trocam a página sem recarregar (o cabeçalho não pisca e a rádio continua tocando). A cada troca o script dispara o evento `cbn:navigate` no `document` — use-o para recarregar os banners e registrar a visualização no Analytics. Para desligar, use `<body data-soft-nav="off">`; os links voltam a abrir normalmente.

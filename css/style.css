@@ -378,13 +378,14 @@ svg.fill { fill: currentColor; stroke: none; }
 .player__info { min-width: 0; display: grid; }
 .player__live { display: inline-flex; align-items: center; gap: 8px; font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #ff6b70; }
 .player__name { font-weight: 700; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.player__eq { display: flex; align-items: flex-end; gap: 3px; height: 22px; margin-left: 4px; }
-.player__eq i { width: 3px; height: 30%; background: var(--red); border-radius: 2px; }
-.is-playing .player__eq i { animation: eq 1s ease-in-out infinite; }
-.player__eq i:nth-child(2) { animation-delay: -.3s; }
-.player__eq i:nth-child(3) { animation-delay: -.6s; }
-.player__eq i:nth-child(4) { animation-delay: -.15s; }
-@keyframes eq { 0%, 100% { height: 25%; } 50% { height: 100%; } }
+/* Equalizador: cinco barras vermelhas pulsando, sinal de que a rádio está no ar */
+.player__eq { display: flex; align-items: flex-end; gap: 3px; height: 26px; margin-left: 6px; }
+.player__eq i { width: 6px; height: 100%; background: var(--red); border-radius: 3px; transform-origin: bottom; animation: eq-pump 1s ease-in-out infinite; }
+.player__eq i:nth-child(2) { animation-delay: -.8s; }
+.player__eq i:nth-child(3) { animation-delay: -.4s; }
+.player__eq i:nth-child(4) { animation-delay: -.6s; }
+.player__eq i:nth-child(5) { animation-delay: -.2s; }
+@keyframes eq-pump { 0%, 100% { transform: scaleY(.25); } 50% { transform: scaleY(1); } }
 .player__spacer { flex: 1; }
 .player__next { font-size: .82rem; color: #b9bec8; white-space: nowrap; }
 .player__next b { color: #fff; font-weight: 600; }
@@ -479,9 +480,10 @@ svg.fill { fill: currentColor; stroke: none; }
 .article__lead { font-size: clamp(1.08rem, 1rem + .5vw, 1.3rem); line-height: 1.45; color: var(--ink-2); }
 .article__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 14px; border-block: 1px solid var(--line); }
 .byline { display: flex; align-items: center; gap: 12px; }
-.byline__avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; font-family: var(--font-head); font-weight: 900; font-style: italic; font-size: .78rem; }
+/* O logo é sempre aplicado em branco (nunca cinza ou com opacidade) */
+.byline__avatar { width: 44px; height: 44px; flex: none; border-radius: 50%; background: var(--red) url(../assets/img/logo-cbn-mark.svg) center / 64% auto no-repeat; font-size: 0; }
 .byline strong { display: block; font-size: .95rem; }
-.byline span { font-size: .82rem; color: var(--muted); }
+.byline div span { font-size: .82rem; color: var(--muted); }
 .tools { display: flex; gap: 6px; }
 .tools__btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 8px; font-size: .84rem; font-weight: 600; background: var(--card); transition: border-color .2s, background-color .2s, color .2s; }
 .tools__btn:hover { border-color: var(--ink); }
@@ -635,7 +637,9 @@ img.is-loading { opacity: 0; }
 }
 
 @media (max-width: 767px) {
-  :root { --gap: 16px; --player-h: 64px; }
+  :root { --gap: 16px; --player-h: 88px; }   /* espaço reservado para a barra inferior flutuante */
+  body { padding-bottom: 0; }
+  .footer { padding-bottom: calc(var(--player-h) + env(safe-area-inset-bottom)); }   /* o rodapé escuro vai até o fim, por trás da barra */
   .container { padding-inline: 16px; }
   .section { padding-block: 28px; }
   .topbar__right { display: none; }
@@ -701,17 +705,20 @@ img.is-loading { opacity: 0; }
 
   /* Player compacto + navegação inferior ao alcance do polegar */
   .player { display: none; }
-  .tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 70; height: calc(var(--player-h) + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; background: var(--bg); border-top: 1px solid var(--line); box-shadow: 0 -6px 24px rgba(0, 0, 0, .08); }
+  /* Barra inferior flutuante, com cantos discretamente arredondados.
+     Os cinco itens ficam dentro da barra, alinhados; "Ao vivo" se destaca só pela cor. */
+  .tabbar { position: fixed; left: 12px; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 70; height: 64px; display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; background: var(--card); border-radius: 14px; box-shadow: 0 8px 24px rgba(16, 18, 22, .16), 0 0 0 1px rgba(16, 18, 22, .06); }
+  [data-cbn-theme="dark"] .tabbar { box-shadow: 0 8px 24px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .1); }
   .tabbar__item:active, .tabbar__live:active { transform: scale(.94); }
-  .tabbar__item { transition: color .2s, transform .15s var(--ease);
-    display: grid; justify-items: center; gap: 2px; font-size: .66rem; font-weight: 600; color: var(--muted); min-height: 48px; align-content: center; }
+  .tabbar__item { transition: color .2s, transform .15s var(--ease); display: grid; justify-items: center; gap: 3px; font-size: .68rem; font-weight: 600; color: var(--muted); min-height: 48px; align-content: center; }
   .tabbar__item svg { width: 22px; height: 22px; }
   .tabbar__item.is-active { color: var(--red); }
-  .tabbar__live { justify-self: center; width: 58px; height: 58px; margin-top: -26px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; box-shadow: 0 8px 20px rgba(209, 10, 17, .45); border: 4px solid var(--bg); position: relative; }
-  .tabbar__live svg { width: 24px; height: 24px; }
+  .tabbar__live { justify-self: center; align-self: start; width: 32px; height: 32px; margin-top: 7px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; position: relative; transition: transform .15s var(--ease); }
+  .tabbar__live::after { content: ""; position: absolute; inset: -8px -18px -22px; }   /* amplia a área de toque */
+  .tabbar__live svg { width: 15px; height: 15px; }
   .tabbar__live .i-pause, .is-playing .tabbar__live .i-play { display: none; }
   .is-playing .tabbar__live .i-pause { display: block; }
-  .tabbar__live-label { position: absolute; bottom: -17px; font-size: .62rem; font-weight: 800; color: var(--red); letter-spacing: .04em; white-space: nowrap; }
+  .tabbar__live-label { position: absolute; top: 33px; font-size: .68rem; font-weight: 700; color: var(--red); letter-spacing: .02em; white-space: nowrap; }
 }
 
 @media (max-width: 400px) {
@@ -723,6 +730,8 @@ img.is-loading { opacity: 0; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .reveal { opacity: 1; transform: none; }
+  .player__eq i:nth-child(odd) { transform: scaleY(.5); }
+  .player__eq i:nth-child(even) { transform: scaleY(.85); }
 }
 
 @media print {
