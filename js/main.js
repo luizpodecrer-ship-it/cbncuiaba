@@ -105,6 +105,84 @@
     else { audio.pause(); audio.removeAttribute('src'); audio.load(); paintRadio(false); rememberRadio(false); }
   }
 
+  /* Controle de volume: o botão segue o cursor 1:1 enquanto é arrastado; um clique
+     no trilho ou uma tecla faz ele deslizar até o ponto. Setas mudam de 5 em 5
+     (com Shift, PageUp ou PageDown, de 10 em 10); Home e End vão aos extremos. */
+  var lastVolume = 1;
+  function initVolume(box) {
+    var control = $('.vol__control', box), thumb = $('.vol__thumb', box), bubble = $('.vol__bubble', box), mute = $('[data-mute]', box);
+    var dragging = false, grab = 0, lingerTimer = null, byPointer = false;
+    var current = function () { return audio ? (audio.muted ? 0 : audio.volume) : 1; };
+    var paint = function () {
+      var v = current(), n = Math.round(v * 100);
+      box.style.setProperty('--p', v);
+      box.classList.toggle('is-muted', v === 0);
+      thumb.setAttribute('aria-valuenow', n);
+      thumb.setAttribute('aria-valuetext', n + '%');
+      bubble.textContent = n;
+      mute.setAttribute('aria-pressed', String(v === 0));
+      mute.setAttribute('aria-label', v === 0 ? 'Ativar o som' : 'Silenciar');
+    };
+    var set = function (v) {
+      v = Math.min(1, Math.max(0, v));
+      if (audio) { audio.volume = v; audio.muted = false; }
+      if (v > 0) lastVolume = v;
+      paint();
+    };
+    var fromPointer = function (e) {
+      var r = control.getBoundingClientRect();
+      return (e.clientX - grab - r.left - 8) / (r.width - 16);
+    };
+    var linger = function () {
+      clearTimeout(lingerTimer);
+      box.classList.add('is-linger');
+      lingerTimer = setTimeout(function () { box.classList.remove('is-linger'); }, 700);
+    };
+    control.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      var onThumb = e.target === thumb || thumb.contains(e.target);
+      var tr = thumb.getBoundingClientRect();
+      grab = onThumb ? e.clientX - (tr.left + tr.width / 2) : 0;
+      if (!onThumb) { set(fromPointer(e)); void thumb.offsetWidth; }   // clique no trilho: desliza com mola
+      dragging = true;
+      box.classList.add('is-dragging');
+      box.classList.remove('is-key', 'is-linger');
+      control.setPointerCapture(e.pointerId);
+      byPointer = true; thumb.focus({ preventScroll: true }); byPointer = false;
+    });
+    control.addEventListener('pointermove', function (e) { if (dragging) set(fromPointer(e)); });
+    var end = function () {
+      if (!dragging) return;
+      dragging = false;
+      box.classList.remove('is-dragging');
+      linger();
+    };
+    control.addEventListener('pointerup', end);
+    control.addEventListener('pointercancel', end);
+    control.addEventListener('lostpointercapture', end);
+    thumb.addEventListener('keydown', function (e) {
+      var big = e.shiftKey ? 0.1 : 0.05;
+      var moves = { ArrowRight: big, ArrowUp: big, ArrowLeft: -big, ArrowDown: -big, PageUp: 0.1, PageDown: -0.1 };
+      var v;
+      if (e.key === 'Home') v = 0;
+      else if (e.key === 'End') v = 1;
+      else if (e.key in moves) v = Math.round((current() + moves[e.key]) * 100) / 100;
+      else return;
+      e.preventDefault();
+      box.classList.add('is-key');
+      set(v);
+    });
+    thumb.addEventListener('focus', function () { if (!byPointer) box.classList.add('is-key'); });   // foco pelo teclado mostra o anel e o balão
+    thumb.addEventListener('blur', function () { box.classList.remove('is-key'); });
+    mute.addEventListener('click', function () {
+      if (current() === 0) set(lastVolume || 1);
+      else { if (audio) audio.muted = true; paint(); }
+      linger();
+    });
+    paint();
+  }
+
   /* ======================================================================
      NAVEGAÇÃO SUAVE ENTRE PÁGINAS
      ====================================================================== */
@@ -298,8 +376,7 @@
     /* Rádio */
     paintRadio(!!audio && !audio.paused);
     $$('[data-radio-toggle]').forEach(function (b) { b.addEventListener('click', toggleRadio); });
-    var vol = $('#volume');
-    if (vol && audio) { vol.value = Math.round(audio.volume * 100); vol.addEventListener('input', function () { audio.volume = vol.value / 100; }); }
+    $$('[data-volume]').forEach(initVolume);
 
     /* Menu em cápsula: uma chapa vermelha marca a editoria atual e desliza até
        a nova ao trocar de página; outra, cinza, acompanha o cursor.            */
