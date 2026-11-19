@@ -22,7 +22,7 @@
 
   /* Estado que muda a cada página */
   var header, drawer, search, scrim, lastFocus, progressBar, prose;
-  var breakingTimer = null, viewer = null, io = null, placeCapsule = null;
+  var breakingTimer = null, viewer = null, io = null, placeNav = null;
   var prevPill = null, prevChipScroll = null, prevChipPill = null;
 
   /* Faz uma troca visual com transição suave quando o navegador permite */
@@ -210,7 +210,7 @@
     return cache[key];
   }
   function rememberNav() {
-    var act = $('.capsule__active');
+    var act = $('.mainnav__active');
     /* Guarda a posição em que a marca está NA TELA (pode estar no meio do deslize),
        para a página seguinte continuar o movimento do mesmo ponto, sem salto. */
     prevPill = null;
@@ -346,12 +346,24 @@
     return api;
   }
 
+  /* Relógio do cabeçalho: hora, dia da semana e data, atualizados sozinhos */
+  function tickClock() {
+    var d = new Date();
+    var two = function (n) { return (n < 10 ? '0' : '') + n; };
+    var wd = d.toLocaleDateString('pt-BR', { weekday: 'long' });
+    $$('[data-clock]').forEach(function (el) { el.textContent = two(d.getHours()) + ':' + two(d.getMinutes()); });
+    $$('[data-weekday]').forEach(function (el) { el.textContent = wd.charAt(0).toUpperCase() + wd.slice(1); });
+    $$('[data-date]').forEach(function (el) { el.textContent = d.toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }); });
+  }
+
   /* ======================================================================
      init() — liga tudo o que está na página atual
      ====================================================================== */
   function init(soft) {
     header = $('.header'); drawer = $('.drawer'); search = $('.search'); scrim = $('.scrim');
     progressBar = $('.progress i'); prose = $('[data-prose]');
+
+    tickClock();
 
     /* Data de hoje */
     var dateEl = $('[data-today]');
@@ -385,20 +397,20 @@
     var fromPill = soft ? prevPill : memo && memo.pill;
     var fromChip = soft ? prevChipScroll : memo && memo.chip;
     var fromChipPill = soft ? prevChipPill : memo && memo.chipPill;
-    placeCapsule = null;
-    $$('[data-capsule]').forEach(function (cap) {
-      var list = $('.capsule__list', cap);
-      var hover = $('.capsule__pill', cap);
+    placeNav = null;
+    $$('[data-mainnav]').forEach(function (cap) {
+      var list = $('.mainnav__list', cap);
+      var hover = $('.mainnav__pill', cap);
       var active = document.createElement('span');
-      active.className = 'capsule__active'; active.setAttribute('aria-hidden', 'true');
+      active.className = 'mainnav__active'; active.setAttribute('aria-hidden', 'true');
       cap.insertBefore(active, list);
       cap.classList.add('is-ready');
-      var current = $('.capsule__link[aria-current]', cap);
+      var current = $('.mainnav__link[aria-current]', cap);
       var put = function (el, link) {
         el.style.width = link.offsetWidth + 'px';
         el.style.transform = 'translateX(' + (list.offsetLeft + link.offsetLeft) + 'px)';
       };
-      placeCapsule = function (animate) {
+      placeNav = function (animate) {
         if (!current) { active.classList.remove('is-on'); return; }
         if (!animate) active.classList.add('is-jump');
         put(active, current);
@@ -409,8 +421,8 @@
         active.classList.add('is-jump', 'is-on');
         active.style.width = fromPill.w; active.style.transform = fromPill.x;
         void active.offsetWidth; active.classList.remove('is-jump');
-        requestAnimationFrame(function () { placeCapsule(true); });
-      } else placeCapsule(false);
+        requestAnimationFrame(function () { placeNav(true); });
+      } else placeNav(false);
 
       var moveHover = function (link) {
         if (link === current) { hover.classList.remove('is-on'); return; }
@@ -420,7 +432,7 @@
         if (first) { void hover.offsetWidth; hover.classList.remove('is-jump'); }
         hover.classList.add('is-on');
       };
-      $$('.capsule__link', cap).forEach(function (link) {
+      $$('.mainnav__link', cap).forEach(function (link) {
         link.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') moveHover(link); });
         link.addEventListener('focus', function () { moveHover(link); });
         link.addEventListener('click', function (e) {      // resposta imediata ao clique
@@ -428,7 +440,7 @@
           var old = current;
           if (old) old.removeAttribute('aria-current');
           link.setAttribute('aria-current', 'page');
-          current = link; hover.classList.remove('is-on'); placeCapsule(true);
+          current = link; hover.classList.remove('is-on'); placeNav(true);
         });
       });
       cap.addEventListener('pointerleave', function () { hover.classList.remove('is-on'); });
@@ -556,6 +568,26 @@
       });
     });
 
+    /* Máscara de telefone: (65) 99999-9999 para celular ou (65) 3333-3333 para fixo.
+       Aceita só números, formata enquanto a pessoa digita e também o que for colado. */
+    $$('input[type="tel"]').forEach(function (tel) {
+      var mask = function (v) {
+        var d = v.replace(/\D/g, '');
+        if (d.length > 11 && d.indexOf('55') === 0) d = d.slice(2);   // número colado com +55 na frente
+        d = d.slice(0, 11);
+        if (d.length > 10) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+        if (d.length > 6) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6);
+        if (d.length > 2) return '(' + d.slice(0, 2) + ') ' + d.slice(2);
+        return d.length ? '(' + d : '';
+      };
+      tel.addEventListener('input', function () { tel.value = mask(tel.value); });
+      tel.addEventListener('blur', function () {          // avisa se o número ficou incompleto
+        var n = tel.value.replace(/\D/g, '').length;
+        tel.setCustomValidity(n === 0 || n === 10 || n === 11 ? '' : 'Informe o telefone com DDD, por exemplo (65) 99999-9999.');
+      });
+      tel.value = mask(tel.value);
+    });
+
     /* Busca */
     $$('form[role="search"]').forEach(function (f) {
       f.addEventListener('submit', function (e) {
@@ -653,6 +685,13 @@
     var y = window.scrollY;
     if (header) {
       header.classList.toggle('is-stuck', y > 40);
+      /* No desktop a linha vermelha rola para fora e o menu fica fixo, em modo compacto */
+      var top = $('.header__top', header);
+      var condensed = window.innerWidth >= 1024 && !!top && top.getBoundingClientRect().bottom <= 1;   // linha vermelha já saiu da tela
+      if (condensed !== header.classList.contains('is-condensed')) {
+        header.classList.toggle('is-condensed', condensed);
+        $$('.header__mini, .header__mini-actions button', header).forEach(function (el) { el.tabIndex = condensed ? 0 : -1; });
+      }
       if (Math.abs(y - lastY) > 6) {                       // ignora tremidas do dedo
         header.classList.toggle('is-hidden', window.innerWidth < 768 && y > 300 && y > lastY);
         lastY = y;
@@ -672,12 +711,14 @@
     window.addEventListener('resize', function () {
       clearTimeout(rt);
       rt = setTimeout(function () {
-        if (placeCapsule) placeCapsule(false);
+        if (placeNav) placeNav(false);
         var cp = $('.chips__pill'), cn = $('.chips__link[aria-current]');
         if (cp && cn) { cp.classList.add('is-jump'); cp.style.left = cn.offsetLeft + 'px'; cp.style.width = cn.offsetWidth + 'px'; void cp.offsetWidth; cp.classList.remove('is-jump'); }
       }, 120);
     });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (placeCapsule) placeCapsule(false); });
+    /* Quando a fonte termina de carregar, a largura dos textos muda: realinha os traços
+       do menu (desktop e mobile) reaproveitando o ajuste feito ao redimensionar a janela. */
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { window.dispatchEvent(new Event('resize')); });
 
     document.addEventListener('keydown', function (e) {
       if (viewer && viewer.isOpen()) {
@@ -722,6 +763,7 @@
       window.addEventListener('popstate', function (e) { go(location.href, false, (e.state && e.state.y) || 0); });
       if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     }
+    setInterval(tickClock, 15000);
     window.addEventListener('pageshow', function (e) { if (e.persisted) root.classList.remove('is-leaving'); });
     window.addEventListener('pagehide', function () { if (window.speechSynthesis) speechSynthesis.cancel(); });
   }

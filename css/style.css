@@ -153,11 +153,29 @@ svg.fill { fill: currentColor; stroke: none; }
 [data-cbn-mode="dark"] .theme-cycle .t-dark,
 [data-cbn-mode="auto"] .theme-cycle .t-auto { display: block; }
 
-.header { position: sticky; top: 0; z-index: 60; background: var(--red); color: #fff; transition: transform .3s var(--ease), box-shadow .3s; }
-.header.is-stuck { box-shadow: 0 6px 24px rgba(0, 0, 0, .18); }
+/* Cabeçalho em duas linhas. A de cima (vermelha) rola para fora; a de baixo (menu)
+   fica fixa no topo: por isso o "top" negativo, igual à altura da linha vermelha. */
+.header { --top-h: 76px; position: sticky; top: calc(-1 * var(--top-h)); z-index: 60; color: #fff; transition: transform .3s var(--ease); }
 .header.is-hidden { transform: translateY(-100%); }
-.header__in { display: flex; align-items: center; gap: 16px; height: 84px; }   /* logo centralizado: mesmo espaço acima e abaixo */
+.header__top { background: var(--red); }
+.header__in { display: flex; align-items: center; gap: 16px; height: var(--top-h); }
 .header__menu { display: none; }
+
+/* Agora: hora grande, dia da semana e data, e o tempo em Cuiabá */
+.header__now { display: flex; align-items: center; gap: 14px; margin-left: 14px; padding-left: 28px; border-left: 1px solid rgba(255, 255, 255, .28); height: 40px; }
+.now__time { font-family: var(--font-head); font-weight: 700; font-size: 1.75rem; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.now__date { display: grid; gap: 3px; font-size: .76rem; line-height: 1; opacity: .92; }
+.now__date b { font-size: .82rem; font-weight: 700; }
+.now__weather { display: inline-flex; align-items: center; gap: 6px; margin-left: 6px; padding-left: 16px; border-left: 1px solid rgba(255, 255, 255, .28); height: 28px; font-size: .8rem; font-weight: 600; white-space: nowrap; }
+.now__weather svg { width: 16px; height: 16px; }
+
+/* Busca em forma de campo: abre a busca em tela cheia (atalho: tecla "/") */
+.search-pill { display: inline-flex; align-items: center; gap: 10px; height: 40px; width: 230px; padding: 0 10px 0 14px; margin-right: 6px; border-radius: 10px; background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .22); color: #fff; font-size: .86rem; text-align: left; transition: background-color .2s, border-color .2s; }
+.search-pill:hover { background: rgba(255, 255, 255, .22); border-color: rgba(255, 255, 255, .4); }
+.search-pill svg { width: 17px; height: 17px; }
+.search-pill span { flex: 1; opacity: .9; }
+.search-pill kbd { font: 600 .7rem/1 var(--font-body); padding: 4px 7px; border-radius: 5px; background: rgba(255, 255, 255, .18); }
+.header__search { display: none; }
 
 .logo { flex: none; display: inline-flex; line-height: 1; color: #fff; }
 .logo img { height: 58px; width: auto; }
@@ -182,54 +200,54 @@ svg.fill { fill: currentColor; stroke: none; }
 .live-btn:hover .live-btn__core { transform: scale(1.08); }
 .live-btn:active .live-btn__core { transform: scale(.92); }
 
-/* Menu em cápsula ----------------------------------------------------------
-   Uma cápsula opaca com filete de luz no topo; a "chapa" de destaque desliza
-   até o item sob o cursor com uma mola que passa um pouco do ponto e volta. */
-.header__nav { position: absolute; left: 0; right: 0; top: 100%; display: flex; justify-content: center; transform: translateY(-50%); pointer-events: none; }
-.capsule {
-  --cap-1: #ffffff; --cap-2: #f1f2f4; --cap-border: rgba(16, 18, 22, .1); --cap-edge: #ffffff; --cap-chip: rgba(16, 18, 22, .07); --cap-text: #272b33;
-  position: relative; pointer-events: auto; max-width: calc(100% - 32px);
-  padding: 5px; border-radius: 999px;
-  background: linear-gradient(180deg, var(--cap-1), var(--cap-2));
-  border: 1px solid var(--cap-border);
-  box-shadow: inset 0 1px 0 var(--cap-edge), 0 14px 30px -12px rgba(16, 18, 22, .35), 0 2px 6px rgba(16, 18, 22, .08);
-}
-[data-cbn-theme="dark"] .capsule { --cap-1: #23262c; --cap-2: #17191d; --cap-border: rgba(255, 255, 255, .1); --cap-edge: rgba(255, 255, 255, .1); --cap-chip: rgba(255, 255, 255, .1); --cap-text: #f2f3f5; }
-.capsule__list { position: relative; z-index: 1; display: flex; align-items: center; gap: 2px; }
-.capsule__link { position: relative; display: inline-flex; align-items: center; height: 42px; padding: 0 15px; border-radius: 999px; color: var(--cap-text); font-family: var(--font-head); font-weight: 600; font-size: .93rem; letter-spacing: -.01em; white-space: nowrap; transition: color .3s, transform .15s var(--ease); }
-.capsule__link--home { width: 42px; padding: 0; justify-content: center; }
-.capsule__link svg { width: 19px; height: 19px; }
-.capsule__link[aria-current="page"] { background: var(--red); color: #fff; box-shadow: 0 4px 12px -4px rgba(209, 10, 17, .7); }
-/* Com o script ativo, a marca vermelha é uma chapa que desliza entre as editorias */
-.capsule.is-ready .capsule__link[aria-current="page"] { background: none; box-shadow: none; }
-.capsule__active { position: absolute; left: 0; top: 5px; height: 42px; width: 0; border-radius: 999px; background: var(--red); box-shadow: 0 4px 12px -4px rgba(209, 10, 17, .7); opacity: 0; pointer-events: none; transition: transform .4s cubic-bezier(.65, 0, .35, 1), width .4s cubic-bezier(.65, 0, .35, 1), opacity .2s; }   /* desliza até o item clicado */
-.capsule__active.is-on { opacity: 1; }
-.capsule__active.is-jump { transition: none; }
-.capsule__link:active { transform: scale(.96); }
-.capsule__link:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--cap-text); }
-.capsule__pill { position: absolute; left: 0; top: 5px; height: 42px; width: 0; border-radius: 999px; background: var(--cap-chip); opacity: 0; pointer-events: none; transition: transform .4s cubic-bezier(.65, 0, .35, 1), width .4s cubic-bezier(.65, 0, .35, 1), opacity .25s; }
-.capsule__pill.is-on { opacity: 1; }
-.capsule__pill.is-jump { transition: opacity .25s; }
+/* Menu de editorias: faixa de ponta a ponta, itens centralizados e com o mesmo
+   intervalo entre si. Um traço vermelho marca a editoria atual e desliza até a
+   nova ao trocar de página; um traço cinza acompanha o cursor. */
+.header__nav { background: var(--card); color: var(--ink); border-bottom: 1px solid var(--line); transition: box-shadow .3s; }
+.header.is-condensed .header__nav { box-shadow: 0 8px 24px -10px rgba(16, 18, 22, .28); }
+.header__nav-in { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; height: 54px; }
+.mainnav { position: relative; height: 100%; }
+.mainnav__list { position: relative; z-index: 1; display: flex; align-items: stretch; gap: clamp(14px, 2.3vw, 34px); height: 100%; }
+.mainnav__list li { display: flex; }
+.mainnav__link { display: inline-flex; align-items: center; height: 100%; padding: 0 2px; color: var(--ink); font-family: var(--font-head); font-weight: 600; font-size: .92rem; letter-spacing: -.01em; white-space: nowrap; transition: color .25s; }
+.mainnav__link:hover { color: var(--red); }
+.mainnav__link[aria-current="page"] { color: var(--red); box-shadow: inset 0 -3px 0 var(--red); }
+.mainnav.is-ready .mainnav__link[aria-current="page"] { box-shadow: none; }
+.mainnav__link:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--ink); border-radius: 4px; }
+.mainnav__active, .mainnav__pill { position: absolute; left: 0; bottom: -1px; height: 3px; width: 0; border-radius: 3px 3px 0 0; opacity: 0; pointer-events: none; transition: transform .4s cubic-bezier(.65, 0, .35, 1), width .4s cubic-bezier(.65, 0, .35, 1), opacity .2s; }
+.mainnav__active { background: var(--red); }
+.mainnav__pill { background: var(--line); height: 3px; }
+[data-cbn-theme="dark"] .mainnav__pill { background: #3a3f49; }
+.mainnav__active.is-on, .mainnav__pill.is-on { opacity: 1; }
+.mainnav__active.is-jump { transition: none; }
+.mainnav__pill.is-jump { transition: opacity .2s; }
 
-/* Editorias no mobile/tablet: a mesma cápsula, deslizável com o dedo */
-.chips { display: none; background: var(--bg); padding: 10px 16px; }
-.chips__list { display: flex; gap: 2px; overflow-x: auto; padding: 4px; scrollbar-width: none; scroll-snap-type: x proximity; border-radius: 999px; background: linear-gradient(180deg, var(--card), var(--bg-soft)); border: 1px solid var(--line); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), 0 6px 16px -10px rgba(16, 18, 22, .35); }
-[data-cbn-theme="dark"] .chips__list { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08); }
+/* Modo compacto (página rolada): a marca e os atalhos entram nas pontas da faixa */
+.header__mini { justify-self: start; width: 62px; height: 22px; background: var(--red); -webkit-mask: url(../assets/img/logo-cbn-mark.svg) left center / contain no-repeat; mask: url(../assets/img/logo-cbn-mark.svg) left center / contain no-repeat; }
+.header__mini-actions { justify-self: end; display: flex; align-items: center; gap: 6px; }
+.header__mini-actions .icon-btn { width: 40px; height: 40px; color: var(--ink); }
+.mini-live { width: 34px; height: 34px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; transition: transform .15s var(--ease); }
+.mini-live:active { transform: scale(.92); }
+.mini-live svg { width: 13px; height: 13px; }
+.mini-live .i-pause, .is-playing .mini-live .i-play { display: none; }
+.is-playing .mini-live .i-pause { display: block; }
+.header__mini, .header__mini-actions { opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .25s, transform .3s var(--ease), visibility .25s; }
+.header.is-condensed .header__mini, .header.is-condensed .header__mini-actions { opacity: 1; visibility: visible; transform: none; }
+
+/* Editorias no mobile/tablet: faixa plana, deslizável com o dedo, com o mesmo traço */
+.chips { display: none; background: var(--card); border-bottom: 1px solid var(--line); }
+.chips__list { position: relative; display: flex; gap: 22px; overflow-x: auto; padding: 0 16px; scrollbar-width: none; }
 .chips__list::-webkit-scrollbar { display: none; }
-.chips__link { display: inline-flex; align-items: center; min-height: 38px; padding: 0 14px; border-radius: 999px; font-family: var(--font-head); font-size: .88rem; font-weight: 600; white-space: nowrap; scroll-snap-align: start; transition: background-color .25s, color .25s, transform .15s var(--ease); }
-.chips__link:active { transform: scale(.95); }
-.chips__link[aria-current="page"] { background: var(--red); color: #fff; }
-/* Com o script ativo, a marca vermelha desliza até a editoria tocada (mesmo movimento do menu do desktop) */
-.chips__list { position: relative; }
-.chips__link { position: relative; z-index: 1; }
-.chips.is-ready .chips__link[aria-current="page"] { background: none; }
-.chips__pill { position: absolute; top: 4px; left: 0; width: 0; height: 38px; border-radius: 999px; background: var(--red); opacity: 0; pointer-events: none; transition: left .4s cubic-bezier(.65, 0, .35, 1), width .4s cubic-bezier(.65, 0, .35, 1), opacity .2s; }
+.chips__link { position: relative; z-index: 1; display: inline-flex; align-items: center; min-height: 46px; font-family: var(--font-head); font-size: .9rem; font-weight: 600; white-space: nowrap; transition: color .25s; }
+.chips__link[aria-current="page"] { color: var(--red); box-shadow: inset 0 -3px 0 var(--red); }
+.chips.is-ready .chips__link[aria-current="page"] { box-shadow: none; }
+.chips__pill { position: absolute; left: 0; bottom: 0; width: 0; height: 3px; border-radius: 3px 3px 0 0; background: var(--red); opacity: 0; pointer-events: none; transition: left .4s cubic-bezier(.65, 0, .35, 1), width .4s cubic-bezier(.65, 0, .35, 1), opacity .2s; }
 .chips__pill.is-on { opacity: 1; }
 .chips__pill.is-jump { transition: none; }
 
 /* 6. Urgente --------------------------------------------------------------- */
 .breaking { background: var(--bg-soft); border-bottom: 1px solid var(--line); }
-.breaking__in { display: flex; align-items: center; gap: 14px; min-height: 46px; padding-top: 30px; }
+.breaking__in { display: flex; align-items: center; gap: 14px; min-height: 46px; }
 .breaking__label { display: inline-flex; align-items: center; gap: 8px; background: var(--red); color: #fff; font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 5px 10px; border-radius: 4px; flex: none; }
 .breaking__track { flex: 1; min-width: 0; position: relative; height: 24px; overflow: hidden; }
 .breaking__item { position: absolute; inset: 0; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: .92rem; opacity: 0; transform: translateY(100%); transition: opacity .45s, transform .45s var(--ease); }
@@ -318,7 +336,6 @@ svg.fill { fill: currentColor; stroke: none; }
 
 /* 11. Sidebar -------------------------------------------------------------- */
 .sidebar { display: grid; gap: 32px; height: 100%; align-content: start; }
-.sidebar__sticky { position: sticky; top: 88px; }
 .widget__title { font-family: var(--font-head); font-weight: 800; font-size: 1.1rem; padding-bottom: 10px; margin-bottom: 6px; border-bottom: 2px solid var(--ink); }
 .ranking { counter-reset: rank; }
 .ranking__item { counter-increment: rank; display: grid; grid-template-columns: 40px 1fr; gap: 10px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--line); }
@@ -400,7 +417,9 @@ svg.fill { fill: currentColor; stroke: none; }
 .player__info { min-width: 0; display: grid; }
 .player__live { display: inline-flex; align-items: center; gap: 8px; font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #ff6b70; }
 .player__name { font-weight: 700; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* Equalizador: cinco barras vermelhas pulsando, sinal de que a rádio está no ar */
+/* Equalizador: cinco barras vermelhas sempre animadas (decisão para a prévia do cliente).
+   Para animar só com a rádio tocando: acrescente "paused" à animação abaixo e a regra
+   .is-playing .player__eq i { animation-play-state: running; } */
 .player__eq { display: flex; align-items: flex-end; gap: 3px; height: 26px; margin-left: 6px; }
 .player__eq i { width: 6px; height: 100%; background: var(--red); border-radius: 3px; transform-origin: bottom; animation: eq-pump 1s ease-in-out infinite; }
 .player__eq i:nth-child(2) { animation-delay: -.8s; }
@@ -654,16 +673,15 @@ img.is-loading { opacity: 0; }
 .drawer__nav a { transition: background-color .2s, padding-left .2s var(--ease); }
 
 /* 18. Responsivo ----------------------------------------------------------- */
-/* Desktop estreito: o menu em cápsula chega até debaixo do logo. Para o logo manter
-   o mesmo espaço em cima e embaixo sem encostar no menu, ele diminui um pouco e a
-   cápsula desce. */
-@media (min-width: 1024px) and (max-width: 1279px) {
-  .logo img { height: 48px; }
-  .header__nav { transform: translateY(-18%); }
-  .breaking__in { padding-top: 50px; }
+/* Desktop: a barra preta do topo sai (hora, data e busca já estão na faixa vermelha) */
+@media (min-width: 1024px) {
+  .topbar { display: none; }
 }
 
 @media (max-width: 1180px) {
+  .now__weather { display: none; }
+  .search-pill { width: 190px; }
+  .mainnav__link { font-size: .86rem; }
   .hero__grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
   .latest { grid-column: 1 / -1; }
   .latest__list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 20px; }
@@ -671,15 +689,15 @@ img.is-loading { opacity: 0; }
 }
 
 @media (max-width: 1023px) {
-  .header__nav, .live-btn, .topbar__right .topbar__item { display: none; }
-  .breaking__in { padding-top: 0; }
+  .header { top: 0; }
+  .header__nav, .header__now, .search-pill, .live-btn, .topbar__right .topbar__item { display: none; }
+  .header__search { display: inline-grid; }
   .header__menu { display: inline-grid; margin-left: -10px; }
-  .header__in { height: 60px; padding-bottom: 0; }
+  .header__in { height: 60px; }
   .logo img { height: 46px; }
   .chips { display: block; }
   .layout { grid-template-columns: minmax(0, 1fr); }
   .sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .sidebar__sticky { position: static; }
   .staff-grid, .contact-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer__grid { grid-template-columns: repeat(2, 1fr); }

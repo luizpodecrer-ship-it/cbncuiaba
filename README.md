@@ -24,15 +24,17 @@ Abra `index.html` no navegador para navegar por todas as páginas.
 |---|---|---|
 | Topo | 990 × 120 | `.ad--topo` |
 | Secundário e Final secundário | 728 × 90 | `.ad--secundario` |
-| Lateral | 300 × 250 | `.ad--lateral` |
+| Lateral (uma posição por página) | 300 × 250 | `.ad--lateral` |
 
 O banner entra dentro de `.ad__box`. Em telas mais estreitas que o formato, a mesma peça encolhe na proporção, sem corte.
 
 ## Observações
 
+- Cabeçalho (desktop): linha vermelha com logo, hora e data, busca, tema e "Ao vivo"; abaixo dela, o menu de editorias em faixa. Ao rolar, a linha vermelha sai e o menu fica fixo no topo em modo compacto (marca à esquerda, busca e play à direita). A temperatura exibida é um valor fixo de exemplo.
+
 - Logo: sempre aplicado em branco sobre vermelho ou fundo escuro, nunca em cinza nem com transparência. `logo-cbn-cuiaba.svg` é o logo completo; `logo-cbn-mark.svg` é só a marca "CBN", para espaços pequenos (ex.: selo do autor na notícia).
 
-- Cards de notícia: em todo o portal mostram apenas editoria, título e data. A linha fina aparece somente dentro da página da notícia.
+- Cards de notícia: em todo o portal mostram editoria, título e data — todos os cards, inclusive os das listas. A linha fina aparece somente dentro da página da notícia.
 
 - Navegação suave: links internos trocam a página sem recarregar (o cabeçalho não pisca e a rádio continua tocando). A cada troca o script dispara o evento `cbn:navigate` no `document` — use-o para recarregar os banners e registrar a visualização no Analytics. Para desligar, use `<body data-soft-nav="off">`; os links voltam a abrir normalmente.
 - Tema: abre em Claro; o visitante pode escolher Claro, Escuro ou Automático (salvo em `localStorage`).

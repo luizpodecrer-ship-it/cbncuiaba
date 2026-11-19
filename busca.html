@@ -53,41 +53,58 @@
       <a class="topbar__item" href="anuncie.html">Anuncie</a>
       <a class="topbar__item" href="expediente.html">Expediente</a>
       <a class="icon-btn" href="https://www.facebook.com/cbncba" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
-      <a class="icon-btn" href="https://instagram.com/cbncbafm" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+      <a class="icon-btn" href="https://www.instagram.com/cbncba" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
       <a class="icon-btn" href="https://www.youtube.com/@cbncba" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-yt"/></svg></a>
     </div>
   </div>
 </div>
 
-<!-- ============ CABEÇALHO (fixo) ============ -->
+<!-- ============ CABEÇALHO ============
+     Linha de cima (vermelha): logo, hora e data, busca, tema e "Ao vivo".
+     Linha de baixo: menu de editorias. Ao rolar, a linha vermelha sai e o menu
+     fica fixo no topo, ganhando a marca e os atalhos de busca e rádio. -->
 <header class="header">
-  <div class="container header__in">
-    <button class="icon-btn header__menu" data-open="menu" aria-label="Abrir menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
-    <a class="logo" href="index.html" aria-label="CBN Cuiabá — página inicial"><img src="assets/img/logo-cbn-cuiaba.svg" alt="CBN Cuiabá 95,9 FM" width="556" height="298"></a>
-    <div class="header__actions">
-      <button class="icon-btn" data-open="search" aria-label="Buscar"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
-      <button class="icon-btn theme-cycle" data-theme-cycle aria-label="Tema: claro"><svg class="t-light" aria-hidden="true"><use href="#i-sun"/></svg><svg class="t-dark" aria-hidden="true"><use href="#i-moon"/></svg><svg class="t-auto" aria-hidden="true"><use href="#i-auto"/></svg></button>
-      <button class="live-btn" data-radio-toggle aria-pressed="false">
-        <span class="live-btn__pulse"><span class="live-btn__core"><svg class="fill i-play" aria-hidden="true"><use href="#i-play"/></svg><svg class="fill i-pause" aria-hidden="true"><use href="#i-pause"/></svg></span><i class="live-btn__wave"></i><i class="live-btn__wave"></i><i class="live-btn__wave"></i></span>
-        <span class="live-btn__label">Ao vivo</span>
-      </button>
+  <div class="header__top">
+    <div class="container header__in">
+      <button class="icon-btn header__menu" data-open="menu" aria-label="Abrir menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+      <a class="logo" href="index.html" aria-label="CBN Cuiabá — página inicial"><img src="assets/img/logo-cbn-cuiaba.svg" alt="CBN Cuiabá 95,9 FM" width="556" height="298"></a>
+      <div class="header__now" aria-label="Agora">
+        <span class="now__time" data-clock>07:52</span>
+        <span class="now__date"><b data-weekday>Quinta-feira</b><span data-date>19 de novembro de 2026</span></span>
+        <span class="now__weather"><svg aria-hidden="true"><use href="#i-sun"/></svg> Cuiabá 34°C</span>
+      </div>
+      <div class="header__actions">
+        <button class="search-pill" type="button" data-open="search"><svg aria-hidden="true"><use href="#i-search"/></svg><span>Buscar notícias</span><kbd>/</kbd></button>
+        <button class="icon-btn header__search" data-open="search" aria-label="Buscar"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
+        <button class="icon-btn theme-cycle" data-theme-cycle aria-label="Tema: claro"><svg class="t-light" aria-hidden="true"><use href="#i-sun"/></svg><svg class="t-dark" aria-hidden="true"><use href="#i-moon"/></svg><svg class="t-auto" aria-hidden="true"><use href="#i-auto"/></svg></button>
+        <button class="live-btn" data-radio-toggle aria-pressed="false">
+          <span class="live-btn__pulse"><span class="live-btn__core"><svg class="fill i-play" aria-hidden="true"><use href="#i-play"/></svg><svg class="fill i-pause" aria-hidden="true"><use href="#i-pause"/></svg></span><i class="live-btn__wave"></i><i class="live-btn__wave"></i><i class="live-btn__wave"></i></span>
+          <span class="live-btn__label">Ao vivo</span>
+        </button>
+      </div>
     </div>
   </div>
-  <!-- Menu em cápsula (desktop): fica sobre a borda inferior do cabeçalho -->
   <div class="header__nav">
-    <nav class="capsule" aria-label="Editorias" data-capsule>
-      <span class="capsule__pill" aria-hidden="true"></span>
-      <ul class="capsule__list">
-            <li><a class="capsule__link capsule__link--home" href="index.html" aria-label="Início"><svg aria-hidden="true"><use href="#i-home"/></svg></a></li>
-            <li><a class="capsule__link" href="noticias.html">Notícias</a></li>
-            <li><a class="capsule__link" href="politica.html">Política</a></li>
-            <li><a class="capsule__link" href="cidades.html">Cidades</a></li>
-            <li><a class="capsule__link" href="economia-negocios.html">Economia &amp; Negócios</a></li>
-            <li><a class="capsule__link" href="esporte-cultura.html">Esporte &amp; Cultura</a></li>
-            <li><a class="capsule__link" href="entrevistas.html">Entrevistas</a></li>
-            <li><a class="capsule__link" href="expediente.html">Expediente</a></li>
-      </ul>
-    </nav>
+    <div class="container header__nav-in">
+      <a class="header__mini" href="index.html" aria-label="CBN Cuiabá — página inicial" tabindex="-1"></a>
+      <nav class="mainnav" aria-label="Editorias" data-mainnav>
+        <span class="mainnav__pill" aria-hidden="true"></span>
+        <ul class="mainnav__list">
+            <li><a class="mainnav__link mainnav__link--home" href="index.html" aria-label="Início">Início</a></li>
+            <li><a class="mainnav__link" href="noticias.html">Notícias</a></li>
+            <li><a class="mainnav__link" href="politica.html">Política</a></li>
+            <li><a class="mainnav__link" href="cidades.html">Cidades</a></li>
+            <li><a class="mainnav__link" href="economia-negocios.html">Economia &amp; Negócios</a></li>
+            <li><a class="mainnav__link" href="esporte-cultura.html">Esporte &amp; Cultura</a></li>
+            <li><a class="mainnav__link" href="entrevistas.html">Entrevistas</a></li>
+            <li><a class="mainnav__link" href="expediente.html">Expediente</a></li>
+        </ul>
+      </nav>
+      <div class="header__mini-actions">
+        <button class="icon-btn" data-open="search" aria-label="Buscar" tabindex="-1"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
+        <button class="mini-live" data-radio-toggle aria-pressed="false" aria-label="Ouvir a rádio ao vivo" tabindex="-1"><svg class="fill i-play" aria-hidden="true"><use href="#i-play"/></svg><svg class="fill i-pause" aria-hidden="true"><use href="#i-pause"/></svg></button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -260,15 +277,13 @@
 </article></div>
   <div data-results-empty hidden><div class="empty"><span class="empty__icon"><svg aria-hidden="true"><use href="#i-search"/></svg></span><h2>Nenhum resultado encontrado</h2><p>Confira a grafia ou tente palavras mais gerais.</p><a class="btn btn--red" href="index.html">Voltar para a página inicial</a></div></div>
 </div><aside class="sidebar" aria-label="Lateral">
-  <aside class="ad ad--lateral" aria-label="Publicidade" data-slot="lateral-1"><span class="ad__label">Publicidade</span>
-  <div class="ad__box" data-name="Lateral 1" data-format="300 × 250"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div></aside>
+  <aside class="ad ad--lateral" aria-label="Publicidade" data-slot="lateral"><span class="ad__label">Publicidade</span>
+  <div class="ad__box" data-name="Lateral" data-format="300 × 250"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div></aside>
   <section class="widget"><h2 class="widget__title">Mais lidas</h2><ol class="ranking"><li class="ranking__item"><a href="noticias/imagens-aereas-mostram-casas-submersas-apos-rompimento-de-barragem-em.html">Imagens aéreas mostram casas submersas após rompimento de barragem em Cuiabá</a></li><li class="ranking__item"><a href="noticias/tarifa-de-agua-tera-reducao-em-cuiaba-a-partir-de-janeiro-de-2027.html">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></li><li class="ranking__item"><a href="noticias/lider-de-faccao-teria-comprado-imovel-na-bahia-com-identidade-falsa.html">Líder de facção teria comprado imóvel na Bahia com identidade falsa</a></li><li class="ranking__item"><a href="noticias/capitao-alan-empereur-deixa-o-cuiaba-apos-mais-de-um-mes-de-negociacao.html">Capitão Alan Empereur deixa o Cuiabá após mais de um mês de negociação</a></li><li class="ranking__item"><a href="noticias/abilio-admite-que-fusao-nao-deu-certo-e-vai-recriar-secretarias-de-cul.html">Abilio admite que fusão “não deu certo” e vai recriar secretarias de Cultura e Esporte</a></li></ol></section>
   <section class="widget"><h2 class="widget__title">Siga a CBN Cuiabá</h2><div class="social-box">
     <a href="https://www.youtube.com/@cbncba"><svg aria-hidden="true"><use href="#i-yt"/></svg> YouTube <span>Assistir ao vivo</span></a>
-    <a href="https://instagram.com/cbncbafm"><svg aria-hidden="true"><use href="#i-ig"/></svg> Instagram <span>Seguir</span></a>
+    <a href="https://www.instagram.com/cbncba"><svg aria-hidden="true"><use href="#i-ig"/></svg> Instagram <span>Seguir</span></a>
     <a href="https://www.facebook.com/cbncba"><svg aria-hidden="true"><use href="#i-fb"/></svg> Facebook <span>Curtir</span></a></div></section>
-  <div class="sidebar__sticky"><aside class="ad ad--lateral" aria-label="Publicidade" data-slot="lateral-2"><span class="ad__label">Publicidade</span>
-  <div class="ad__box" data-name="Lateral 2" data-format="300 × 250"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div></aside></div>
 </aside></div></div>
 <div class="ad-wrap"><div class="container"><aside class="ad ad--secundario" aria-label="Publicidade" data-slot="final-secundario"><span class="ad__label">Publicidade</span>
   <div class="ad__box" data-name="Final secundário" data-format="728 × 90"><!-- BANNER: inserir aqui o código/imagem do anúncio --></div></aside></div></div>
@@ -282,7 +297,7 @@
       <p>A rádio que toca notícia. Jornalismo de Cuiabá e Mato Grosso, 24 horas no ar em 95,9 FM.</p>
       <div class="footer__social">
         <a href="https://www.facebook.com/cbncba" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
-        <a href="https://instagram.com/cbncbafm" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+        <a href="https://www.instagram.com/cbncba" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
         <a href="https://www.youtube.com/@cbncba" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-yt"/></svg></a>
         <a href="https://twitter.com/cbncba" aria-label="X (Twitter)"><svg aria-hidden="true"><use href="#i-x"/></svg></a>
       </div>
@@ -374,7 +389,7 @@
   </div>
   <div class="drawer__foot">
     <a href="https://www.facebook.com/cbncba" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
-    <a href="https://instagram.com/cbncbafm" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+    <a href="https://www.instagram.com/cbncba" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
     <a href="https://www.youtube.com/@cbncba" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-yt"/></svg></a>
     <button class="theme-cycle drawer__theme" type="button" data-theme-cycle aria-label="Tema: claro"><svg class="t-light" aria-hidden="true"><use href="#i-sun"/></svg><svg class="t-dark" aria-hidden="true"><use href="#i-moon"/></svg><svg class="t-auto" aria-hidden="true"><use href="#i-auto"/></svg></button>
   </div>
