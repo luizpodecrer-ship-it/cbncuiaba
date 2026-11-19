@@ -771,10 +771,9 @@ img.is-loading { opacity: 0; }
 .drawer__nav a { transition: background-color .2s, padding-left .2s var(--ease); }
 
 /* 18. Responsivo ----------------------------------------------------------- */
-/* Desktop: a barra preta do topo sai (hora, data e busca já estão na faixa vermelha) */
-@media (min-width: 1024px) {
-  .topbar { display: none; }
-}
+/* A barra preta do topo (data e clima) não aparece em nenhuma tela: no computador
+   hora, data e busca já estão na faixa vermelha; no celular fica só a faixa vermelha. */
+.topbar { display: none; }
 
 @media (max-width: 1180px) {
   .onair__in { grid-template-columns: minmax(220px, 280px) auto minmax(0, 1fr); gap: 18px; }
