@@ -833,7 +833,7 @@ img.is-loading { opacity: 0; }
   .live__title { gap: 10px; }
   .live__more { display: none; }   /* no celular o link fica só "YouTube" */
   .live__player { width: calc(100% + 32px); margin-inline: -16px; border-radius: 0; }   /* de ponta a ponta no celular */
-  .live__tag { top: 12px; left: 12px; }
+  .live__tag { display: none; }   /* no celular o título da seção já mostra "No ar" */
   .live__play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
   .live__info { left: 16px; right: 16px; bottom: 14px; }
   .live__info strong { font-size: 1.1rem; }
