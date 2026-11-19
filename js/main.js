@@ -22,7 +22,7 @@
 
   /* Estado que muda a cada página */
   var header, drawer, search, scrim, lastFocus, progressBar, prose;
-  var breakingTimer = null, viewer = null, io = null, placeNav = null;
+  var breakingTimer = null, viewer = null, io = null, placeNav = null, onairTimer = null, onairTick = null, onairRealign = null;
   var prevPill = null, prevChipScroll = null, prevChipPill = null;
 
   /* Faz uma troca visual com transição suave quando o navegador permite */
@@ -227,7 +227,7 @@
     try { sessionStorage.setItem('cbn-nav', JSON.stringify({ pill: prevPill, chip: prevChipScroll, chipPill: prevChipPill, t: Date.now() })); } catch (e) {}
   }
   function teardown() {
-    clearInterval(breakingTimer);
+    clearInterval(breakingTimer); clearInterval(onairTimer); clearInterval(onairTick);
     if (viewer) viewer.close(true);
     viewer = null;
     if (io) io.disconnect();
@@ -669,6 +669,143 @@
       });
     });
 
+    /* CBN Ao Vivo: o player do YouTube só é carregado no clique (página mais leve).
+       Um vídeo da lista toca no mesmo player; "Voltar para o ao vivo" retorna à transmissão.
+       Ao dar play no vídeo, a rádio do rodapé é pausada para não tocar dois áudios. */
+    $$('[data-live-player]').forEach(function (box) {
+      var LIVE = box.getAttribute('data-live-src');
+      var poster = $('[data-live-play]', box), back = $('[data-live-back]', box);
+      var links = $$('[data-video]', box.parentNode);
+      var frame = null;
+      var mark = function (cur) { links.forEach(function (a) { a.classList.toggle('is-current', a === cur); if (a === cur) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); }); };
+      var play = function (src, title) {
+        if (audio && !audio.paused) toggleRadio();
+        if (!frame) {
+          frame = document.createElement('iframe');
+          frame.className = 'live__frame';
+          frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+          frame.setAttribute('allowfullscreen', '');
+          frame.referrerPolicy = 'strict-origin-when-cross-origin';
+          box.insertBefore(frame, back);
+        }
+        frame.title = title;
+        frame.src = src;
+        box.classList.add('is-playing');
+      };
+      poster.addEventListener('click', function () { play(LIVE, 'CBN Cuiabá ao vivo'); back.hidden = true; mark(null); });
+      back.addEventListener('click', function () { play(LIVE, 'CBN Cuiabá ao vivo'); back.hidden = true; mark(null); });
+      links.forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;   // nova aba: abre no YouTube
+          e.preventDefault();
+          play('https://www.youtube-nocookie.com/embed/' + a.getAttribute('data-video') + '?autoplay=1&rel=0', $('.vid__title', a).textContent);
+          back.hidden = false;
+          mark(a);
+          var r = box.getBoundingClientRect();
+          if (r.top < 60 || r.bottom > window.innerHeight) box.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+        });
+      });
+    });
+
+    /* Faixa de programação: "No ar agora" pelo horário de Cuiabá, barra de progresso
+       do programa e slide com urgentes e próximos programas (passa sozinho a cada 5 s,
+       pausa com o mouse ou o foco em cima, aceita setas e o deslizar do dedo). */
+    var onair = $('[data-onair]');
+    if (onair) {
+      var grade = [];
+      try { grade = JSON.parse($('#cbn-grade', onair).textContent); } catch (e) {}
+      var track = $('[data-onair-track]', onair);
+      var cuiaba = function () {                                    // data e hora em Cuiabá
+        var parts = {};
+        new Intl.DateTimeFormat('en-US', { timeZone: 'America/Cuiaba', hour12: false, weekday: 'short', hour: '2-digit', minute: '2-digit' })
+          .formatToParts(new Date()).forEach(function (x) { parts[x.type] = x.value; });
+        var wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(parts.weekday);
+        return { wd: wd, min: (parseInt(parts.hour, 10) % 24) * 60 + parseInt(parts.minute, 10) };
+      };
+      var toMin = function (s) { var p = s.split(':'); return parseInt(p[0], 10) * 60 + parseInt(p[1], 10); };
+      var label = function (s) { var p = s.split(':'); var h = parseInt(p[0], 10) % 24; return h + 'h' + (p[1] !== '00' ? p[1] : ''); };
+      var dayOk = function (item, wd) { return item.dias === 'sab-dom' ? (wd === 0 || wd === 6) : (wd >= 1 && wd <= 5); };
+      var today = function (wd) { return grade.filter(function (g) { return dayOk(g, wd); }).sort(function (a, b) { return toMin(a.inicio) - toMin(b.inicio); }); };
+      var esc = function (s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
+      var urgent = $$('.onair__slide--urgent', track);
+      var idx = 0, sig = '';
+      var slides = function () { return $$('.onair__slide', track).filter(function (s) { return getComputedStyle(s).display !== 'none'; }); };
+      var go = function (n, smooth) {
+        var list = slides();
+        if (!list.length) return;
+        idx = (n + list.length) % list.length;
+        if (smooth === false) track.style.transition = 'none';
+        var x = list[idx].getBoundingClientRect().left - list[0].getBoundingClientRect().left;   // posição dentro do trilho
+        track.style.transform = 'translateX(' + (-x) + 'px)';
+        if (smooth === false) { void track.offsetWidth; track.style.transition = ''; }
+      };
+      var render = function () {
+        var now = cuiaba(), list = today(now.wd), cur = null, next = [];
+        list.forEach(function (g) {
+          var s = toMin(g.inicio), e = toMin(g.fim);
+          if (now.min >= s && now.min < e) cur = g; else if (s > now.min) next.push(g);
+        });
+        var DIAS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+        next = next.map(function (g) { return { g: g, dia: '' }; });
+        for (var d = 1; d <= 3 && next.length < 6; d++) {
+          var wd2 = (now.wd + d) % 7;
+          today(wd2).forEach(function (g) { next.push({ g: g, dia: d === 1 ? 'amanhã, ' : DIAS[wd2] + ', ' }); });
+        }
+        var local = next.filter(function (n) { return n.g.programa !== 'CBN Brasil'; });   // destaca os programas locais
+        next = (local.length ? local : next).slice(0, 3);
+        if (cur) {
+          $('[data-now-title]', onair).textContent = cur.programa;
+          $('[data-now-hosts]', onair).textContent = cur.apresentacao;
+          $('[data-now-time]', onair).textContent = label(cur.inicio) + ' às ' + label(cur.fim);
+          var pct = Math.max(0, Math.min(100, (now.min - toMin(cur.inicio)) / (toMin(cur.fim) - toMin(cur.inicio)) * 100));
+          $('[data-now-progress]', onair).style.setProperty('--p', pct.toFixed(1) + '%');
+        }
+        var key = (cur ? cur.programa + cur.inicio : '') + '|' + next.map(function (n) { return n.dia + n.g.programa + n.g.inicio; }).join(',');
+        if (key === sig) return;                                    // só redesenha o slide quando a grade muda
+        sig = key;
+        $$('.onair__slide--now, .onair__slide--next', track).forEach(function (s) { s.remove(); });
+        var html = '';
+        if (cur) html += '<div class="onair__slide onair__slide--now"><span class="onair__tag"><span class="pulse"></span> No ar agora · ' + label(cur.inicio) + ' às ' + label(cur.fim) + '</span><span class="onair__slide-title">' + esc(cur.programa) + '</span><span class="onair__slide-meta">' + esc(cur.apresentacao) + '</span></div>';
+        next.forEach(function (n) {
+          var g = n.g;
+          html += '<div class="onair__slide onair__slide--next"><span class="onair__tag">A seguir · ' + n.dia + label(g.inicio) + '</span><span class="onair__slide-title">' + esc(g.programa) + '</span><span class="onair__slide-meta">' + esc(g.apresentacao) + '</span></div>';
+        });
+        var tmp = document.createElement('div'); tmp.innerHTML = html;
+        var nowSlide = tmp.querySelector('.onair__slide--now');
+        if (nowSlide) track.insertBefore(nowSlide, track.firstChild);  // celular: começa pelo "No ar agora"
+        $$('.onair__slide--next', tmp).forEach(function (s) { track.appendChild(s); });
+        go(0, false);
+      };
+      var clock = function () {
+        var d = new Date();
+        var fmt = function (o) { return new Intl.DateTimeFormat('pt-BR', Object.assign({ timeZone: 'America/Cuiaba' }, o)).format(d); };
+        $$('[data-clock]', onair).forEach(function (el) { el.textContent = fmt({ hour: '2-digit', minute: '2-digit' }); });
+        $$('[data-weekday-short]', onair).forEach(function (el) { var w = fmt({ weekday: 'short' }).replace('.', ''); el.textContent = w.charAt(0).toUpperCase() + w.slice(1); });
+        $$('[data-date-short]', onair).forEach(function (el) { el.textContent = fmt({ day: 'numeric', month: 'short' }).replace('.', '').replace(' de ', ' '); });
+      };
+      var paused = false;
+      var auto = function () { clearInterval(onairTimer); if (!reduce) onairTimer = setInterval(function () { if (!paused) go(idx + 1); }, 5000); };
+      var slider = $('[data-onair-slider]', onair);
+      slider.addEventListener('mouseenter', function () { paused = true; });
+      slider.addEventListener('mouseleave', function () { paused = false; });
+      slider.addEventListener('focusin', function () { paused = true; });
+      slider.addEventListener('focusout', function () { paused = false; });
+      $('[data-onair="prev"]', onair).addEventListener('click', function () { go(idx - 1); auto(); });
+      $('[data-onair="next"]', onair).addEventListener('click', function () { go(idx + 1); auto(); });
+      var x0 = null;                                                // deslizar com o dedo
+      slider.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+      slider.addEventListener('touchend', function (e) {
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0; x0 = null;
+        if (Math.abs(dx) > 40) { go(idx + (dx < 0 ? 1 : -1)); auto(); }
+      });
+      onairRealign = function () { go(idx, false); };
+      render(); clock(); auto();
+      clearInterval(onairTick);
+      onairTick = setInterval(function () { render(); clock(); }, 30000);
+      if (!urgent.length && !slides().length) slider.hidden = true;
+    }
+
     /* Stories */
     var stories = $$('.story');
     if (stories.length) viewer = buildViewer(stories);
@@ -712,6 +849,7 @@
       clearTimeout(rt);
       rt = setTimeout(function () {
         if (placeNav) placeNav(false);
+        if (onairRealign && document.querySelector('[data-onair-track]')) onairRealign();
         var cp = $('.chips__pill'), cn = $('.chips__link[aria-current]');
         if (cp && cn) { cp.classList.add('is-jump'); cp.style.left = cn.offsetLeft + 'px'; cp.style.width = cn.offsetWidth + 'px'; void cp.offsetWidth; cp.classList.remove('is-jump'); }
       }, 120);

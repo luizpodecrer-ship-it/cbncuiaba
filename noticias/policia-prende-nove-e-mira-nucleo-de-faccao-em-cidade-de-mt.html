@@ -68,11 +68,6 @@
     <div class="container header__in">
       <button class="icon-btn header__menu" data-open="menu" aria-label="Abrir menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
       <a class="logo" href="../index.html" aria-label="CBN Cuiabá — página inicial"><img src="../assets/img/logo-cbn-cuiaba.svg" alt="CBN Cuiabá 95,9 FM" width="556" height="298"></a>
-      <div class="header__now" aria-label="Agora">
-        <span class="now__time" data-clock>07:52</span>
-        <span class="now__date"><b data-weekday>Quinta-feira</b><span data-date>19 de novembro de 2026</span></span>
-        <span class="now__weather"><svg aria-hidden="true"><use href="#i-sun"/></svg> Cuiabá 34°C</span>
-      </div>
       <div class="header__actions">
         <div class="header__social" aria-label="Redes sociais">
           <a href="https://www.facebook.com/cbncba" target="_blank" rel="noopener" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
@@ -127,21 +122,37 @@
   </ul>
 </nav>
 
-<!-- ============ URGENTE ============ -->
-<div class="breaking" aria-label="Últimas urgentes">
-  <div class="container breaking__in">
-    <span class="breaking__label"><span class="pulse"></span> Urgente</span>
-    <div class="breaking__track">
-      <p class="breaking__item is-active"><time>14h32</time><a href="../noticias/rio-transborda-invade-casas-e-deixa-familias-ilhadas-em-distrito-de-cu.html">Rio transborda, invade casas e deixa famílias ilhadas em distrito de Cuiabá</a></p>
-      <p class="breaking__item"><time>13h10</time><a href="../noticias/arena-pantanal-vira-centro-de-operacoes-para-atender-ocorrencias-da-ch.html">Arena Pantanal vira centro de operações para atender ocorrências da chuva</a></p>
-      <p class="breaking__item"><time>11h04</time><a href="../noticias/tarifa-de-agua-tera-reducao-em-cuiaba-a-partir-de-janeiro-de-2027.html">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></p>
+<!-- ============ FAIXA DE PROGRAMAÇÃO ============
+     Esquerda: o que está no ar agora (troca sozinho pelo horário de Cuiabá).
+     Direita: slide com os próximos programas. As notícias urgentes ficam em "Últimas notícias".
+     A grade vem do JSON #cbn-grade (no WordPress, gerado a partir de um cadastro de programas).
+-->
+<section class="onair" aria-label="Programação da CBN Cuiabá" data-onair>
+  <div class="container onair__in">
+    <div class="onair__now" aria-live="polite">
+      <span class="onair__label"><span class="pulse"></span> No ar agora</span>
+      <strong class="onair__title" data-now-title>Jornal da CBN Cuiabá</strong>
+      <span class="onair__meta"><span data-now-time>8h às 10h</span> · <span data-now-hosts>Camila Ribeiro, Pedro Panok e Igor Taques</span></span>
+      <span class="onair__progress" aria-hidden="true"><i data-now-progress></i></span>
     </div>
-    <div class="breaking__nav">
-      <button class="icon-btn" data-breaking="prev" aria-label="Anterior"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>
-      <button class="icon-btn" data-breaking="next" aria-label="Próxima"><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button class="onair__listen" type="button" data-radio-toggle aria-pressed="false"><svg class="fill i-play" aria-hidden="true"><use href="#i-play"/></svg><svg class="fill i-pause" aria-hidden="true"><use href="#i-pause"/></svg><span>Ouvir</span></button>
+    <div class="onair__slider" data-onair-slider aria-roledescription="carrossel" aria-label="Urgentes e próximos programas">
+      <div class="onair__viewport">
+        <div class="onair__track" data-onair-track>
+        </div>
+      </div>
+      <div class="onair__nav">
+        <button class="onair__arrow" type="button" data-onair="prev" aria-label="Anterior"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+        <button class="onair__arrow" type="button" data-onair="next" aria-label="Próximo"><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+      </div>
+    </div>
+    <div class="onair__clock">
+      <span class="onair__time" data-clock>12:00</span>
+      <span class="onair__date"><b data-weekday-short>Qui</b>, <span data-date-short>19 nov</span> · Cuiabá 34°C</span>
     </div>
   </div>
-</div>
+  <script type="application/json" id="cbn-grade">[{"dias": "seg-sex", "inicio": "00:00", "fim": "06:00", "programa": "CBN Brasil", "apresentacao": "Programação nacional da rede CBN"}, {"dias": "seg-sex", "inicio": "06:00", "fim": "08:00", "programa": "CBN Brasil", "apresentacao": "Programação nacional da rede CBN"}, {"dias": "seg-sex", "inicio": "08:00", "fim": "10:00", "programa": "Jornal da CBN Cuiabá", "apresentacao": "Camila Ribeiro, Pedro Panok e Igor Taques"}, {"dias": "seg-sex", "inicio": "10:00", "fim": "11:00", "programa": "Entre Elas na CBN", "apresentacao": "Marina Martins e Camila Piacenti"}, {"dias": "seg-sex", "inicio": "11:00", "fim": "12:00", "programa": "CBN Tecnologia", "apresentacao": "Daniel Sagin"}, {"dias": "seg-sex", "inicio": "12:00", "fim": "14:00", "programa": "CBN Brasil", "apresentacao": "Programação nacional da rede CBN"}, {"dias": "seg-sex", "inicio": "14:00", "fim": "16:00", "programa": "Estúdio CBN", "apresentacao": "Bancada: Marcela Vasconcelos"}, {"dias": "seg-sex", "inicio": "16:00", "fim": "24:00", "programa": "CBN Brasil", "apresentacao": "Programação nacional da rede CBN"}, {"dias": "sab-dom", "inicio": "00:00", "fim": "24:00", "programa": "CBN Brasil", "apresentacao": "Programação nacional da rede CBN"}]</script>
+</section>
 
 <main id="conteudo">
 <div class="progress" aria-hidden="true"><i></i></div>

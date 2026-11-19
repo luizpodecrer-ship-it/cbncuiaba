@@ -155,7 +155,7 @@ svg.fill { fill: currentColor; stroke: none; }
 
 /* Cabeçalho em duas linhas. A de cima (vermelha) rola para fora; a de baixo (menu)
    fica fixa no topo: por isso o "top" negativo, igual à altura da linha vermelha. */
-.header { --top-h: 76px; position: sticky; top: calc(-1 * var(--top-h)); z-index: 60; color: #fff; transition: transform .3s var(--ease); }
+.header { --top-h: 92px; position: sticky; top: calc(-1 * var(--top-h)); z-index: 60; color: #fff; transition: transform .3s var(--ease); }
 .header.is-hidden { transform: translateY(-100%); }
 .header__top { background: var(--red); }
 .header__in { display: flex; align-items: center; gap: 16px; height: var(--top-h); }
@@ -184,7 +184,7 @@ svg.fill { fill: currentColor; stroke: none; }
 .header__social svg { width: 17px; height: 17px; }
 
 .logo { flex: none; display: inline-flex; line-height: 1; color: #fff; }
-.logo img { height: 58px; width: auto; }
+.logo img { height: 62px; width: auto; }
 .footer .logo img { height: 64px; }
 .drawer .logo img { height: 40px; }
 
@@ -265,6 +265,46 @@ svg.fill { fill: currentColor; stroke: none; }
 .breaking__nav { display: flex; flex: none; }
 .breaking__nav .icon-btn { width: 36px; height: 36px; }
 
+/* Faixa de programação ------------------------------------------------------
+   Fundo grafite com faixas diagonais vermelhas à direita (marca CBN). */
+.onair { position: relative; background: #121418; color: #fff; overflow: hidden; isolation: isolate; }
+.onair::after { content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; right: 0; width: 420px; pointer-events: none;
+  background: linear-gradient(118deg, transparent 0 34%, rgba(209, 10, 17, .55) 34% 46%, transparent 46% 54%, rgba(209, 10, 17, .85) 54% 72%, transparent 72% 80%, rgba(209, 10, 17, .4) 80%); }
+.onair__in { display: grid; grid-template-columns: minmax(250px, 340px) auto minmax(0, 1fr) auto; align-items: center; gap: 22px; min-height: 84px; }
+.onair__now { position: relative; align-self: stretch; display: flex; flex-direction: column; justify-content: center; gap: 4px; min-width: 0; }
+.onair__label { display: inline-flex; align-items: center; gap: 7px; line-height: 1; font-size: .64rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #ff6b70; }
+.onair__title { font-family: var(--font-head); font-size: 1.06rem; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.onair__meta { font-size: .76rem; line-height: 1.25; color: #aeb4be; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.onair__progress { position: absolute; left: 0; right: 0; bottom: 0; display: block; height: 3px; border-radius: 3px 3px 0 0; background: rgba(255, 255, 255, .14); overflow: hidden; }
+.onair__progress i { display: block; height: 100%; width: var(--p, 0%); background: var(--red); border-radius: 3px; transition: width .6s var(--ease); }
+.onair__listen { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px 0 14px; border-radius: 999px; background: var(--red); color: #fff; font-size: .84rem; font-weight: 700; white-space: nowrap; box-shadow: 0 6px 16px rgba(209, 10, 17, .35); transition: background-color .2s, transform .15s var(--ease); }
+.onair__listen:hover { background: #e5131a; }
+.onair__listen:active { transform: scale(.95); }
+.onair__listen svg { width: 14px; height: 14px; }
+.onair__listen .i-pause, .is-playing .onair__listen .i-play { display: none; }
+.is-playing .onair__listen .i-pause { display: block; }
+.onair__slider { align-self: center; display: flex; align-items: center; gap: 14px; min-width: 0; padding-left: 22px; border-left: 1px solid rgba(255, 255, 255, .12); }
+.onair__viewport { flex: 1; min-width: 0; overflow: hidden; }
+.onair__track { display: flex; align-items: center; transition: transform .55s cubic-bezier(.65, 0, .35, 1); }
+.onair__slide { flex: 0 0 100%; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 4px; color: #fff; }
+.onair__slide--now { display: none; }
+.onair__slide--now .onair__tag { display: inline-flex; align-self: flex-start; align-items: center; gap: 7px; color: #ff6b70; }
+.onair__slide .pulse::after { display: none; }   /* sem o anel, que seria cortado pelo slide */
+.onair__tag { align-self: flex-start; line-height: 1; font-size: .64rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #9aa1ac; }
+.onair__slide--urgent .onair__tag { padding: 3px 7px; border-radius: 4px; background: var(--red); color: #fff; }
+.onair__slide-title { font-family: var(--font-head); font-size: 1.06rem; line-height: 1.2; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+a.onair__slide:hover .onair__slide-title { text-decoration: underline; text-underline-offset: 3px; }
+.onair__slide-meta { font-size: .76rem; line-height: 1.25; color: #aeb4be; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.onair__nav { display: flex; gap: 6px; flex: none; }
+.onair__arrow { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, .08); color: #fff; transition: background-color .2s, transform .15s var(--ease); }
+.onair__arrow:hover { background: rgba(255, 255, 255, .18); }
+.onair__arrow:active { transform: scale(.92); }
+.onair__arrow svg { width: 16px; height: 16px; }
+.onair__clock { display: grid; justify-items: end; gap: 5px; padding-left: 8px; }
+.onair__time { font-family: var(--font-head); font-size: 1.6rem; font-weight: 700; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+.onair__date { font-size: .74rem; line-height: 1.2; color: #e6e8ec; white-space: nowrap; }
+.onair__date b { font-weight: 700; }
+
 /* 7. Cards ----------------------------------------------------------------- */
 .card { display: flex; flex-direction: column; gap: 12px; position: relative; }
 .card__media { position: relative; overflow: hidden; border-radius: var(--radius); background: var(--bg-soft); aspect-ratio: 16 / 10; }
@@ -309,6 +349,11 @@ svg.fill { fill: currentColor; stroke: none; }
 .latest__item time { font-size: .76rem; font-weight: 700; color: var(--red); }
 .latest__item a { display: block; font-weight: 600; font-size: .93rem; line-height: 1.3; margin-top: 2px; }
 .latest__item a:hover { color: var(--red); }
+/* Notícia urgente: marcador vermelho cheio, etiqueta e fundo levemente avermelhado */
+.latest__item--urgent { background: linear-gradient(90deg, var(--red-050), transparent 85%); border-left-color: var(--red); border-radius: 0 8px 8px 0; padding-right: 10px; }
+.latest__item--urgent::before { background: var(--red); }
+.latest__flag { display: inline-block; margin-left: 8px; padding: 3px 6px; border-radius: 4px; background: var(--red); color: #fff; font-size: .6rem; font-weight: 800; line-height: 1; letter-spacing: .1em; text-transform: uppercase; vertical-align: 1px; }
+.latest__item--urgent a { font-weight: 700; }
 .latest__more { margin-top: auto; padding: 10px 0; text-align: center; font-size: .86rem; font-weight: 700; color: var(--red); border-top: 1px solid var(--line); }
 
 /* 9. Stories --------------------------------------------------------------- */
@@ -328,6 +373,53 @@ svg.fill { fill: currentColor; stroke: none; }
 .scroll-btn { position: absolute; top: 50%; z-index: 5; width: 44px; height: 44px; border-radius: 50%; background: var(--card); color: var(--ink); box-shadow: var(--shadow); display: grid; place-items: center; transform: translateY(-50%); }
 .scroll-btn--prev { left: -14px; }
 .scroll-btn--next { right: -14px; }
+
+/* CBN Ao Vivo (home): player do YouTube e últimos vídeos ------------------- */
+.live__title { display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+.live__badge { flex: none; white-space: nowrap; }
+.live__badge { display: inline-flex; align-items: center; gap: 7px; height: 24px; padding: 0 9px; border-radius: 4px; background: var(--red); color: #fff; font-family: var(--font-body); font-size: .64rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.live__grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 28px; align-items: stretch; }
+.live__player { position: relative; align-self: start; width: 100%; aspect-ratio: 16 / 9;   /* mantém 16:9 sem invadir a coluna ao lado */ border-radius: var(--radius); overflow: hidden; background: #0b0c0f; box-shadow: var(--shadow); }
+.live__poster { position: absolute; inset: 0; width: 100%; height: 100%; display: block; color: #fff; text-align: left; }
+.live__poster img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.live__poster:hover img { transform: scale(1.03); }
+.live__shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, .35) 0, rgba(0, 0, 0, 0) 26%, rgba(0, 0, 0, .35) 52%, rgba(0, 0, 0, .78) 74%, rgba(0, 0, 0, .94) 100%); }   /* escurece a base para o texto não brigar com a arte da miniatura */
+.live__tag { position: absolute; top: 16px; left: 16px; display: inline-flex; align-items: center; gap: 8px; height: 28px; padding: 0 11px; border-radius: 6px; background: var(--red); font-size: .7rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.live__play { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%; background: var(--red); display: grid; place-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, .45); transition: transform .25s var(--ease); }
+.live__play::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .7); animation: live-ring 2.4s cubic-bezier(0, .4, .2, 1) infinite; }
+@keyframes live-ring { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.6); opacity: 0; } }
+.live__play svg { width: 28px; height: 28px; margin-left: 4px; }
+.live__poster:hover .live__play { transform: scale(1.07); }
+.live__poster:active .live__play { transform: scale(.95); }
+.live__info { position: absolute; left: 22px; right: 22px; bottom: 20px; display: grid; gap: 4px; }
+.live__info strong { font-family: var(--font-head); font-size: 1.35rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; }
+.live__info span { font-size: .9rem; opacity: .88; }
+.live__frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.live__player.is-playing .live__poster { display: none; }
+.live__back { position: absolute; z-index: 2; left: 12px; bottom: 56px; display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 13px; border-radius: 999px; background: var(--red); color: #fff; font-size: .78rem; font-weight: 700; box-shadow: 0 6px 18px rgba(0, 0, 0, .35); transition: transform .15s var(--ease); }
+.live__back:active { transform: scale(.95); }
+.live__back[hidden] { display: none; }
+
+.live__list { display: flex; flex-direction: column; min-width: 0; }
+.live__list-title { font-family: var(--font-head); font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.live__list ol { flex: 1; display: grid; grid-auto-rows: 1fr; }
+.live__list li { display: flex; border-bottom: 1px solid var(--line); }
+.live__list li:last-child { border-bottom: 0; }
+.vid { flex: 1; display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 16px; align-items: center; padding: 10px 8px; margin: 0 -8px; border-radius: var(--radius-sm); transition: background-color .2s; }
+.vid:hover { background: var(--bg-soft); }
+.vid.is-current { background: var(--red-050); }
+.vid__thumb { position: relative; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: var(--bg-soft); }
+.vid__thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.vid:hover .vid__thumb img { transform: scale(1.05); }
+.vid__play { position: absolute; right: 7px; bottom: 7px; width: 28px; height: 28px; border-radius: 50%; background: rgba(0, 0, 0, .7); color: #fff; display: grid; place-items: center; transition: background-color .2s; }
+.vid__play svg { width: 12px; height: 12px; margin-left: 2px; }
+.vid:hover .vid__play, .vid.is-current .vid__play { background: var(--red); }
+.vid__body { display: grid; gap: 5px; min-width: 0; }
+.vid__title { font-family: var(--font-head); font-weight: 600; font-size: .94rem; line-height: 1.3; color: var(--ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: color .2s; }
+.vid:hover .vid__title, .vid.is-current .vid__title { color: var(--red); }
+.vid__meta { font-size: .78rem; color: var(--muted); }
+.vid__now { display: none; color: var(--red); font-weight: 700; }
+.vid.is-current .vid__now { display: inline; }
 
 /* 10. Seções / grades ------------------------------------------------------ */
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 40px; align-items: start; }
@@ -685,6 +777,12 @@ img.is-loading { opacity: 0; }
 }
 
 @media (max-width: 1180px) {
+  .onair__in { grid-template-columns: minmax(220px, 280px) auto minmax(0, 1fr); gap: 18px; }
+  .onair__clock { display: none; }
+  .live__grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 22px; }
+  .vid { grid-template-columns: 124px minmax(0, 1fr); gap: 12px; }
+  .live__list li:nth-child(4) { display: none; }   /* desktop estreito: 3 vídeos, para a lista ter a altura do player */
+  .live__list li:nth-child(3) { border-bottom: 0; }
   .now__weather { display: none; }
   .search-pill { width: 190px; }
   .mainnav__link { font-size: .86rem; }
@@ -695,8 +793,18 @@ img.is-loading { opacity: 0; }
 }
 
 @media (max-width: 1023px) {
+  .onair__in { grid-template-columns: minmax(200px, 260px) auto minmax(0, 1fr); gap: 16px; min-height: 76px; }
+  .onair__nav { display: none; }
+  .live__grid { grid-template-columns: minmax(0, 1fr); }
+  .live__list li:nth-child(4) { display: flex; }
+  .live__list li:nth-child(3) { border-bottom: 1px solid var(--line); }
+  .live__list ol { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+  .live__list li:nth-last-child(2) { border-bottom: 0; }
   .header { top: 0; }
-  .header__nav, .header__now, .header__social, .search-pill, .live-btn, .topbar__right .topbar__item { display: none; }
+  .header__nav, .header__now, .search-pill, .live-btn, .topbar__right .topbar__item { display: none; }
+  /* Tablet e celular: as redes sociais continuam na barra vermelha, em tamanho menor */
+  .header__social { margin-right: 2px; padding-right: 6px; gap: 0; }
+  .header__social a { width: 34px; height: 34px; }
   .header__search { display: inline-grid; }
   .header__menu { display: inline-grid; margin-left: -10px; }
   .header__in { height: 60px; }
@@ -712,10 +820,38 @@ img.is-loading { opacity: 0; }
 }
 
 @media (max-width: 767px) {
+  /* Celular: a faixa vira um slide só, com "No ar agora" como primeiro slide */
+  .onair::after { width: 120px; opacity: .7; }
+  .onair__in { grid-template-columns: minmax(0, 1fr) auto; gap: 12px; min-height: 78px; }
+  .onair__now { display: none; }
+  .onair__slider { order: -1; align-self: stretch; padding-left: 0; border-left: 0; }
+  .onair__viewport { align-self: stretch; display: flex; }
+  .onair__track { align-items: stretch; width: 100%; }
+  .onair__slide-title { font-size: 1rem; }
+  .onair__slide--now { display: flex; }
+  .onair__listen { padding: 0 14px 0 11px; height: 38px; }
+  .live__title { gap: 10px; }
+  .live__more { display: none; }   /* no celular o link fica só "YouTube" */
+  .live__player { width: calc(100% + 32px); margin-inline: -16px; border-radius: 0; }   /* de ponta a ponta no celular */
+  .live__tag { top: 12px; left: 12px; }
+  .live__play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
+  .live__info { left: 16px; right: 16px; bottom: 14px; }
+  .live__info strong { font-size: 1.1rem; }
+  .live__info span { font-size: .8rem; }
+  .live__back { bottom: 50px; }
+  .live__list ol { grid-template-columns: minmax(0, 1fr); }
+  .live__list li:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+  .vid { grid-template-columns: 120px minmax(0, 1fr); }
   :root { --gap: 16px; --player-h: 88px; }   /* espaço reservado para a barra inferior flutuante */
   body { padding-bottom: 0; }
   .footer { padding-bottom: calc(var(--player-h) + env(safe-area-inset-bottom)); }   /* o rodapé escuro vai até o fim, por trás da barra */
   .container { padding-inline: 16px; }
+  .header__in { gap: 8px; }
+  .header__social { margin-right: 0; padding-right: 4px; }
+  .header__social a { width: 30px; height: 30px; }
+  .header__social svg { width: 16px; height: 16px; }
+  .header__actions { gap: 0; }
+  .header__actions .icon-btn { width: 40px; height: 40px; }
   .section { padding-block: 28px; }
   .topbar__right { display: none; }
   .topbar__in { justify-content: center; }
@@ -796,6 +932,15 @@ img.is-loading { opacity: 0; }
   .tabbar__live-label { position: absolute; top: 33px; font-size: .68rem; font-weight: 700; color: var(--red); letter-spacing: .02em; white-space: nowrap; }
 }
 
+/* Telas muito estreitas: tudo um pouco menor para caber na barra */
+@media (max-width: 345px) {
+  .logo img { height: 40px; }
+  .header__menu { margin-left: -8px; }
+  .header__social { border-right: 0; padding-right: 0; }
+  .header__social a { width: 28px; height: 28px; }
+  .header__actions .icon-btn { width: 36px; height: 36px; }
+}
+
 @media (max-width: 400px) {
   .topbar__left .topbar__item:nth-child(2) { display: none; }
 }
@@ -812,3 +957,17 @@ img.is-loading { opacity: 0; }
 @media print {
   .header, .topbar, .chips, .breaking, .player, .tabbar, .ad, .footer, .cta, .sidebar, .tools, .share, .progress { display: none !important; }
 }
+/* Seção CBN Ao Vivo em faixa escura (mesma cor da faixa de programação).
+   As cores são fixas: no modo escuro a seção continua igual. */
+.live {
+  --ink: #f2f3f5; --muted: #9aa1ac; --line: rgba(255, 255, 255, .1);
+  --bg-soft: rgba(255, 255, 255, .06); --red-050: rgba(209, 10, 17, .2);
+  background: #121418; color: #fff; padding-block: 44px;
+}
+.live .section-head__title, .live .section-head__more { color: #fff; }
+.live .section-head__more:hover { color: #ff5a5f; }
+.live .live__player { box-shadow: 0 18px 40px rgba(0, 0, 0, .45), 0 0 0 1px rgba(255, 255, 255, .06); }
+.live .vid__thumb { box-shadow: 0 0 0 1px rgba(255, 255, 255, .06); }
+.live .vid:hover .vid__title, .live .vid.is-current .vid__title { color: #ff5a5f; }
+.live .vid__now { color: #ff5a5f; }
+@media (max-width: 767px) { .live { padding-block: 32px; } }

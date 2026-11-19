@@ -68,11 +68,6 @@
     <div class="container header__in">
       <button class="icon-btn header__menu" data-open="menu" aria-label="Abrir menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
       <a class="logo" href="index.html" aria-label="CBN Cuiabá — página inicial"><img src="assets/img/logo-cbn-cuiaba.svg" alt="CBN Cuiabá 95,9 FM" width="556" height="298"></a>
-      <div class="header__now" aria-label="Agora">
-        <span class="now__time" data-clock>07:52</span>
-        <span class="now__date"><b data-weekday>Quinta-feira</b><span data-date>19 de novembro de 2026</span></span>
-        <span class="now__weather"><svg aria-hidden="true"><use href="#i-sun"/></svg> Cuiabá 34°C</span>
-      </div>
       <div class="header__actions">
         <div class="header__social" aria-label="Redes sociais">
           <a href="https://www.facebook.com/cbncba" target="_blank" rel="noopener" aria-label="Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
@@ -127,21 +122,37 @@
   </ul>
 </nav>
 
-<!-- ============ URGENTE ============ -->
-<div class="breaking" aria-label="Últimas urgentes">
-  <div class="container breaking__in">
-    <span class="breaking__label"><span class="pulse"></span> Urgente</span>
-    <div class="breaking__track">
-      <p class="breaking__item is-active"><time>14h32</time><a href="noticias/rio-transborda-invade-casas-e-deixa-familias-ilhadas-em-distrito-de-cu.html">Rio transborda, invade casas e deixa famílias ilhadas em distrito de Cuiabá</a></p>
-      <p class="breaking__item"><time>13h10</time><a href="noticias/arena-pantanal-vira-centro-de-operacoes-para-atender-ocorrencias-da-ch.html">Arena Pantanal vira centro de operações para atender ocorrências da chuva</a></p>
-      <p class="breaking__item"><time>11h04</time><a href="noticias/tarifa-de-agua-tera-reducao-em-cuiaba-a-partir-de-janeiro-de-2027.html">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></p>
+<!-- ============ FAIXA DE PROGRAMAÇÃO ============
+     Esquerda: o que está no ar agora (troca sozinho pelo horário de Cuiabá).
+     Direita: slide com os próximos programas. As notícias urgentes ficam em "Últimas notícias".
+     A grade vem do JSON #cbn-grade (no WordPress, gerado a partir de um cadastro de programas).
+-->
+<section class="onair" aria-label="Programação da CBN Cuiabá" data-onair>
+  <div class="container onair__in">
+    <div class="onair__now" aria-live="polite">
+      <span class="onair__label"><span class="pulse"></span> No ar agora</span>
+      <strong class="onair__title" data-now-title>Jornal da CBN Cuiabá</strong>
+      <span class="onair__meta"><span data-now-time>8h às 10h</span> · <span data-now-hosts>Camila Ribeiro, Pedro Panok e Igor Taques</span></span>
+      <span class="onair__progress" aria-hidden="true"><i data-now-progress></i></span>
     </div>
-    <div class="breaking__nav">
-      <button class="icon-btn" data-breaking="prev" aria-label="Anterior"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>
-      <button class="icon-btn" data-breaking="next" aria-label="Próxima"><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+    <button class="onair__listen" type="button" data-radio-toggle aria-pressed="false"><svg class="fill i-play" aria-hidden="true"><use href="#i-play"/></svg><svg class="fill i-pause" aria-hidden="true"><use href="#i-pause"/></svg><span>Ouvir</span></button>
+    <div class="onair__slider" data-onair-slider aria-roledescription="carrossel" aria-label="Urgentes e próximos programas">
+      <div class="onair__viewport">
+        <div class="onair__track" data-onair-track>
+        </div>
+      </div>
+      <div class="onair__nav">
+        <button class="onair__arrow" type="button" data-onair="prev" aria-label="Anterior"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+        <button class="onair__arrow" type="button" data-onair="next" aria-label="Próximo"><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+      </div>
+    </div>
+    <div class="onair__clock">
+      <span class="onair__time" data-clock>12:00</span>
+      <span class="onair__date"><b data-weekday-short>Qui</b>, <span data-date-short>19 nov</span> · Cuiabá 34°C</span>
     </div>
   </div>
-</div>
+  <script type="application/json" id="cbn-grade">[{"dias": "seg-sex", "inicio": "00:00", "fim": "06:00", "programa": "CBN Brasil", "apresentacao": "Programação nacional da rede CBN"}, {"dias": "seg-sex", "inicio": "06:00", "fim": "08:00", "programa": "CBN Brasil", "apresentacao": "Programação nacional da rede CBN"}, {"dias": "seg-sex", "inicio": "08:00", "fim": "10:00", "programa": "Jornal da CBN Cuiabá", "apresentacao": "Camila Ribeiro, Pedro Panok e Igor Taques"}, {"dias": "seg-sex", "inicio": "10:00", "fim": "11:00", "programa": "Entre Elas na CBN", "apresentacao": "Marina Martins e Camila Piacenti"}, {"dias": "seg-sex", "inicio": "11:00", "fim": "12:00", "programa": "CBN Tecnologia", "apresentacao": "Daniel Sagin"}, {"dias": "seg-sex", "inicio": "12:00", "fim": "14:00", "programa": "CBN Brasil", "apresentacao": "Programação nacional da rede CBN"}, {"dias": "seg-sex", "inicio": "14:00", "fim": "16:00", "programa": "Estúdio CBN", "apresentacao": "Bancada: Marcela Vasconcelos"}, {"dias": "seg-sex", "inicio": "16:00", "fim": "24:00", "programa": "CBN Brasil", "apresentacao": "Programação nacional da rede CBN"}, {"dias": "sab-dom", "inicio": "00:00", "fim": "24:00", "programa": "CBN Brasil", "apresentacao": "Programação nacional da rede CBN"}]</script>
+</section>
 
 <main id="conteudo">
 
@@ -189,10 +200,10 @@
           <h2 class="latest__title" id="ultimas"><span class="pulse"></span> Últimas notícias</h2>
         </div>
         <ol class="latest__list">
-            <li class="latest__item"><time>14h32</time><a href="noticias/rio-transborda-invade-casas-e-deixa-familias-ilhadas-em-distrito-de-cu.html">Rio transborda, invade casas e deixa famílias ilhadas em distrito de Cuiabá</a></li>
+            <li class="latest__item latest__item--urgent"><time>14h32</time><span class="latest__flag">Urgente</span><a href="noticias/rio-transborda-invade-casas-e-deixa-familias-ilhadas-em-distrito-de-cu.html">Rio transborda, invade casas e deixa famílias ilhadas em distrito de Cuiabá</a></li>
             <li class="latest__item"><time>13h50</time><a href="noticias/empresario-e-suspeito-de-causar-prejuizo-de-r-2-milhoes-com-venda-de-c.html">Empresário é suspeito de causar prejuízo de R$ 2 milhões com venda de carros</a></li>
             <li class="latest__item"><time>12h15</time><a href="noticias/mae-filho-medico-e-terceiro-reu-vao-a-juri-por-chacina-em-mt.html">Mãe, filho médico e terceiro réu vão a júri por chacina em MT</a></li>
-            <li class="latest__item"><time>11h04</time><a href="noticias/tarifa-de-agua-tera-reducao-em-cuiaba-a-partir-de-janeiro-de-2027.html">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></li>
+            <li class="latest__item latest__item--urgent"><time>11h04</time><span class="latest__flag">Urgente</span><a href="noticias/tarifa-de-agua-tera-reducao-em-cuiaba-a-partir-de-janeiro-de-2027.html">Tarifa de água terá redução em Cuiabá a partir de janeiro de 2027</a></li>
             <li class="latest__item"><time>09h41</time><a href="noticias/policia-prende-nove-e-mira-nucleo-de-faccao-em-cidade-de-mt.html">Polícia prende nove e mira núcleo de facção em cidade de MT</a></li>
             <li class="latest__item"><time>08h20</time><a href="noticias/governo-discute-estrategias-para-ampliar-producao-de-peixes-no-norte-d.html">Governo discute estratégias para ampliar produção de peixes no norte de MT</a></li>
         </ol>
@@ -201,66 +212,54 @@
     </div>
   </section>
 
-  <!-- ============ CBN STORIES ============ -->
-  <section class="section" aria-labelledby="stories">
+  <!-- ============ CBN AO VIVO ============
+       Player do YouTube (transmissão ao vivo do canal) e, ao lado, os últimos vídeos.
+       O vídeo só carrega quando o leitor clica no play (página mais leve).
+       No WordPress, a lista "Últimos vídeos" pode vir do feed do canal:
+       https://www.youtube.com/feeds/videos.xml?channel_id=UCj6ge2Si8TMKCnZtRbyT1Iw -->
+  <section class="section live" aria-labelledby="aovivo">
     <div class="container">
       <header class="section-head">
-          <h2 class="section-head__title" id="stories">CBN Stories</h2>
-          <a class="section-head__more" href="stories.html">Ver todos <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        </header>
-      <div class="stories">
-        <button class="scroll-btn scroll-btn--prev" data-scroll="-1" data-target="#stories-track" aria-label="Voltar"><svg aria-hidden="true"><use href="#i-chev-l"/></svg></button>
-        <div class="stories__track" id="stories-track">
-          <a class="story" href="stories.html">
-            <img src="assets/img/barragem.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
-            <span class="story__bars"><i></i><i></i><i></i></span>
-            <span class="story__title">Rompimento de barragem: o que se sabe até agora</span>
-          </a>
-          <a class="story" href="stories.html">
-            <img src="assets/img/arena.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
-            <span class="story__bars"><i></i><i></i><i></i></span>
-            <span class="story__title">Arena Pantanal vira centro de operações</span>
-          </a>
-          <a class="story" href="stories.html">
-            <img src="assets/img/agua.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
-            <span class="story__bars"><i></i><i></i><i></i></span>
-            <span class="story__title">Conta de água mais barata em 2027</span>
-          </a>
-          <a class="story" href="stories.html">
-            <img src="assets/img/empereur.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
-            <span class="story__bars"><i></i><i></i><i></i></span>
-            <span class="story__title">Alan Empereur se despede do Cuiabá</span>
-          </a>
-          <a class="story" href="stories.html">
-            <img src="assets/img/aeroporto.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
-            <span class="story__bars"><i></i><i></i><i></i></span>
-            <span class="story__title">Nova rota aérea liga Cuiabá a São Paulo</span>
-          </a>
-          <a class="story" href="stories.html">
-            <img src="assets/img/peixes.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
-            <span class="story__bars"><i></i><i></i><i></i></span>
-            <span class="story__title">Piscicultura avança no norte de MT</span>
-          </a>
-          <a class="story" href="stories.html">
-            <img src="assets/img/lago.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
-            <span class="story__bars"><i></i><i></i><i></i></span>
-            <span class="story__title">Lago Di Vino ganha prêmio internacional</span>
-          </a>
-          <a class="story" href="stories.html">
-            <img src="assets/img/cuiaba1.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
-            <span class="story__bars"><i></i><i></i><i></i></span>
-            <span class="story__title">Cuiabá vence em casa na Série B</span>
-          </a>
-          <a class="story" href="stories.html">
-            <img src="assets/img/compostagem.jpg" alt="" width="360" height="640" loading="lazy" decoding="async">
-            <span class="story__bars"><i></i><i></i><i></i></span>
-            <span class="story__title">Resíduos viram fertilizante em Cuiabá</span>
-          </a>
+        <h2 class="section-head__title live__title" id="aovivo">CBN Ao Vivo <span class="live__badge"><span class="pulse"></span> No ar</span></h2>
+        <a class="section-head__more" href="https://www.youtube.com/@cbncba" target="_blank" rel="noopener"><span class="live__more">Canal no</span>YouTube <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </header>
+      <div class="live__grid">
+        <div class="live__player" data-live-player data-live-src="https://www.youtube-nocookie.com/embed/live_stream?channel=UCj6ge2Si8TMKCnZtRbyT1Iw&amp;autoplay=1">
+          <button class="live__poster" type="button" data-live-play aria-label="Assistir à CBN Cuiabá ao vivo">
+            <img src="assets/img/yt/tBX231qumpM.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">
+            <span class="live__shade"></span>
+            <span class="live__tag"><span class="pulse"></span> Ao vivo</span>
+            <span class="live__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span>
+            <span class="live__info"><strong>CBN Cuiabá ao vivo</strong><span>Assista à programação da rádio 95,9 FM, direto do estúdio</span></span>
+          </button>
+          <button class="live__back" type="button" data-live-back hidden><span class="pulse"></span> Voltar para o ao vivo</button>
         </div>
-        <button class="scroll-btn scroll-btn--next" data-scroll="1" data-target="#stories-track" aria-label="Avançar"><svg aria-hidden="true"><use href="#i-chev"/></svg></button>
+        <div class="live__list">
+          <h3 class="live__list-title">Últimos vídeos</h3>
+          <ol>
+            <li><a class="vid" href="https://www.youtube.com/watch?v=X1WWqaS7CZo" data-video="X1WWqaS7CZo" target="_blank" rel="noopener">
+              <span class="vid__thumb"><img src="assets/img/yt/X1WWqaS7CZo.jpg" alt="" width="480" height="270" loading="lazy" decoding="async"><span class="vid__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span></span>
+              <span class="vid__body"><span class="vid__title">Jornal da CBN Cuiabá – 19/11/2026</span><span class="vid__meta"><span class="vid__now">Reproduzindo · </span>Hoje</span></span>
+            </a></li>
+            <li><a class="vid" href="https://www.youtube.com/watch?v=hc_3ok7Wk_I" data-video="hc_3ok7Wk_I" target="_blank" rel="noopener">
+              <span class="vid__thumb"><img src="assets/img/yt/hc_3ok7Wk_I.jpg" alt="" width="480" height="270" loading="lazy" decoding="async"><span class="vid__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span></span>
+              <span class="vid__body"><span class="vid__title">Entre Elas na CBN | Marina Martins e Camila Piacenti</span><span class="vid__meta"><span class="vid__now">Reproduzindo · </span>Hoje</span></span>
+            </a></li>
+            <li><a class="vid" href="https://www.youtube.com/watch?v=deLHwmtS9UA" data-video="deLHwmtS9UA" target="_blank" rel="noopener">
+              <span class="vid__thumb"><img src="assets/img/yt/deLHwmtS9UA.jpg" alt="" width="480" height="270" loading="lazy" decoding="async"><span class="vid__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span></span>
+              <span class="vid__body"><span class="vid__title">CBN Tecnologia | Daniel Sagin, advogado e especialista em Inteligência Artificial</span><span class="vid__meta"><span class="vid__now">Reproduzindo · </span>Hoje</span></span>
+            </a></li>
+            <li><a class="vid" href="https://www.youtube.com/watch?v=8LWahk3ZonE" data-video="8LWahk3ZonE" target="_blank" rel="noopener">
+              <span class="vid__thumb"><img src="assets/img/yt/8LWahk3ZonE.jpg" alt="" width="480" height="270" loading="lazy" decoding="async"><span class="vid__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span></span>
+              <span class="vid__body"><span class="vid__title">José Machado, advogado imobiliário e condominial – Entrevista no Jornal da CBN</span><span class="vid__meta"><span class="vid__now">Reproduzindo · </span>Hoje</span></span>
+            </a></li>
+          </ol>
+        </div>
       </div>
     </div>
   </section>
+
+  
 
   <!-- PUBLICIDADE — SECUNDÁRIO 728x90 -->
   <div class="ad-wrap ad-wrap--soft">
