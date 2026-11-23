@@ -970,3 +970,81 @@ img.is-loading { opacity: 0; }
 .live .vid:hover .vid__title, .live .vid.is-current .vid__title { color: #ff5a5f; }
 .live .vid__now { color: #ff5a5f; }
 @media (max-width: 767px) { .live { padding-block: 32px; } }
+
+/* ===== Manchetes com CBN Ao Vivo =================================================
+   Esquerda: manchete principal. Direita: caixa CBN Ao Vivo (player do YouTube) e,
+   abaixo, duas notícias. Embaixo de tudo: "Últimas notícias" na horizontal. */
+.hero--live .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: stretch; }
+.hero--live .hero__main { min-height: 0; height: 100%; }
+.hero--live .hero__side { display: flex; flex-direction: column; gap: var(--gap); grid-template-rows: none; min-width: 0; }
+
+/* Caixa CBN Ao Vivo: mesma cor escura da faixa de programação, nos dois modos */
+.onlive { background: #121418; color: #fff; border-radius: var(--radius); overflow: hidden; }
+.onlive__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; }
+.onlive__title { display: flex; align-items: center; gap: 10px; font-family: var(--font-head); font-size: 1.15rem; font-weight: 800; letter-spacing: -.015em; white-space: nowrap; }
+.onlive__more { display: inline-flex; align-items: center; gap: 4px; min-height: 32px; font-size: .82rem; font-weight: 600; color: #fff; opacity: .85; }
+.onlive__more:hover { opacity: 1; }
+.onlive__more svg { width: 14px; height: 14px; }
+.onlive .live__player { border-radius: 0; box-shadow: none; }
+.onlive .live__info { left: 18px; right: 18px; bottom: 16px; }
+.onlive .live__info strong { font-size: 1.1rem; }
+.onlive .live__info span { font-size: .82rem; }
+.onlive .live__play { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
+
+.hero__duo { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); min-height: 210px; }
+.hero__duo .card--overlay { min-height: 0; }
+.hero__duo .card__body { padding: 16px; gap: 8px; }
+.hero__duo .card__title { font-size: 1.02rem; line-height: 1.25; }
+
+/* Últimas notícias na horizontal: linha do tempo deitada */
+.latest--row { margin-top: var(--gap); padding: 16px 20px 18px; }
+.latest--row .latest__head { margin-bottom: 14px; }
+.latest__all { display: inline-flex; align-items: center; gap: 4px; font-size: .84rem; font-weight: 700; color: var(--red); white-space: nowrap; }
+.latest__all svg { width: 14px; height: 14px; }
+.latest--row .latest__list { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; }
+.latest--row .latest__item { margin: 0; padding: 16px 16px 4px 0; border-left: 0; border-top: 2px solid var(--line); background: none; border-radius: 0; }
+.latest--row .latest__item::before { left: 0; top: -6px; }
+.latest--row .latest__item a { margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.latest--row .latest__item--urgent { border-top-color: var(--red); padding-right: 16px; }
+.latest--row .latest__item--urgent a { color: var(--red); }
+
+/* Faixa escura: só vídeos e entrevistas */
+.videos__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+.yt { display: grid; gap: 10px; align-content: start; }
+.yt__media { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: var(--radius); overflow: hidden; background: #0b0c0f; box-shadow: 0 0 0 1px rgba(255, 255, 255, .06); }
+.yt__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.yt__media:hover img { transform: scale(1.04); }
+.yt__play { position: absolute; left: 12px; bottom: 12px; width: 44px; height: 44px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; box-shadow: 0 6px 18px rgba(209, 10, 17, .45); }
+.yt__play svg { width: 16px; height: 16px; margin-left: 2px; }
+.yt__frame { width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: var(--radius); display: block; background: #000; }
+.yt__title { font-family: var(--font-head); font-weight: 700; font-size: 1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.yt__title a:hover { color: #ff5a5f; }
+.yt .meta { color: #9aa1ac; }
+
+@media (max-width: 1180px) {
+  .hero--live .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+  .latest--row .latest__list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .latest--row .latest__item:nth-child(n+5) { display: none; }   /* 4 notícias para não apertar */
+}
+@media (max-width: 1023px) {
+  .hero--live .hero__grid { grid-template-columns: 1fr; }
+  .hero--live .hero__main { height: auto; aspect-ratio: 16 / 10; }
+  .videos__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .hero--live .hero__main { aspect-ratio: 4 / 5; }
+  .onlive { margin-inline: -16px; border-radius: 0; }
+  .onlive .live__player { width: 100%; margin-inline: 0; }
+  .onlive .live__info strong { font-size: 1rem; }
+  .onlive .live__info span { font-size: .76rem; }
+  .onlive .live__play { width: 56px; height: 56px; margin: -28px 0 0 -28px; }
+  .hero__duo { grid-template-columns: 1fr; min-height: 0; gap: 16px; }
+  .hero__duo .card__body { padding: 0; }
+  /* Últimas notícias: desliza com o dedo, uma notícia e meia à vista */
+  .latest--row { margin-inline: -16px; border-radius: 0; border-inline: 0; padding: 16px 0 14px; }
+  .latest--row .latest__head { padding-inline: 16px; }
+  .latest--row .latest__list { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-inline: 16px; scroll-padding-inline: 16px; }
+  .latest--row .latest__list::-webkit-scrollbar { display: none; }
+  .latest--row .latest__item, .latest--row .latest__item:nth-child(n+5) { display: block; flex: 0 0 72%; scroll-snap-align: start; }
+  .videos__grid { display: flex; }
+}

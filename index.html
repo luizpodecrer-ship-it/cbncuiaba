@@ -166,9 +166,13 @@
     </div>
   </div>
 
-  <!-- ============ MANCHETES ============ -->
-  <section class="hero" aria-label="Manchetes">
-    <div class="container hero__grid">
+  <!-- ============ MANCHETES + CBN AO VIVO ============
+       Esquerda: manchete principal. Direita: transmissão ao vivo do YouTube (CBN Ao Vivo,
+       todos os dias) e, abaixo, duas notícias. Embaixo: "Últimas notícias" na horizontal.
+       O player só carrega quando o leitor clica no play (página mais leve). -->
+  <section class="hero hero--live" aria-label="Manchetes e CBN Ao Vivo">
+    <div class="container">
+      <div class="hero__grid">
       <article class="card card--overlay hero__main">
           <div class="card__media"><img src="assets/img/barragem.jpg" alt="" width="800" height="500" fetchpriority="high"></div>
           <div class="card__body">
@@ -178,7 +182,23 @@
           </div>
         </article>
       <div class="hero__side">
-        <article class="card card--overlay">
+        <section class="onlive" aria-labelledby="aovivo">
+          <header class="onlive__head">
+            <h2 class="onlive__title" id="aovivo">CBN Ao Vivo <span class="live__badge"><span class="pulse"></span> No ar</span></h2>
+            <a class="onlive__more" href="https://www.youtube.com/@cbncba" target="_blank" rel="noopener">YouTube <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </header>
+          <div class="live__player" data-live-player data-live-src="https://www.youtube-nocookie.com/embed/live_stream?channel=UCj6ge2Si8TMKCnZtRbyT1Iw&amp;autoplay=1">
+            <button class="live__poster" type="button" data-live-play aria-label="Assistir à CBN Cuiabá ao vivo">
+              <img src="assets/img/yt/tBX231qumpM.jpg" alt="" width="1280" height="720" decoding="async">
+              <span class="live__shade"></span>
+              <span class="live__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span>
+              <span class="live__info"><strong>Assista à CBN Cuiabá ao vivo</strong><span>Programação da rádio 95,9 FM, direto do estúdio</span></span>
+            </button>
+            <button class="live__back" type="button" data-live-back hidden><span class="pulse"></span> Voltar para o ao vivo</button>
+          </div>
+        </section>
+        <div class="hero__duo">
+          <article class="card card--overlay">
           <div class="card__media"><img src="assets/img/faccao.jpg" alt="" width="800" height="500" fetchpriority="high"></div>
           <div class="card__body">
             <span class="tag tag--solid">Notícias</span>
@@ -186,7 +206,7 @@
             <div class="meta"><time>Há 1 h</time></div>
           </div>
         </article>
-        <article class="card card--overlay">
+          <article class="card card--overlay">
           <div class="card__media"><img src="assets/img/arena.jpg" alt="" width="800" height="500" fetchpriority="high"></div>
           <div class="card__body">
             <span class="tag tag--solid">Cidades</span>
@@ -194,10 +214,13 @@
             <div class="meta"><time>Há 2 h</time></div>
           </div>
         </article>
+        </div>
       </div>
-      <aside class="latest" aria-labelledby="ultimas">
+      </div>
+      <aside class="latest latest--row" aria-labelledby="ultimas">
         <div class="latest__head">
           <h2 class="latest__title" id="ultimas"><span class="pulse"></span> Últimas notícias</h2>
+          <a class="latest__all" href="#">Ver todas <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
         <ol class="latest__list">
             <li class="latest__item latest__item--urgent"><time>14h32</time><span class="latest__flag">Urgente</span><a href="noticias/rio-transborda-invade-casas-e-deixa-familias-ilhadas-em-distrito-de-cu.html">Rio transborda, invade casas e deixa famílias ilhadas em distrito de Cuiabá</a></li>
@@ -207,54 +230,56 @@
             <li class="latest__item"><time>09h41</time><a href="noticias/policia-prende-nove-e-mira-nucleo-de-faccao-em-cidade-de-mt.html">Polícia prende nove e mira núcleo de facção em cidade de MT</a></li>
             <li class="latest__item"><time>08h20</time><a href="noticias/governo-discute-estrategias-para-ampliar-producao-de-peixes-no-norte-d.html">Governo discute estratégias para ampliar produção de peixes no norte de MT</a></li>
         </ol>
-        <a class="latest__more" href="noticias.html">Ver todas as notícias</a>
       </aside>
     </div>
   </section>
 
-  <!-- ============ CBN AO VIVO ============
-       Player do YouTube (transmissão ao vivo do canal) e, ao lado, os últimos vídeos.
-       O vídeo só carrega quando o leitor clica no play (página mais leve).
-       No WordPress, a lista "Últimos vídeos" pode vir do feed do canal:
-       https://www.youtube.com/feeds/videos.xml?channel_id=UCj6ge2Si8TMKCnZtRbyT1Iw -->
-  <section class="section live" aria-labelledby="aovivo">
+  <!-- ============ VÍDEOS E ENTREVISTAS ============
+       Últimos vídeos do canal da CBN Cuiabá no YouTube. O vídeo toca no próprio card.
+       No WordPress, a lista pode vir do feed do canal:
+       https://www.youtube.com/feeds/videos.xml?channel_id=UCj6ge2Si8TMKCnZtRbyT1Iw
+       Exibir só vídeos normais, NUNCA Shorts: o feed mistura os dois. Para filtrar,
+       ignore o vídeo se https://www.youtube.com/shorts/ID responder 200 (vídeo normal
+       redireciona para /watch) ou se a duração (API do YouTube) for de até 3 minutos. -->
+  <section class="section live videos" aria-labelledby="videos">
     <div class="container">
       <header class="section-head">
-        <h2 class="section-head__title live__title" id="aovivo">CBN Ao Vivo <span class="live__badge"><span class="pulse"></span> No ar</span></h2>
+        <h2 class="section-head__title" id="videos">Vídeos e Entrevistas</h2>
         <a class="section-head__more" href="https://www.youtube.com/@cbncba" target="_blank" rel="noopener"><span class="live__more">Canal no</span>YouTube <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </header>
-      <div class="live__grid">
-        <div class="live__player" data-live-player data-live-src="https://www.youtube-nocookie.com/embed/live_stream?channel=UCj6ge2Si8TMKCnZtRbyT1Iw&amp;autoplay=1">
-          <button class="live__poster" type="button" data-live-play aria-label="Assistir à CBN Cuiabá ao vivo">
-            <img src="assets/img/yt/tBX231qumpM.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async">
-            <span class="live__shade"></span>
-            <span class="live__tag"><span class="pulse"></span> Ao vivo</span>
-            <span class="live__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span>
-            <span class="live__info"><strong>CBN Cuiabá ao vivo</strong><span>Assista à programação da rádio 95,9 FM, direto do estúdio</span></span>
-          </button>
-          <button class="live__back" type="button" data-live-back hidden><span class="pulse"></span> Voltar para o ao vivo</button>
-        </div>
-        <div class="live__list">
-          <h3 class="live__list-title">Últimos vídeos</h3>
-          <ol>
-            <li><a class="vid" href="https://www.youtube.com/watch?v=X1WWqaS7CZo" data-video="X1WWqaS7CZo" target="_blank" rel="noopener">
-              <span class="vid__thumb"><img src="assets/img/yt/X1WWqaS7CZo.jpg" alt="" width="480" height="270" loading="lazy" decoding="async"><span class="vid__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span></span>
-              <span class="vid__body"><span class="vid__title">Jornal da CBN Cuiabá – 19/11/2026</span><span class="vid__meta"><span class="vid__now">Reproduzindo · </span>Hoje</span></span>
-            </a></li>
-            <li><a class="vid" href="https://www.youtube.com/watch?v=hc_3ok7Wk_I" data-video="hc_3ok7Wk_I" target="_blank" rel="noopener">
-              <span class="vid__thumb"><img src="assets/img/yt/hc_3ok7Wk_I.jpg" alt="" width="480" height="270" loading="lazy" decoding="async"><span class="vid__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span></span>
-              <span class="vid__body"><span class="vid__title">Entre Elas na CBN | Marina Martins e Camila Piacenti</span><span class="vid__meta"><span class="vid__now">Reproduzindo · </span>Hoje</span></span>
-            </a></li>
-            <li><a class="vid" href="https://www.youtube.com/watch?v=deLHwmtS9UA" data-video="deLHwmtS9UA" target="_blank" rel="noopener">
-              <span class="vid__thumb"><img src="assets/img/yt/deLHwmtS9UA.jpg" alt="" width="480" height="270" loading="lazy" decoding="async"><span class="vid__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span></span>
-              <span class="vid__body"><span class="vid__title">CBN Tecnologia | Daniel Sagin, advogado e especialista em Inteligência Artificial</span><span class="vid__meta"><span class="vid__now">Reproduzindo · </span>Hoje</span></span>
-            </a></li>
-            <li><a class="vid" href="https://www.youtube.com/watch?v=8LWahk3ZonE" data-video="8LWahk3ZonE" target="_blank" rel="noopener">
-              <span class="vid__thumb"><img src="assets/img/yt/8LWahk3ZonE.jpg" alt="" width="480" height="270" loading="lazy" decoding="async"><span class="vid__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span></span>
-              <span class="vid__body"><span class="vid__title">José Machado, advogado imobiliário e condominial – Entrevista no Jornal da CBN</span><span class="vid__meta"><span class="vid__now">Reproduzindo · </span>Hoje</span></span>
-            </a></li>
-          </ol>
-        </div>
+      <div class="videos__grid snap-mobile">
+          <article class="yt" data-yt="fXcWOegIUNQ">
+            <a class="yt__media" href="https://www.youtube.com/watch?v=fXcWOegIUNQ" target="_blank" rel="noopener" aria-label="Assistir: Estúdio CBN – 23/11/2026">
+              <img src="assets/img/yt/fXcWOegIUNQ.jpg" alt="" width="480" height="270" loading="lazy" decoding="async">
+              <span class="yt__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span>
+            </a>
+            <h3 class="yt__title"><a href="https://www.youtube.com/watch?v=fXcWOegIUNQ" target="_blank" rel="noopener">Estúdio CBN – 23/11/2026</a></h3>
+            <div class="meta"><span>CBN Cuiabá</span><time>Hoje</time></div>
+          </article>
+          <article class="yt" data-yt="2MXSvB0pBPw">
+            <a class="yt__media" href="https://www.youtube.com/watch?v=2MXSvB0pBPw" target="_blank" rel="noopener" aria-label="Assistir: Entre Elas na CBN | Marina Martins e Camila Piacenti">
+              <img src="assets/img/yt/2MXSvB0pBPw.jpg" alt="" width="480" height="270" loading="lazy" decoding="async">
+              <span class="yt__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span>
+            </a>
+            <h3 class="yt__title"><a href="https://www.youtube.com/watch?v=2MXSvB0pBPw" target="_blank" rel="noopener">Entre Elas na CBN | Marina Martins e Camila Piacenti</a></h3>
+            <div class="meta"><span>CBN Cuiabá</span><time>Hoje</time></div>
+          </article>
+          <article class="yt" data-yt="JFiXKkQJZVE">
+            <a class="yt__media" href="https://www.youtube.com/watch?v=JFiXKkQJZVE" target="_blank" rel="noopener" aria-label="Assistir: Múltiplas com Emirella Martins, coronel da PMMT e palestrante">
+              <img src="assets/img/yt/JFiXKkQJZVE.jpg" alt="" width="480" height="270" loading="lazy" decoding="async">
+              <span class="yt__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span>
+            </a>
+            <h3 class="yt__title"><a href="https://www.youtube.com/watch?v=JFiXKkQJZVE" target="_blank" rel="noopener">Múltiplas com Emirella Martins, coronel da PMMT e palestrante</a></h3>
+            <div class="meta"><span>CBN Cuiabá</span><time>Hoje</time></div>
+          </article>
+          <article class="yt" data-yt="X1WWqaS7CZo">
+            <a class="yt__media" href="https://www.youtube.com/watch?v=X1WWqaS7CZo" target="_blank" rel="noopener" aria-label="Assistir: Jornal da CBN Cuiabá – 19/11/2026">
+              <img src="assets/img/yt/X1WWqaS7CZo.jpg" alt="" width="480" height="270" loading="lazy" decoding="async">
+              <span class="yt__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span>
+            </a>
+            <h3 class="yt__title"><a href="https://www.youtube.com/watch?v=X1WWqaS7CZo" target="_blank" rel="noopener">Jornal da CBN Cuiabá – 19/11/2026</a></h3>
+            <div class="meta"><span>CBN Cuiabá</span><time>19 nov 2026</time></div>
+          </article>
       </div>
     </div>
   </section>
@@ -401,62 +426,6 @@
       </aside>
     </div>
   </div>
-
-  <!-- ============ ENTREVISTAS ============ -->
-  <section class="interviews" aria-labelledby="entrevistas">
-    <div class="container">
-      <header class="section-head">
-          <h2 class="section-head__title" id="entrevistas">Entrevistas</h2>
-          <a class="section-head__more" href="entrevistas.html">Todas as entrevistas <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        </header>
-      <div class="grid-4 snap-mobile">
-          <article class="interview">
-            <div class="interview__media"><img src="assets/img/tce.jpg" alt="" width="800" height="500" loading="lazy" decoding="async">
-              <span class="interview__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span>
-              <span class="interview__dur">24 min</span>
-            </div>
-            <div>
-              <span class="tag">Política</span>
-              <h3 class="interview__title"><a href="noticias/os-bastidores-da-semana-na-assembleia-e-no-palacio-paiaguas.html">Os bastidores da semana na Assembleia e no Palácio Paiaguás</a></h3>
-            </div>
-            <div class="meta"><span>CBN Cuiabá</span><time>Áudio e vídeo</time></div>
-          </article>
-          <article class="interview">
-            <div class="interview__media"><img src="assets/img/agua.jpg" alt="" width="800" height="500" loading="lazy" decoding="async">
-              <span class="interview__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span>
-              <span class="interview__dur">18 min</span>
-            </div>
-            <div>
-              <span class="tag">Cidades</span>
-              <h3 class="interview__title"><a href="noticias/saneamento-o-que-muda-na-conta-de-agua-do-cuiabano-em-2027.html">Saneamento: o que muda na conta de água do cuiabano em 2027</a></h3>
-            </div>
-            <div class="meta"><span>CBN Cuiabá</span><time>Áudio e vídeo</time></div>
-          </article>
-          <article class="interview">
-            <div class="interview__media"><img src="assets/img/aeroporto.jpg" alt="" width="800" height="500" loading="lazy" decoding="async">
-              <span class="interview__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span>
-              <span class="interview__dur">21 min</span>
-            </div>
-            <div>
-              <span class="tag">Economia</span>
-              <h3 class="interview__title"><a href="noticias/novas-rotas-aereas-e-o-impacto-no-turismo-de-mato-grosso.html">Novas rotas aéreas e o impacto no turismo de Mato Grosso</a></h3>
-            </div>
-            <div class="meta"><span>CBN Cuiabá</span><time>Áudio e vídeo</time></div>
-          </article>
-          <article class="interview">
-            <div class="interview__media"><img src="assets/img/cuiaba2.jpg" alt="" width="800" height="500" loading="lazy" decoding="async">
-              <span class="interview__play"><svg class="fill" aria-hidden="true"><use href="#i-play"/></svg></span>
-              <span class="interview__dur">16 min</span>
-            </div>
-            <div>
-              <span class="tag">Esporte</span>
-              <h3 class="interview__title"><a href="noticias/o-planejamento-do-cuiaba-para-a-proxima-temporada.html">O planejamento do Cuiabá para a próxima temporada</a></h3>
-            </div>
-            <div class="meta"><span>CBN Cuiabá</span><time>Áudio e vídeo</time></div>
-          </article>
-      </div>
-    </div>
-  </section>
 
   <!-- ============ ARTIGOS + CBN ESPECIAIS ============ -->
   <div class="section section--soft">

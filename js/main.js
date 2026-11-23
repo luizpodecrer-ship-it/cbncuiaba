@@ -707,6 +707,25 @@
       });
     });
 
+    /* Vídeos e Entrevistas: o vídeo toca dentro do próprio card (carrega só no clique).
+       Ao dar play, a rádio do rodapé é pausada para não tocar dois áudios. */
+    $$('[data-yt]').forEach(function (card) {
+      var media = $('.yt__media', card);
+      media.addEventListener('click', function (e) {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;   // nova aba: abre no YouTube
+        e.preventDefault();
+        if (audio && !audio.paused) toggleRadio();
+        var f = document.createElement('iframe');
+        f.className = 'yt__frame';
+        f.title = $('.yt__title', card).textContent.trim();
+        f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+        f.setAttribute('allowfullscreen', '');
+        f.referrerPolicy = 'strict-origin-when-cross-origin';
+        f.src = 'https://www.youtube-nocookie.com/embed/' + card.getAttribute('data-yt') + '?autoplay=1&rel=0';
+        media.replaceWith(f);
+      });
+    });
+
     /* Faixa de programação: "No ar agora" pelo horário de Cuiabá, barra de progresso
        do programa e slide com urgentes e próximos programas (passa sozinho a cada 5 s,
        pausa com o mouse ou o foco em cima, aceita setas e o deslizar do dedo). */
