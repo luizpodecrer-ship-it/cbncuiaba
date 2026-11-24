@@ -1068,11 +1068,13 @@ svg.cbn { width: 100% !important; height: 100% !important; margin: 0 !important;
 @keyframes radio-wave { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.45); } }
 @media (prefers-reduced-motion: reduce) { .is-playing .radio-ico .rw path { animation: none; } }
 
-.live-btn--radio { height: 44px; padding: 0; gap: 0; border-radius: 999px; transition: transform .2s var(--ease); }
-.live-btn--radio .radio-ico { height: 44px; width: auto; border-radius: 999px; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .55), 0 4px 14px rgba(0, 0, 0, .18); }
+/* Ícone play_radio_4.svg (ondas + OUVIR): branco no topo, vermelho no rodapé */
+.live-btn--radio { height: 48px; padding: 0 4px; gap: 0; border-radius: 8px; color: #fff; transition: transform .2s var(--ease); }
+.live-btn--radio .radio-ico { height: 40px; width: auto; }
 .live-btn--radio:hover { transform: scale(1.04); }
 .live-btn--radio:active { transform: scale(.96); }
 
-.player__play--radio { width: 54px; height: 54px; background: none; padding: 0; }
+.player__play--radio { width: 60px; height: 52px; border-radius: 8px; background: none; padding: 0; color: #ad091c; }   /* no rodapé o ícone fica na cor original (vermelho) */
 .player__play--radio:hover { background: none; }
 .player__play--radio .radio-ico { width: 100%; height: 100%; }
+
