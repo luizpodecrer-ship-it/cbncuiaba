@@ -389,6 +389,9 @@ a.onair__slide:hover .onair__slide-title { text-decoration: underline; text-unde
 .live__play::before { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .7); animation: live-ring 2.4s cubic-bezier(0, .4, .2, 1) infinite; }
 @keyframes live-ring { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.6); opacity: 0; } }
 .live__play svg { width: 28px; height: 28px; margin-left: 4px; }
+/* Ícone de play próprio da CBN (círculo vermelho + triângulo centralizado), arquivo play_yt.svg */
+.live__play:has(.play-icon) { background: none; }
+.live__play .play-icon { width: 100%; height: 100%; margin: 0; display: block; }
 .live__poster:hover .live__play { transform: scale(1.07); }
 .live__poster:active .live__play { transform: scale(.95); }
 .live__info { position: absolute; left: 22px; right: 22px; bottom: 20px; display: grid; gap: 4px; }
@@ -1048,3 +1051,28 @@ img.is-loading { opacity: 0; }
   .latest--row .latest__item, .latest--row .latest__item:nth-child(n+5) { display: block; flex: 0 0 72%; scroll-snap-align: start; }
   .videos__grid { display: flex; }
 }
+
+/* Play da CBN (play_yt.svg) em todos os botões redondos: o próprio ícone traz o círculo
+   vermelho, então o fundo do botão sai e o ícone ocupa o botão inteiro. */
+.mini-live:has(.cbn), .player__play:has(.cbn), .tabbar__live:has(.cbn), .yt__play:has(.cbn), .interview__play:has(.cbn) { background: none; }
+.player__play:has(.cbn):hover { background: none; }
+svg.cbn { width: 100% !important; height: 100% !important; margin: 0 !important; }
+
+/* Ícones da rádio (play_radio.svg no rodapé, play_radio2.svg no cabeçalho).
+   Enquanto a rádio toca, as ondas sobem e descem como um equalizador. */
+.radio-ico { display: block; }
+.radio-ico .rw path { transform-box: fill-box; transform-origin: center; }
+.is-playing .radio-ico .rw path { animation: radio-wave 1s ease-in-out infinite; }
+.is-playing .radio-ico .rw path:nth-child(2n) { animation-delay: -.35s; }
+.is-playing .radio-ico .rw path:nth-child(3n) { animation-delay: -.7s; }
+@keyframes radio-wave { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.45); } }
+@media (prefers-reduced-motion: reduce) { .is-playing .radio-ico .rw path { animation: none; } }
+
+.live-btn--radio { height: 44px; padding: 0; gap: 0; border-radius: 999px; transition: transform .2s var(--ease); }
+.live-btn--radio .radio-ico { height: 44px; width: auto; border-radius: 999px; box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .55), 0 4px 14px rgba(0, 0, 0, .18); }
+.live-btn--radio:hover { transform: scale(1.04); }
+.live-btn--radio:active { transform: scale(.96); }
+
+.player__play--radio { width: 54px; height: 54px; background: none; padding: 0; }
+.player__play--radio:hover { background: none; }
+.player__play--radio .radio-ico { width: 100%; height: 100%; }
