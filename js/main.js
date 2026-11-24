@@ -65,7 +65,7 @@
     el.classList.add('is-open');
     el.setAttribute('aria-hidden', 'false');
     body.classList.add('is-locked');
-    if (el === drawer) scrim.classList.add('is-open');
+    if ((el === drawer || el === search) && scrim) scrim.classList.add('is-open');
     var first = el === search ? $('input', el) : $('button, a', el);
     if (first) setTimeout(function () { first.focus(); }, 80);
   }
@@ -588,6 +588,77 @@
       tel.value = mask(tel.value);
     });
 
+    /* Busca do topo e do painel: sugestões enquanto digita.
+       Vazio: "Assuntos em alta". Digitando: até 5 notícias + "Ver todos os resultados".
+       Setas ↑ ↓ escolhem, Enter abre, Esc fecha. Enter sem escolha abre busca.html?s=termo.
+       No WordPress, trocar window.CBN_BUSCA por fetch('/wp-json/wp/v2/search?search=' + termo). */
+    (function () {
+      var data = window.CBN_BUSCA || { itens: [], emAlta: [] };
+      var idx = document.querySelector('script[src$="js/busca-index.js"]');
+      var base = idx ? idx.src.replace(/js\/busca-index\.js.*$/, '') : '';
+      var norm = function (s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
+      var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+      var arrow = '<svg aria-hidden="true"><use href="#i-arrow"/></svg>';
+      var mark = function (title, words) {           // destaca as palavras buscadas no título
+        var t = esc(title);
+        words.forEach(function (w) {
+          if (w.length < 2) return;
+          var n = norm(t), out = '', i = 0, k;
+          while ((k = n.indexOf(w, i)) > -1) { out += t.slice(i, k) + '<mark>' + t.slice(k, k + w.length) + '</mark>'; i = k + w.length; }
+          t = out + t.slice(i);
+        });
+        return t;
+      };
+      $$('[data-qsearch]').forEach(function (form) {
+        var input = $('.qsearch__input', form), clear = $('.qsearch__clear', form), drop = $('.qsearch__drop', form);
+        var panel = form.classList.contains('qsearch--panel');
+        var opts = [], active = -1;
+        var resultsUrl = function (q) { return form.getAttribute('action') + '?s=' + encodeURIComponent(q).replace(/%20/g, '+'); };
+        var setActive = function (i) {
+          opts.forEach(function (o, k) { o.classList.toggle('is-active', k === i); o.setAttribute('aria-selected', k === i ? 'true' : 'false'); });
+          active = i;
+          if (opts[i]) opts[i].scrollIntoView({ block: 'nearest' });
+        };
+        var show = function () { drop.hidden = false; input.setAttribute('aria-expanded', 'true'); };
+        var hide = function () { if (panel) return; drop.hidden = true; input.setAttribute('aria-expanded', 'false'); active = -1; };
+        var render = function () {
+          var q = input.value.trim(), html = '';
+          clear.hidden = !input.value;
+          if (!q) {
+            html = '<div class="qs__label">Assuntos em alta</div><div class="qs__tags">' +
+              data.emAlta.map(function (t) { return '<a class="qs__tag" role="option" href="' + esc(resultsUrl(t)) + '">' + esc(t) + '</a>'; }).join('') + '</div>';
+          } else {
+            var words = norm(q).split(/\s+/).filter(Boolean);
+            var hits = data.itens.filter(function (it) { var h = norm(it.t + ' ' + it.c); return words.every(function (w) { return h.indexOf(w) > -1; }); }).slice(0, 5);
+            html = hits.length ? '<div class="qs__label">Notícias</div>' + hits.map(function (it) {
+              return '<a class="qs__item" role="option" href="' + esc(base + it.u) + '"><img class="qs__thumb" src="' + esc(base + it.i) + '" alt="" loading="lazy">' +
+                '<span><span class="qs__cat">' + esc(it.c) + '</span><span class="qs__title">' + mark(it.t, words) + '</span></span></a>';
+            }).join('') : '<p class="qs__empty">Nenhuma notícia com “' + esc(q) + '” nas sugestões.</p>';
+            html += '<a class="qs__all" role="option" href="' + esc(resultsUrl(q)) + '"><span>Ver todos os resultados para “' + esc(q) + '”</span>' + arrow + '</a>';
+          }
+          drop.innerHTML = html;
+          opts = $$('[role="option"]', drop);
+          active = -1;
+          opts.forEach(function (o) {
+            o.addEventListener('click', function () { try { sessionStorage.setItem('cbn-busca', o.classList.contains('qs__item') ? q : (o.classList.contains('qs__tag') ? o.textContent : q)); } catch (e) {} });
+          });
+          show();
+        };
+        input.addEventListener('focus', render);
+        input.addEventListener('input', render);
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowDown') { e.preventDefault(); if (drop.hidden) render(); setActive(Math.min(active + 1, opts.length - 1)); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(Math.max(active - 1, -1)); }
+          else if (e.key === 'Enter' && opts[active]) { e.preventDefault(); opts[active].click(); }
+          else if (e.key === 'Escape') { if (input.value) { input.value = ''; render(); } else { hide(); input.blur(); } e.stopPropagation(); }
+        });
+        clear.addEventListener('click', function () { input.value = ''; input.focus(); render(); });
+        form.addEventListener('submit', function (e) { if (!input.value.trim()) { e.preventDefault(); e.stopImmediatePropagation(); input.focus(); } });
+        document.addEventListener('pointerdown', function (e) { if (!form.contains(e.target)) hide(); });
+        form.addEventListener('focusout', function () { setTimeout(function () { if (!form.contains(document.activeElement)) hide(); }, 0); });
+      });
+    })();
+
     /* Busca */
     $$('form[role="search"]').forEach(function (f) {
       f.addEventListener('submit', function (e) {
@@ -749,7 +820,7 @@
       var urgent = $$('.onair__slide--urgent', track);
       var idx = 0, sig = '';
       var slides = function () { return $$('.onair__slide', track).filter(function (s) { return getComputedStyle(s).display !== 'none'; }); };
-      var go = function (n, smooth) {
+      var slideTo = function (n, smooth) {
         var list = slides();
         if (!list.length) return;
         idx = (n + list.length) % list.length;
@@ -793,7 +864,7 @@
         var nowSlide = tmp.querySelector('.onair__slide--now');
         if (nowSlide) track.insertBefore(nowSlide, track.firstChild);  // celular: começa pelo "No ar agora"
         $$('.onair__slide--next', tmp).forEach(function (s) { track.appendChild(s); });
-        go(0, false);
+        slideTo(0, false);
       };
       var clock = function () {
         var d = new Date();
@@ -803,22 +874,22 @@
         $$('[data-date-short]', onair).forEach(function (el) { el.textContent = fmt({ day: 'numeric', month: 'short' }).replace('.', '').replace(' de ', ' '); });
       };
       var paused = false;
-      var auto = function () { clearInterval(onairTimer); if (!reduce) onairTimer = setInterval(function () { if (!paused) go(idx + 1); }, 5000); };
+      var auto = function () { clearInterval(onairTimer); if (!reduce) onairTimer = setInterval(function () { if (!paused) slideTo(idx + 1); }, 5000); };
       var slider = $('[data-onair-slider]', onair);
       slider.addEventListener('mouseenter', function () { paused = true; });
       slider.addEventListener('mouseleave', function () { paused = false; });
       slider.addEventListener('focusin', function () { paused = true; });
       slider.addEventListener('focusout', function () { paused = false; });
-      $('[data-onair="prev"]', onair).addEventListener('click', function () { go(idx - 1); auto(); });
-      $('[data-onair="next"]', onair).addEventListener('click', function () { go(idx + 1); auto(); });
+      $('[data-onair="prev"]', onair).addEventListener('click', function () { slideTo(idx - 1); auto(); });
+      $('[data-onair="next"]', onair).addEventListener('click', function () { slideTo(idx + 1); auto(); });
       var x0 = null;                                                // deslizar com o dedo
       slider.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
       slider.addEventListener('touchend', function (e) {
         if (x0 === null) return;
         var dx = e.changedTouches[0].clientX - x0; x0 = null;
-        if (Math.abs(dx) > 40) { go(idx + (dx < 0 ? 1 : -1)); auto(); }
+        if (Math.abs(dx) > 40) { slideTo(idx + (dx < 0 ? 1 : -1)); auto(); }
       });
-      onairRealign = function () { go(idx, false); };
+      onairRealign = function () { slideTo(idx, false); };
       render(); clock(); auto();
       clearInterval(onairTick);
       onairTick = setInterval(function () { render(); clock(); }, 30000);
@@ -885,7 +956,11 @@
         return;
       }
       if (e.key === 'Escape') closePanels();
-      if (e.key === '/' && !/input|textarea|select/i.test(e.target.tagName) && search) { e.preventDefault(); openPanel(search); }
+      if (e.key === '/' && !/input|textarea|select/i.test(e.target.tagName)) {   // "/" foca a busca do topo (ou abre o painel)
+        e.preventDefault();
+        var top = $('.qsearch--header .qsearch__input'), r = top && top.getBoundingClientRect();
+        if (r && r.width && r.bottom > 0) top.focus(); else if (search) openPanel(search);
+      }
     });
 
     if (media) {

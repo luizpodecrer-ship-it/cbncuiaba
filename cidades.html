@@ -76,11 +76,16 @@
           <a href="https://www.instagram.com/cbncba" target="_blank" rel="noopener" aria-label="Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
           <a href="https://www.youtube.com/@cbncba" target="_blank" rel="noopener" aria-label="YouTube"><svg aria-hidden="true"><use href="#i-yt"/></svg></a>
         </div>
-        <button class="search-pill" type="button" data-open="search"><svg aria-hidden="true"><use href="#i-search"/></svg><span>Buscar notícias</span><kbd>/</kbd></button>
+        <!-- Busca: campo de verdade. Ao digitar, mostra notícias sugeridas; Enter abre a página de resultados -->
+        <form class="qsearch qsearch--header" action="busca.html" method="get" role="search" data-qsearch>
+          <span class="qsearch__icon"><svg aria-hidden="true"><use href="#i-search"/></svg></span>
+          <label class="sr-only" for="qh">Buscar notícias</label>
+          <input class="qsearch__input" id="qh" type="search" name="s" placeholder="Buscar notícias..." autocomplete="off" enterkeyhint="search" aria-controls="qh-drop" aria-expanded="false" aria-autocomplete="list" role="combobox">
+          <button class="qsearch__clear" type="button" aria-label="Limpar busca" hidden><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+          <div class="qsearch__drop" id="qh-drop" role="listbox" aria-label="Sugestões de busca" hidden></div>
+        </form>
         <button class="icon-btn header__search" data-open="search" aria-label="Buscar"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
         <button class="icon-btn theme-cycle" data-theme-cycle aria-label="Tema: claro"><svg class="t-light" aria-hidden="true"><use href="#i-sun"/></svg><svg class="t-dark" aria-hidden="true"><use href="#i-moon"/></svg><svg class="t-auto" aria-hidden="true"><use href="#i-auto"/></svg></button>
-        <!-- Ouvir a rádio ao vivo: mesmo botão "Ouvir" da faixa de programação, na versão branca -->
-        <button class="onair__listen header__listen" type="button" data-radio-toggle aria-pressed="false" aria-label="Ouvir a rádio CBN Cuiabá ao vivo"><svg class="fill i-play" aria-hidden="true"><use href="#i-play"/></svg><svg class="fill i-pause" aria-hidden="true"><use href="#i-pause"/></svg><span>Ouvir</span></button>
       </div>
     </div>
   </div>
@@ -300,22 +305,26 @@
   </div>
 </aside>
 
-<!-- ============ BUSCA ============ -->
+<!-- ============ BUSCA (painel suspenso) ============
+     Abre pelo ícone de lupa no celular, no menu fixo e na barra de baixo.
+     Mesmo campo do topo, com sugestões e "Assuntos em alta". -->
 <div class="search" role="dialog" aria-modal="true" aria-label="Buscar" aria-hidden="true">
   <div class="search__in">
-    <div class="search__top"><button class="icon-btn" data-close aria-label="Fechar busca"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
-    <form class="search__form" action="busca.html" method="get" role="search">
-      <svg aria-hidden="true"><use href="#i-search"/></svg>
-      <label class="sr-only" for="s">Buscar notícias</label>
-      <input id="s" type="search" name="s" placeholder="O que você procura?" autocomplete="off">
-    </form>
-    <p class="search__hint">Assuntos em alta</p>
-    <div class="search__tags">
-      <a href="busca.html?s=Chuvas+em+Cuiabá">Chuvas em Cuiabá</a><a href="busca.html?s=Barragem">Barragem</a><a href="busca.html?s=Tarifa+de+água">Tarifa de água</a><a href="busca.html?s=Cuiabá+EC">Cuiabá EC</a><a href="busca.html?s=Eleições">Eleições</a><a href="busca.html?s=Arena+Pantanal">Arena Pantanal</a>
+    <div class="search__row">
+      <form class="qsearch qsearch--panel" action="busca.html" method="get" role="search" data-qsearch>
+          <span class="qsearch__icon"><svg aria-hidden="true"><use href="#i-search"/></svg></span>
+          <label class="sr-only" for="s">Buscar notícias</label>
+          <input class="qsearch__input" id="s" type="search" name="s" placeholder="O que você procura?" autocomplete="off" enterkeyhint="search" aria-controls="s-drop" aria-expanded="false" aria-autocomplete="list" role="combobox">
+          <button class="qsearch__clear" type="button" aria-label="Limpar busca" hidden><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+          <div class="qsearch__drop" id="s-drop" role="listbox" aria-label="Sugestões de busca" hidden></div>
+        </form>
+      <button class="search__close" type="button" data-close aria-label="Fechar busca">Cancelar</button>
     </div>
   </div>
 </div>
 
+<!-- Índice da busca (no WordPress: trocar pela API /wp-json/wp/v2/search?search=termo) -->
+<script src="js/busca-index.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
