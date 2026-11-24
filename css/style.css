@@ -1082,3 +1082,8 @@ svg.cbn { width: 100% !important; height: 100% !important; margin: 0 !important;
 .player__play--eq:hover { background: rgba(255, 255, 255, .06); }
 .player__play--eq .player__eq { height: 30px; gap: 4px; }
 .player__play--eq .player__eq i { width: 7px; }
+
+/* Botão "Ouvir" do topo: o mesmo da faixa de programação, em branco sobre a faixa vermelha */
+.header__listen { margin-left: 6px; background: #fff; color: var(--red); box-shadow: 0 4px 14px rgba(0, 0, 0, .18); }
+.header__listen:hover { background: #f3f4f6; }
+@media (max-width: 1023px) { .header__listen { display: none; } }
