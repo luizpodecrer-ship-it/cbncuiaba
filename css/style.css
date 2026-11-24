@@ -518,11 +518,9 @@ a.onair__slide:hover .onair__slide-title { text-decoration: underline; text-unde
 .player__info { min-width: 0; display: grid; }
 .player__live { display: inline-flex; align-items: center; gap: 8px; font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #ff6b70; }
 .player__name { font-weight: 700; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* Equalizador: cinco barras vermelhas sempre animadas (decisão para a prévia do cliente).
-   Para animar só com a rádio tocando: acrescente "paused" à animação abaixo e a regra
-   .is-playing .player__eq i { animation-play-state: running; } */
-.player__eq { display: flex; align-items: flex-end; gap: 3px; height: 26px; margin-left: 6px; }
-.player__eq i { width: 6px; height: 100%; background: var(--red); border-radius: 3px; transform-origin: bottom; animation: eq-pump 1s ease-in-out infinite; }
+/* Equalizador: é o botão de ouvir a rádio no rodapé (cinco barras vermelhas). */
+.player__eq { display: flex; align-items: flex-end; gap: 3px; height: 26px; flex: none; }
+.player__eq i { width: 6px; height: 100%; background: var(--red); border-radius: 3px; transform-origin: bottom; animation: eq-pump 1s ease-in-out infinite; }   /* sempre animado */
 .player__eq i:nth-child(2) { animation-delay: -.8s; }
 .player__eq i:nth-child(3) { animation-delay: -.4s; }
 .player__eq i:nth-child(4) { animation-delay: -.6s; }
@@ -1078,3 +1076,9 @@ svg.cbn { width: 100% !important; height: 100% !important; margin: 0 !important;
 .player__play--radio:hover { background: none; }
 .player__play--radio .radio-ico { width: 100%; height: 100%; }
 
+
+/* Rodapé: o equalizador é o botão da rádio */
+.player__play--eq { width: auto; height: 48px; padding: 0 8px; border-radius: 8px; background: none; }
+.player__play--eq:hover { background: rgba(255, 255, 255, .06); }
+.player__play--eq .player__eq { height: 30px; gap: 4px; }
+.player__play--eq .player__eq i { width: 7px; }
