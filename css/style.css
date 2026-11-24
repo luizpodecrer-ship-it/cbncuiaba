@@ -278,7 +278,6 @@ svg.fill { fill: currentColor; stroke: none; }
 .onair__progress { position: absolute; left: 0; right: 0; bottom: 0; display: block; height: 3px; border-radius: 3px 3px 0 0; background: rgba(255, 255, 255, .14); overflow: hidden; }
 .onair__progress i { display: block; height: 100%; width: var(--p, 0%); background: var(--red); border-radius: 3px; transition: width .6s var(--ease); }
 .onair__listen { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px 0 14px; border-radius: 999px; background: var(--red); color: #fff; font-size: .84rem; font-weight: 700; white-space: nowrap; box-shadow: 0 6px 16px rgba(209, 10, 17, .35); transition: background-color .2s, transform .15s var(--ease); }
-.onair__listen:hover { background: #e5131a; }
 .onair__listen:active { transform: scale(.95); }
 .onair__listen svg { width: 14px; height: 14px; }
 .onair__listen .i-pause, .is-playing .onair__listen .i-play { display: none; }
@@ -1085,5 +1084,24 @@ svg.cbn { width: 100% !important; height: 100% !important; margin: 0 !important;
 
 /* Botão "Ouvir" do topo: o mesmo da faixa de programação, em branco sobre a faixa vermelha */
 .header__listen { margin-left: 6px; background: #fff; color: var(--red); box-shadow: 0 4px 14px rgba(0, 0, 0, .18); }
-.header__listen:hover { background: #f3f4f6; }
 @media (max-width: 1023px) { .header__listen { display: none; } }
+
+/* Botões "Ouvir": hover — o botão sobe um pouco, a sombra cresce, o play desliza
+   para a direita e um brilho atravessa o botão. No clique ele "afunda". */
+.onair__listen { position: relative; overflow: hidden; isolation: isolate; transition: background-color .25s ease, color .25s ease, box-shadow .3s ease, transform .25s cubic-bezier(.2, .8, .2, 1); }
+.onair__listen svg { transition: transform .3s cubic-bezier(.2, .8, .2, 1); }
+.onair__listen::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(110deg, transparent 25%, rgba(255, 255, 255, .38) 50%, transparent 75%); transform: translateX(-130%); }
+.onair__listen:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+@media (hover: hover) {
+  .onair__listen:hover { background: #e5131a; transform: translateY(-2px); box-shadow: 0 12px 26px rgba(209, 10, 17, .5); }
+  .onair__listen:hover svg { transform: translateX(2px) scale(1.12); }
+  .onair__listen:hover::after { transform: translateX(130%); transition: transform .75s ease; }
+  .header__listen:hover { background: #fff; color: #b5070d; box-shadow: 0 12px 26px rgba(0, 0, 0, .28), 0 0 0 3px rgba(255, 255, 255, .28); }
+}
+.onair__listen:active { transform: translateY(0) scale(.96); box-shadow: 0 4px 10px rgba(0, 0, 0, .2); transition-duration: .1s; }
+.header__listen::after { background: linear-gradient(110deg, transparent 25%, rgba(209, 10, 17, .14) 50%, transparent 75%); }
+.header__listen:focus-visible { outline-color: #fff; }
+@media (prefers-reduced-motion: reduce) {
+  .onair__listen, .onair__listen svg, .onair__listen::after { transition: none; }
+  .onair__listen:hover { transform: none; }
+}
